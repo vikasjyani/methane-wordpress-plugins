@@ -1,0 +1,674 @@
+# Methane Monitor - India Emissions Tracker
+# Copyright (C) 2024 Vasudha Foundation
+# This file is distributed under the GPL v2 or later.
+msgid ""
+msgstr ""
+"Project-Id-Version: Methane Monitor 1.0.0\n"
+"Report-Msgid-Bugs-To: https://github.com/vasudha-foundation/methane-monitor/issues\n"
+"POT-Creation-Date: 2024-01-01 12:00:00+00:00\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+
+# Plugin Information
+msgid "Methane Monitor - India Emissions Tracker"
+msgstr ""
+
+msgid "Interactive geospatial monitoring system for methane emissions across Indian states and districts with advanced analytics and visualization capabilities."
+msgstr ""
+
+msgid "Vasudha Foundation"
+msgstr ""
+
+# Admin Menu Items
+msgid "Methane Monitor"
+msgstr ""
+
+msgid "Dashboard"
+msgstr ""
+
+msgid "Data Management"
+msgstr ""
+
+msgid "Analytics"
+msgstr ""
+
+msgid "Settings"
+msgstr ""
+
+# Dashboard
+msgid "Methane Monitor Dashboard"
+msgstr ""
+
+msgid "Total Data Points"
+msgstr ""
+
+msgid "States Covered"
+msgstr ""
+
+msgid "Districts Covered"
+msgstr ""
+
+msgid "Data Coverage"
+msgstr ""
+
+msgid "Quick Actions"
+msgstr ""
+
+msgid "Upload Data"
+msgstr ""
+
+msgid "Clear Cache"
+msgstr ""
+
+msgid "Recalculate Aggregations"
+msgstr ""
+
+msgid "Recent Activity"
+msgstr ""
+
+msgid "System Status"
+msgstr ""
+
+msgid "No data"
+msgstr ""
+
+msgid "Plugin is running normally. All services are operational."
+msgstr ""
+
+msgid "Database Connection"
+msgstr ""
+
+msgid "Connected"
+msgstr ""
+
+msgid "Cache System"
+msgstr ""
+
+msgid "External cache active"
+msgstr ""
+
+msgid "Using database cache"
+msgstr ""
+
+msgid "File Upload Directory"
+msgstr ""
+
+msgid "Writable"
+msgstr ""
+
+msgid "Not writable"
+msgstr ""
+
+msgid "Memory Usage"
+msgstr ""
+
+# Data Management
+msgid "Upload Data Files"
+msgstr ""
+
+msgid "State Name"
+msgstr ""
+
+msgid "Select State"
+msgstr ""
+
+msgid "District Name"
+msgstr ""
+
+msgid "Enter district name"
+msgstr ""
+
+msgid "Data Files"
+msgstr ""
+
+msgid "Select Excel or CSV files containing methane emission data. Files should have latitude, longitude, and date columns (YYYY_MM_DD format)."
+msgstr ""
+
+msgid "Upload and Process"
+msgstr ""
+
+msgid "Data Overview"
+msgstr ""
+
+msgid "Bulk Operations"
+msgstr ""
+
+msgid "Export All Data"
+msgstr ""
+
+msgid "Cleanup Old Data"
+msgstr ""
+
+msgid "Validate Data Integrity"
+msgstr ""
+
+msgid "State"
+msgstr ""
+
+msgid "Districts"
+msgstr ""
+
+msgid "Data Points"
+msgstr ""
+
+msgid "Date Range"
+msgstr ""
+
+msgid "No data available"
+msgstr ""
+
+# Analytics
+msgid "Analytics Dashboard"
+msgstr ""
+
+msgid "Generate Analytics"
+msgstr ""
+
+msgid "Analysis Type"
+msgstr ""
+
+msgid "State/District Rankings"
+msgstr ""
+
+msgid "Time Series Analysis"
+msgstr ""
+
+msgid "District Clustering"
+msgstr ""
+
+msgid "Correlation Analysis"
+msgstr ""
+
+msgid "All States"
+msgstr ""
+
+msgid "Time Period"
+msgstr ""
+
+msgid "Generate Analytics"
+msgstr ""
+
+msgid "Analysis Results"
+msgstr ""
+
+msgid "Generating analytics..."
+msgstr ""
+
+msgid "Error generating analytics:"
+msgstr ""
+
+msgid "State Rankings"
+msgstr ""
+
+msgid "District Rankings"
+msgstr ""
+
+msgid "Rank"
+msgstr ""
+
+msgid "Avg CH₄ (ppb)"
+msgstr ""
+
+msgid "District Clustering Results"
+msgstr ""
+
+msgid "Number of clusters:"
+msgstr ""
+
+msgid "District"
+msgstr ""
+
+msgid "Cluster"
+msgstr ""
+
+# Settings
+msgid "Methane Monitor Settings"
+msgstr ""
+
+msgid "General Settings"
+msgstr ""
+
+msgid "Configure general plugin settings."
+msgstr ""
+
+msgid "Map Settings"
+msgstr ""
+
+msgid "Configure default map appearance and behavior."
+msgstr ""
+
+msgid "Data Processing Settings"
+msgstr ""
+
+msgid "Configure data processing and file upload settings."
+msgstr ""
+
+msgid "Enable Caching"
+msgstr ""
+
+msgid "Enable data caching for better performance"
+msgstr ""
+
+msgid "Cache Duration (seconds)"
+msgstr ""
+
+msgid "Default Map Zoom"
+msgstr ""
+
+msgid "Color Scheme"
+msgstr ""
+
+msgid "Viridis"
+msgstr ""
+
+msgid "Plasma"
+msgstr ""
+
+msgid "Inferno"
+msgstr ""
+
+msgid "Magma"
+msgstr ""
+
+msgid "Maximum File Size (MB)"
+msgstr ""
+
+msgid "Allowed File Types"
+msgstr ""
+
+# Frontend
+msgid "India Methane Emissions Monitor"
+msgstr ""
+
+msgid "Interactive Environmental Monitoring Platform (2014-2023)"
+msgstr ""
+
+msgid "Loading data..."
+msgstr ""
+
+msgid "Error loading data"
+msgstr ""
+
+msgid "ppb"
+msgstr ""
+
+msgid "Click to explore"
+msgstr ""
+
+msgid "Controls"
+msgstr ""
+
+msgid "Navigation"
+msgstr ""
+
+msgid "-- Select State --"
+msgstr ""
+
+msgid "-- Select District --"
+msgstr ""
+
+msgid "Show Methane Layer"
+msgstr ""
+
+msgid "Use Heatmap Visualization"
+msgstr ""
+
+msgid "Reset to India"
+msgstr ""
+
+msgid "Current:"
+msgstr ""
+
+msgid "Overview"
+msgstr ""
+
+msgid "Time Series"
+msgstr ""
+
+msgid "Clustering"
+msgstr ""
+
+msgid "Methane Emissions Overview"
+msgstr ""
+
+msgid "Explore methane emission patterns across India. Click on regions to drill down for detailed analysis."
+msgstr ""
+
+msgid "Time Series Analysis:"
+msgstr ""
+
+msgid "District Clustering:"
+msgstr ""
+
+msgid "Average"
+msgstr ""
+
+msgid "Minimum"
+msgstr ""
+
+msgid "Maximum"
+msgstr ""
+
+msgid "Data visualization powered by Vasudha Foundation"
+msgstr ""
+
+msgid "Last updated: %s"
+msgstr ""
+
+msgid "Fullscreen"
+msgstr ""
+
+msgid "Export"
+msgstr ""
+
+msgid "Export as PNG"
+msgstr ""
+
+msgid "Export as PDF"
+msgstr ""
+
+msgid "Export Data as CSV"
+msgstr ""
+
+# Months
+msgid "January"
+msgstr ""
+
+msgid "February"
+msgstr ""
+
+msgid "March"
+msgstr ""
+
+msgid "April"
+msgstr ""
+
+msgid "May"
+msgstr ""
+
+msgid "June"
+msgstr ""
+
+msgid "July"
+msgstr ""
+
+msgid "August"
+msgstr ""
+
+msgid "September"
+msgstr ""
+
+msgid "October"
+msgstr ""
+
+msgid "November"
+msgstr ""
+
+msgid "December"
+msgstr ""
+
+# Errors and Messages
+msgid "Security check failed"
+msgstr ""
+
+msgid "Insufficient permissions"
+msgstr ""
+
+msgid "Invalid level parameter"
+msgstr ""
+
+msgid "Invalid year parameter"
+msgstr ""
+
+msgid "Invalid month parameter"
+msgstr ""
+
+msgid "State parameter is required"
+msgstr ""
+
+msgid "State and district parameters are required"
+msgstr ""
+
+msgid "No data found for the specified period"
+msgstr ""
+
+msgid "No files uploaded"
+msgstr ""
+
+msgid "State and district names are required"
+msgstr ""
+
+msgid "File size exceeds maximum allowed size"
+msgstr ""
+
+msgid "File type not allowed"
+msgstr ""
+
+msgid "File upload error occurred"
+msgstr ""
+
+msgid "Failed to save uploaded file"
+msgstr ""
+
+msgid "Are you sure you want to clear the cache?"
+msgstr ""
+
+msgid "Cache cleared successfully"
+msgstr ""
+
+msgid "Error clearing cache"
+msgstr ""
+
+msgid "This may take several minutes. Continue?"
+msgstr ""
+
+msgid "Processing..."
+msgstr ""
+
+msgid "Aggregations recalculated successfully"
+msgstr ""
+
+msgid "Error recalculating aggregations"
+msgstr ""
+
+msgid "Uploading and processing files..."
+msgstr ""
+
+msgid "Upload completed successfully!"
+msgstr ""
+
+msgid "Upload failed:"
+msgstr ""
+
+msgid "Upload failed due to network error"
+msgstr ""
+
+msgid "This will remove data older than 2 years. Continue?"
+msgstr ""
+
+msgid "Cleanup functionality coming soon"
+msgstr ""
+
+msgid "Validating..."
+msgstr ""
+
+msgid "Data validation completed. No issues found."
+msgstr ""
+
+# Plugin Configuration
+msgid "Methane Monitor needs configuration. <a href=\"%s\">Go to settings</a>."
+msgstr ""
+
+msgid "Methane Monitor database tables are missing. Please deactivate and reactivate the plugin."
+msgstr ""
+
+msgid "Methane Monitor requires PHP 7.4 or higher and WordPress 5.0 or higher."
+msgstr ""
+
+msgid "Methane Monitor Error:"
+msgstr ""
+
+msgid "This plugin requires PHP 7.4 or higher and WordPress 5.0 or higher."
+msgstr ""
+
+msgid "Methane Monitor:"
+msgstr ""
+
+msgid "Plugin needs configuration. Please visit the <a href=\"%s\">settings page</a> to complete setup."
+msgstr ""
+
+msgid "Documentation"
+msgstr ""
+
+msgid "Support"
+msgstr ""
+
+# Shortcodes
+msgid "State parameter is required for state statistics"
+msgstr ""
+
+msgid "State and district parameters are required for district statistics"
+msgstr ""
+
+msgid "No data available for the specified parameters"
+msgstr ""
+
+msgid "No valid emission data found"
+msgstr ""
+
+msgid "Only states ranking is currently supported"
+msgstr ""
+
+msgid "No ranking data available"
+msgstr ""
+
+msgid "Metric"
+msgstr ""
+
+msgid "Value (ppb)"
+msgstr ""
+
+msgid "Median"
+msgstr ""
+
+msgid "Name"
+msgstr ""
+
+msgid "CH₄ (ppb)"
+msgstr ""
+
+msgid "Average: %s ppb | Range: %s - %s ppb | Data points: %s"
+msgstr ""
+
+# Cache and Performance
+msgid "Clearing"
+msgstr ""
+
+msgid "Uploading"
+msgstr ""
+
+msgid "Upload Completed"
+msgstr ""
+
+msgid "Upload Failed"
+msgstr ""
+
+msgid "Preparing Upload"
+msgstr ""
+
+msgid "Generating Analytics"
+msgstr ""
+
+msgid "Clearing..."
+msgstr ""
+
+msgid "Uploading..."
+msgstr ""
+
+msgid "Upload completed"
+msgstr ""
+
+msgid "Upload failed"
+msgstr ""
+
+msgid "Preparing upload"
+msgstr ""
+
+msgid "Generating analytics..."
+msgstr ""
+
+# Additional Analytics
+msgid "Strongest Correlations"
+msgstr ""
+
+msgid "District 1"
+msgstr ""
+
+msgid "District 2"
+msgstr ""
+
+msgid "Correlation"
+msgstr ""
+
+msgid "Clusters Found"
+msgstr ""
+
+msgid "No time series data found for %s, %s"
+msgstr ""
+
+msgid "No clustering data found for %s"
+msgstr ""
+
+msgid "No correlation data found for %s"
+msgstr ""
+
+msgid "Correlation Analysis"
+msgstr ""
+
+msgid "Time Series Analysis"
+msgstr ""
+
+msgid "Clustering Analysis"
+msgstr ""
+
+# File Processing
+msgid "File size (%s) exceeds maximum allowed size (%s)"
+msgstr ""
+
+msgid "File type \"%s\" is not allowed. Allowed types: %s"
+msgstr ""
+
+msgid "Invalid MIME type for uploaded file"
+msgstr ""
+
+# System Information
+msgid "Total emissions data points"
+msgstr ""
+
+msgid "Total states"
+msgstr ""
+
+msgid "Total districts"
+msgstr ""
+
+msgid "Latest date"
+msgstr ""
+
+# Export functionality
+msgid "Invalid export format"
+msgstr ""
+
+msgid "Invalid export level"
+msgstr ""
+
+msgid "Export functionality will be implemented in future version"
+msgstr ""
+
+msgid "Validation functionality will be implemented in future version"
+msgstr ""

@@ -1,0 +1,705 @@
+/**
+ * Methane Monitor Frontend Styles
+ * 
+ * Styles for the public-facing methane emissions monitoring interface
+ */
+
+/* CSS Variables for theming */
+:root {
+    --methane-primary: #667eea;
+    --methane-secondary: #764ba2;
+    --methane-success: #00c853;
+    --methane-danger: #ff5252;
+    --methane-warning: #ffc107;
+    --methane-info: #17a2b8;
+    --methane-light: #f8f9fa;
+    --methane-dark: #212529;
+    
+    /* Gradients */
+    --methane-gradient: linear-gradient(135deg, var(--methane-primary) 0%, var(--methane-secondary) 100%);
+    --methane-gradient-light: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+    
+    /* Shadows */
+    --methane-shadow-sm: 0 2px 4px rgba(0,0,0,0.1);
+    --methane-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    --methane-shadow-lg: 0 8px 32px rgba(0,0,0,0.15);
+    
+    /* Border radius */
+    --methane-border-radius: 8px;
+    --methane-border-radius-lg: 16px;
+    
+    /* Spacing */
+    --methane-spacing-xs: 0.25rem;
+    --methane-spacing-sm: 0.5rem;
+    --methane-spacing: 1rem;
+    --methane-spacing-lg: 1.5rem;
+    --methane-spacing-xl: 2rem;
+}
+
+/* Dark theme variables */
+[data-theme="dark"] {
+    --methane-light: #1a1a1a;
+    --methane-dark: #ffffff;
+    --bs-body-bg: #121212;
+    --bs-body-color: #ffffff;
+}
+
+/* Main container */
+.methane-monitor-container {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    line-height: 1.6;
+    color: var(--methane-dark);
+    max-width: 1600px;
+    margin: 0 auto;
+    padding: var(--methane-spacing);
+}
+
+/* Header styles */
+.methane-header {
+    background: var(--methane-gradient);
+    color: white;
+    padding: var(--methane-spacing-xl);
+    border-radius: var(--methane-border-radius-lg);
+    margin-bottom: var(--methane-spacing-lg);
+    text-align: center;
+    box-shadow: var(--methane-shadow);
+}
+
+.methane-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: var(--methane-spacing-sm);
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: var(--methane-spacing-sm);
+}
+
+.methane-logo {
+    height: 40px;
+    width: auto;
+    vertical-align: middle;
+}
+
+.methane-subtitle {
+    font-size: 1.1rem;
+    opacity: 0.9;
+    margin: 0;
+}
+
+/* Breadcrumb navigation */
+.methane-breadcrumb,
+#methane-breadcrumb-container {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    padding: var(--methane-spacing) var(--methane-spacing-lg);
+    border-radius: var(--methane-border-radius);
+    margin-bottom: var(--methane-spacing);
+    box-shadow: var(--methane-shadow-sm);
+}
+
+.methane-breadcrumb a,
+#methane-breadcrumb-container a {
+    color: var(--methane-primary);
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.methane-breadcrumb a:hover,
+#methane-breadcrumb-container a:hover {
+    text-decoration: underline;
+    color: var(--methane-secondary);
+}
+
+.methane-breadcrumb .current,
+#methane-breadcrumb-container .current {
+    color: #495057;
+    font-weight: 600;
+}
+
+/* Map container */
+.methane-map-container {
+    position: relative;
+    margin-bottom: var(--methane-spacing-xl);
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border-radius: var(--methane-border-radius-lg);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    box-shadow: var(--methane-shadow-lg);
+    padding: var(--methane-spacing-sm);
+    overflow: hidden;
+}
+
+#methane-map {
+    border-radius: var(--methane-border-radius);
+    background: #f0f0f0;
+    z-index: 1;
+}
+
+/* Controls panel */
+.methane-controls-panel,
+.methane-controls-wrapper {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    z-index: 1000;
+    background: rgba(255, 255, 255, 0.98);
+    backdrop-filter: blur(10px);
+    border-radius: var(--methane-border-radius);
+    box-shadow: var(--methane-shadow);
+    min-width: 300px;
+    max-height: calc(100% - 30px);
+    overflow-y: auto;
+}
+
+.methane-controls-panel .card-header {
+    background: rgba(0, 0, 0, 0.03);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    padding: var(--methane-spacing);
+}
+
+.methane-controls-panel .card-body {
+    padding: var(--methane-spacing);
+}
+
+.methane-controls-panel .form-label {
+    font-size: 0.875rem;
+    color: #6c757d;
+    margin-bottom: var(--methane-spacing-xs);
+    font-weight: 500;
+}
+
+.methane-controls-panel .form-select,
+.methane-controls-panel .form-control {
+    font-size: 0.875rem;
+    border-radius: 6px;
+    border-color: #ddd;
+    transition: all 0.3s ease;
+}
+
+.methane-controls-panel .form-select:focus,
+.methane-controls-panel .form-control:focus {
+    border-color: var(--methane-primary);
+    box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+}
+
+.methane-controls-panel .form-check-input:checked {
+    background-color: var(--methane-primary);
+    border-color: var(--methane-primary);
+}
+
+.methane-controls-panel hr {
+    margin: var(--methane-spacing-sm) 0;
+    opacity: 0.3;
+}
+
+/* Statistics grid */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: var(--methane-spacing);
+    margin-bottom: var(--methane-spacing-lg);
+}
+
+.stat-card {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border-radius: var(--methane-border-radius);
+    padding: var(--methane-spacing-lg);
+    text-align: center;
+    transition: all 0.3s ease;
+    box-shadow: var(--methane-shadow-sm);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.stat-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--methane-shadow);
+}
+
+.stat-value {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: var(--methane-spacing-xs);
+    line-height: 1.2;
+}
+
+.stat-label {
+    font-size: 0.875rem;
+    opacity: 0.8;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin: 0;
+}
+
+/* Analytics container */
+.methane-analytics-container {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border-radius: var(--methane-border-radius-lg);
+    overflow: hidden;
+    box-shadow: var(--methane-shadow-sm);
+    margin-bottom: var(--methane-spacing-xl);
+}
+
+.methane-analytics-container .nav-tabs {
+    background: rgba(0, 0, 0, 0.03);
+    border-bottom: none;
+    padding: var(--methane-spacing) var(--methane-spacing) 0;
+}
+
+.methane-analytics-container .nav-tabs .nav-link {
+    border: none;
+    color: #495057;
+    font-weight: 500;
+    border-radius: var(--methane-border-radius) var(--methane-border-radius) 0 0;
+    margin-right: 4px;
+    padding: var(--methane-spacing-sm) var(--methane-spacing);
+    transition: all 0.3s ease;
+}
+
+.methane-analytics-container .nav-tabs .nav-link.active {
+    background: white;
+    color: var(--methane-primary);
+    font-weight: 600;
+    box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.methane-analytics-container .nav-tabs .nav-link:hover:not(.active) {
+    background: rgba(255, 255, 255, 0.5);
+}
+
+.methane-analytics-container .nav-tabs .nav-link:disabled {
+    opacity: 0.5;
+    pointer-events: none;
+}
+
+.methane-analytics-container .tab-content {
+    padding: var(--methane-spacing-lg);
+}
+
+.methane-analytics-container .tab-pane {
+    min-height: 400px;
+}
+
+/* Chart and table containers */
+.chart-container,
+.table-container {
+    background: white;
+    border-radius: var(--methane-border-radius);
+    padding: var(--methane-spacing-lg);
+    margin-bottom: var(--methane-spacing);
+    box-shadow: var(--methane-shadow-sm);
+    min-height: 320px;
+}
+
+.chart-container > div,
+.table-container > div {
+    min-height: 280px;
+}
+
+/* Loading overlay */
+.methane-loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    backdrop-filter: blur(5px);
+}
+
+.methane-loading-content {
+    background: white;
+    padding: var(--methane-spacing-xl);
+    border-radius: var(--methane-border-radius-lg);
+    text-align: center;
+    min-width: 200px;
+    box-shadow: var(--methane-shadow-lg);
+}
+
+.methane-loading-content .spinner-border {
+    width: 3rem;
+    height: 3rem;
+    border-width: 0.3em;
+}
+
+/* Legend */
+.legend,
+.methane-legend {
+    background: rgba(255, 255, 255, 0.98);
+    padding: var(--methane-spacing);
+    border-radius: var(--methane-border-radius);
+    box-shadow: var(--methane-shadow-sm);
+    font-size: 12px;
+    min-width: 150px;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.legend h6,
+.methane-legend h6 {
+    margin: 0 0 var(--methane-spacing-sm);
+    font-size: 13px;
+    font-weight: 600;
+    color: #333;
+}
+
+.legend-gradient {
+    height: 20px;
+    width: 100%;
+    border-radius: 4px;
+    margin-bottom: var(--methane-spacing-sm);
+    border: 1px solid #ddd;
+}
+
+.legend-labels {
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+    color: #666;
+}
+
+/* Leaflet tooltip and popup enhancements */
+.leaflet-tooltip {
+    background: rgba(255, 255, 255, 0.98) !important;
+    border: 1px solid #ddd !important;
+    border-radius: 6px !important;
+    padding: var(--methane-spacing-sm) var(--methane-spacing) !important;
+    font-size: 13px !important;
+    box-shadow: var(--methane-shadow-sm) !important;
+}
+
+.leaflet-tooltip strong {
+    color: var(--methane-primary);
+}
+
+.leaflet-popup-content-wrapper {
+    border-radius: var(--methane-border-radius) !important;
+    box-shadow: var(--methane-shadow) !important;
+}
+
+.leaflet-popup-content {
+    margin: 13px 19px !important;
+    font-size: 14px !important;
+}
+
+.methane-popup {
+    text-align: center;
+    min-width: 150px;
+}
+
+.methane-popup h6 {
+    color: var(--methane-primary);
+    margin-bottom: var(--methane-spacing-sm);
+    font-weight: 600;
+}
+
+.methane-popup .value {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin: var(--methane-spacing-sm) 0;
+}
+
+.methane-popup .period {
+    color: #666;
+    font-size: 12px;
+}
+
+.methane-popup .action {
+    margin-top: var(--methane-spacing-sm);
+    padding-top: var(--methane-spacing-sm);
+    border-top: 1px solid #eee;
+    font-size: 12px;
+    color: var(--methane-info);
+}
+
+/* Button styles */
+.btn-primary {
+    background-color: var(--methane-primary);
+    border-color: var(--methane-primary);
+    transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+    background-color: var(--methane-secondary);
+    border-color: var(--methane-secondary);
+    transform: translateY(-1px);
+}
+
+.btn-warning {
+    background-color: var(--methane-warning);
+    border-color: var(--methane-warning);
+    color: #212529;
+}
+
+.btn-warning:hover {
+    background-color: #ffb300;
+    border-color: #ffb300;
+    color: #212529;
+}
+
+/* Table styles */
+.table-hover tbody tr:hover {
+    background-color: rgba(102, 126, 234, 0.05);
+}
+
+.badge {
+    font-weight: 500;
+    padding: 0.35em 0.65em;
+}
+
+/* Footer */
+.methane-footer {
+    text-align: center;
+    padding-top: var(--methane-spacing);
+    margin-top: var(--methane-spacing-xl);
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.methane-footer p {
+    margin-bottom: var(--methane-spacing-xs);
+    color: #6c757d;
+}
+
+/* Scrollbar customization */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.05);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 4px;
+    transition: background 0.3s ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(0, 0, 0, 0.3);
+}
+
+/* Responsive design */
+@media (max-width: 992px) {
+    .methane-controls-panel,
+    .methane-controls-wrapper {
+        position: relative !important;
+        top: auto !important;
+        right: auto !important;
+        margin-top: var(--methane-spacing);
+        width: 100% !important;
+        max-height: none !important;
+    }
+    
+    .methane-title {
+        font-size: 2rem;
+    }
+    
+    .stats-grid {
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    }
+}
+
+@media (max-width: 768px) {
+    .methane-monitor-container {
+        padding: var(--methane-spacing-sm);
+    }
+    
+    .methane-title {
+        font-size: 1.75rem;
+        flex-direction: column;
+    }
+    
+    .methane-logo {
+        height: 32px;
+    }
+    
+    #methane-map {
+        height: 50vh !important;
+        min-height: 400px !important;
+    }
+    
+    .stat-value {
+        font-size: 1.5rem;
+    }
+    
+    .methane-analytics-container .nav-tabs {
+        padding: var(--methane-spacing-sm);
+    }
+    
+    .methane-analytics-container .nav-tabs .nav-link {
+        padding: var(--methane-spacing-xs) var(--methane-spacing-sm);
+        font-size: 0.875rem;
+    }
+    
+    .methane-analytics-container .tab-content {
+        padding: var(--methane-spacing);
+    }
+}
+
+@media (max-width: 576px) {
+    .methane-title {
+        font-size: 1.5rem;
+    }
+    
+    .methane-subtitle {
+        font-size: 1rem;
+    }
+    
+    .stats-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: var(--methane-spacing-sm);
+    }
+    
+    .stat-card {
+        padding: var(--methane-spacing);
+    }
+    
+    .stat-value {
+        font-size: 1.25rem;
+    }
+    
+    .stat-label {
+        font-size: 0.75rem;
+    }
+}
+
+/* Print styles */
+@media print {
+    .methane-controls-panel,
+    .methane-controls-wrapper,
+    .methane-loading-overlay,
+    .btn,
+    .alert {
+        display: none !important;
+    }
+    
+    .methane-monitor-container {
+        max-width: none;
+        margin: 0;
+        padding: 0;
+    }
+    
+    .methane-header {
+        background: none !important;
+        color: black !important;
+        box-shadow: none !important;
+    }
+    
+    .methane-map-container {
+        box-shadow: none !important;
+        border: 1px solid #ccc !important;
+    }
+}
+
+/* Accessibility improvements */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
+    :root {
+        --methane-primary: #0000ff;
+        --methane-secondary: #800080;
+        --methane-success: #008000;
+        --methane-danger: #ff0000;
+        --methane-warning: #ffff00;
+        --methane-info: #00ffff;
+    }
+    
+    .methane-controls-panel,
+    .stat-card,
+    .chart-container,
+    .table-container {
+        border: 2px solid #000 !important;
+    }
+}
+
+/* Focus styles for keyboard navigation */
+.btn:focus,
+.form-select:focus,
+.form-control:focus,
+.form-check-input:focus {
+    outline: 2px solid var(--methane-primary) !important;
+    outline-offset: 2px !important;
+}
+
+/* Error states */
+.methane-error {
+    border-color: var(--methane-danger) !important;
+    background-color: rgba(255, 82, 82, 0.1) !important;
+}
+
+.methane-success {
+    border-color: var(--methane-success) !important;
+    background-color: rgba(0, 200, 83, 0.1) !important;
+}
+
+/* Custom form elements */
+.methane-controls-panel .form-switch .form-check-input {
+    background-color: #6c757d;
+}
+
+.methane-controls-panel .form-switch .form-check-input:checked {
+    background-color: var(--methane-primary);
+}
+
+/* Animation classes */
+.fade-in {
+    animation: fadeIn 0.3s ease-in;
+}
+
+.slide-up {
+    animation: slideUp 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideUp {
+    from { 
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to { 
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Utility classes */
+.methane-text-primary { color: var(--methane-primary) !important; }
+.methane-text-secondary { color: var(--methane-secondary) !important; }
+.methane-text-success { color: var(--methane-success) !important; }
+.methane-text-danger { color: var(--methane-danger) !important; }
+.methane-text-warning { color: var(--methane-warning) !important; }
+.methane-text-info { color: var(--methane-info) !important; }
+
+.methane-bg-primary { background-color: var(--methane-primary) !important; }
+.methane-bg-secondary { background-color: var(--methane-secondary) !important; }
+.methane-bg-light { background-color: var(--methane-light) !important; }
+
+.methane-border-primary { border-color: var(--methane-primary) !important; }
+.methane-border-radius { border-radius: var(--methane-border-radius) !important; }
+.methane-border-radius-lg { border-radius: var(--methane-border-radius-lg) !important; }
+
+.methane-shadow { box-shadow: var(--methane-shadow) !important; }
+.methane-shadow-sm { box-shadow: var(--methane-shadow-sm) !important; }
+.methane-shadow-lg { box-shadow: var(--methane-shadow-lg) !important; }

@@ -1,0 +1,686 @@
+/**
+ * Methane Monitor Admin Styles
+ * 
+ * Styles for the WordPress admin interface
+ */
+
+/* Admin Variables */
+:root {
+    --methane-admin-primary: #0073aa;
+    --methane-admin-secondary: #667eea;
+    --methane-admin-success: #00a32a;
+    --methane-admin-warning: #dba617;
+    --methane-admin-danger: #d63638;
+    --methane-admin-info: #2271b1;
+    
+    --methane-admin-bg: #f1f1f1;
+    --methane-admin-bg-white: #ffffff;
+    --methane-admin-border: #c3c4c7;
+    --methane-admin-text: #1d2327;
+    --methane-admin-text-light: #646970;
+    
+    --methane-admin-shadow: 0 1px 3px rgba(0, 0, 0, 0.13);
+    --methane-admin-shadow-lg: 0 4px 15px rgba(0, 0, 0, 0.1);
+    --methane-admin-radius: 4px;
+    --methane-admin-radius-lg: 8px;
+}
+
+/* Main admin container */
+.methane-dashboard,
+.methane-data-management,
+.methane-analytics-admin {
+    max-width: 1200px;
+}
+
+/* Statistics Grid */
+.methane-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.methane-stat-card {
+    background: var(--methane-admin-bg-white);
+    border: 1px solid var(--methane-admin-border);
+    border-radius: var(--methane-admin-radius-lg);
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    box-shadow: var(--methane-admin-shadow);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.methane-stat-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--methane-admin-primary), var(--methane-admin-secondary));
+}
+
+.methane-stat-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--methane-admin-shadow-lg);
+}
+
+.stat-icon {
+    font-size: 2.5em;
+    margin-right: 15px;
+    opacity: 0.8;
+}
+
+.stat-content h3 {
+    margin: 0 0 5px 0;
+    font-size: 2em;
+    color: var(--methane-admin-primary);
+    font-weight: 600;
+}
+
+.stat-content p {
+    margin: 0;
+    color: var(--methane-admin-text-light);
+    font-size: 0.9em;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Quick Actions */
+.methane-quick-actions,
+.methane-recent-activity,
+.methane-system-status {
+    background: var(--methane-admin-bg-white);
+    border: 1px solid var(--methane-admin-border);
+    border-radius: var(--methane-admin-radius-lg);
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: var(--methane-admin-shadow);
+}
+
+.methane-quick-actions h2,
+.methane-recent-activity h2,
+.methane-system-status h2 {
+    margin-top: 0;
+    margin-bottom: 15px;
+    color: var(--methane-admin-text);
+    font-size: 1.3em;
+    border-bottom: 2px solid var(--methane-admin-primary);
+    padding-bottom: 8px;
+}
+
+.action-buttons {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.action-buttons .button {
+    transition: all 0.3s ease;
+}
+
+.action-buttons .button:hover {
+    transform: translateY(-1px);
+}
+
+/* Activity List */
+.activity-list {
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.activity-item {
+    padding: 12px 0;
+    border-bottom: 1px solid #eee;
+    position: relative;
+    padding-left: 25px;
+}
+
+.activity-item::before {
+    content: '•';
+    position: absolute;
+    left: 0;
+    top: 12px;
+    color: var(--methane-admin-primary);
+    font-weight: bold;
+    font-size: 1.2em;
+}
+
+.activity-item:last-child {
+    border-bottom: none;
+}
+
+.activity-item strong {
+    color: var(--methane-admin-text);
+}
+
+.activity-item small {
+    display: block;
+    color: var(--methane-admin-text-light);
+    margin-top: 4px;
+    font-size: 0.85em;
+}
+
+/* System Status */
+.status-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.status-item:last-child {
+    border-bottom: none;
+}
+
+.status-item .status-label {
+    font-weight: 500;
+    color: var(--methane-admin-text);
+}
+
+.status-good { 
+    color: var(--methane-admin-success);
+    font-weight: 600;
+}
+
+.status-warning { 
+    color: var(--methane-admin-warning);
+    font-weight: 600;
+}
+
+.status-error { 
+    color: var(--methane-admin-danger);
+    font-weight: 600;
+}
+
+.status-good::before {
+    content: '✓ ';
+}
+
+.status-warning::before {
+    content: '⚠ ';
+}
+
+.status-error::before {
+    content: '✗ ';
+}
+
+/* Upload Section */
+.upload-section {
+    background: var(--methane-admin-bg-white);
+    border: 1px solid var(--methane-admin-border);
+    border-radius: var(--methane-admin-radius-lg);
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.upload-section h2 {
+    margin-top: 0;
+    color: var(--methane-admin-text);
+    border-bottom: 2px solid var(--methane-admin-secondary);
+    padding-bottom: 8px;
+}
+
+.upload-progress-bar {
+    width: 100%;
+    height: 24px;
+    background: #f1f1f1;
+    border-radius: 12px;
+    overflow: hidden;
+    margin: 15px 0;
+    border: 1px solid var(--methane-admin-border);
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--methane-admin-primary), var(--methane-admin-secondary));
+    width: 0%;
+    transition: width 0.3s ease;
+    border-radius: 12px;
+    position: relative;
+}
+
+.progress-fill::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+    animation: progress-shine 2s infinite;
+}
+
+@keyframes progress-shine {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+}
+
+.upload-status {
+    padding: 10px;
+    border-radius: var(--methane-admin-radius);
+    margin-top: 10px;
+    font-weight: 500;
+}
+
+/* Data Overview */
+.data-overview {
+    background: var(--methane-admin-bg-white);
+    border: 1px solid var(--methane-admin-border);
+    border-radius: var(--methane-admin-radius-lg);
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.data-overview-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+}
+
+.data-overview-table th,
+.data-overview-table td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+}
+
+.data-overview-table th {
+    background: #f9f9f9;
+    font-weight: 600;
+    color: var(--methane-admin-text);
+    text-transform: uppercase;
+    font-size: 0.85em;
+    letter-spacing: 0.5px;
+}
+
+.data-overview-table tbody tr:hover {
+    background: rgba(0, 115, 170, 0.05);
+}
+
+/* Bulk Operations */
+.bulk-operations {
+    background: var(--methane-admin-bg-white);
+    border: 1px solid var(--methane-admin-border);
+    border-radius: var(--methane-admin-radius-lg);
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.bulk-action-buttons {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+/* Analytics Section */
+.methane-analytics-admin > div {
+    background: var(--methane-admin-bg-white);
+    border: 1px solid var(--methane-admin-border);
+    border-radius: var(--methane-admin-radius-lg);
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.analytics-controls h2 {
+    margin-top: 0;
+    color: var(--methane-admin-text);
+    border-bottom: 2px solid var(--methane-admin-info);
+    padding-bottom: 8px;
+}
+
+.analytics-results {
+    min-height: 400px;
+}
+
+.analytics-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.analytics-table th,
+.analytics-table td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+}
+
+.analytics-table th {
+    background: #f9f9f9;
+    font-weight: 600;
+    color: var(--methane-admin-text);
+}
+
+.analytics-table tbody tr:hover {
+    background: rgba(102, 126, 234, 0.05);
+}
+
+.analytics-chart {
+    width: 100%;
+    height: 400px;
+    margin-top: 20px;
+    border: 1px solid #eee;
+    border-radius: var(--methane-admin-radius);
+}
+
+/* Form Enhancements */
+.methane-admin .form-table th {
+    color: var(--methane-admin-text);
+    font-weight: 600;
+}
+
+.methane-admin .form-table td {
+    color: var(--methane-admin-text-light);
+}
+
+.methane-admin .form-table input[type="text"],
+.methane-admin .form-table input[type="number"],
+.methane-admin .form-table select,
+.methane-admin .form-table textarea {
+    border-color: var(--methane-admin-border);
+    border-radius: var(--methane-admin-radius);
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.methane-admin .form-table input[type="text"]:focus,
+.methane-admin .form-table input[type="number"]:focus,
+.methane-admin .form-table select:focus,
+.methane-admin .form-table textarea:focus {
+    border-color: var(--methane-admin-primary);
+    box-shadow: 0 0 0 2px rgba(0, 115, 170, 0.2);
+    outline: none;
+}
+
+/* Settings Page */
+.methane-settings-section {
+    background: var(--methane-admin-bg-white);
+    border: 1px solid var(--methane-admin-border);
+    border-radius: var(--methane-admin-radius-lg);
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.methane-settings-section h3 {
+    margin-top: 0;
+    color: var(--methane-admin-text);
+    border-bottom: 1px solid #eee;
+    padding-bottom: 10px;
+}
+
+/* Notices and Alerts */
+.methane-notice {
+    border-left: 4px solid var(--methane-admin-primary);
+    background: rgba(0, 115, 170, 0.05);
+    padding: 12px 15px;
+    margin: 15px 0;
+    border-radius: 0 var(--methane-admin-radius) var(--methane-admin-radius) 0;
+}
+
+.methane-notice.notice-error {
+    border-left-color: var(--methane-admin-danger);
+    background: rgba(214, 54, 56, 0.05);
+}
+
+.methane-notice.notice-warning {
+    border-left-color: var(--methane-admin-warning);
+    background: rgba(219, 166, 23, 0.05);
+}
+
+.methane-notice.notice-success {
+    border-left-color: var(--methane-admin-success);
+    background: rgba(0, 163, 42, 0.05);
+}
+
+/* Tabs */
+.methane-admin .nav-tab-wrapper {
+    border-bottom: 1px solid var(--methane-admin-border);
+    margin-bottom: 20px;
+}
+
+.methane-admin .nav-tab {
+    border: 1px solid var(--methane-admin-border);
+    border-bottom: none;
+    background: #f9f9f9;
+    color: var(--methane-admin-text-light);
+    transition: all 0.3s ease;
+}
+
+.methane-admin .nav-tab:hover {
+    background: #fff;
+    color: var(--methane-admin-text);
+}
+
+.methane-admin .nav-tab-active {
+    background: #fff;
+    color: var(--methane-admin-primary);
+    border-bottom-color: #fff;
+    font-weight: 600;
+}
+
+/* Loading States */
+.methane-loading {
+    text-align: center;
+    padding: 40px 20px;
+    color: var(--methane-admin-text-light);
+}
+
+.methane-loading .spinner {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border: 2px solid #f3f3f3;
+    border-top: 2px solid var(--methane-admin-primary);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-right: 10px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Badges and Labels */
+.methane-badge {
+    display: inline-block;
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 0.75em;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.methane-badge-primary {
+    background: var(--methane-admin-primary);
+    color: white;
+}
+
+.methane-badge-success {
+    background: var(--methane-admin-success);
+    color: white;
+}
+
+.methane-badge-warning {
+    background: var(--methane-admin-warning);
+    color: white;
+}
+
+.methane-badge-danger {
+    background: var(--methane-admin-danger);
+    color: white;
+}
+
+.methane-badge-secondary {
+    background: #6c757d;
+    color: white;
+}
+
+/* Help Text */
+.methane-help-text {
+    color: var(--methane-admin-text-light);
+    font-size: 0.9em;
+    font-style: italic;
+    margin-top: 5px;
+}
+
+.methane-help-text::before {
+    content: 'ℹ ';
+    color: var(--methane-admin-info);
+}
+
+/* Code Blocks */
+.methane-code {
+    background: #f8f9fa;
+    border: 1px solid #e9ecef;
+    border-radius: var(--methane-admin-radius);
+    padding: 12px;
+    font-family: 'Monaco', 'Consolas', 'Courier New', monospace;
+    font-size: 0.9em;
+    color: #495057;
+    margin: 10px 0;
+    overflow-x: auto;
+}
+
+/* Responsive Design */
+@media screen and (max-width: 782px) {
+    .methane-stats-grid {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+    
+    .methane-stat-card {
+        padding: 15px;
+    }
+    
+    .stat-icon {
+        font-size: 2em;
+        margin-right: 10px;
+    }
+    
+    .stat-content h3 {
+        font-size: 1.5em;
+    }
+    
+    .action-buttons {
+        flex-direction: column;
+    }
+    
+    .action-buttons .button {
+        width: 100%;
+        text-align: center;
+    }
+    
+    .bulk-action-buttons {
+        flex-direction: column;
+    }
+    
+    .analytics-chart {
+        height: 300px;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .methane-dashboard,
+    .methane-data-management,
+    .methane-analytics-admin {
+        margin: 0 -10px;
+    }
+    
+    .methane-quick-actions,
+    .methane-recent-activity,
+    .methane-system-status,
+    .upload-section,
+    .data-overview,
+    .bulk-operations {
+        margin: 0 0 15px 0;
+        border-radius: 0;
+        border-left: none;
+        border-right: none;
+    }
+    
+    .status-item {
+        flex-direction: column;
+        align-items: flex-start;
+        text-align: left;
+    }
+    
+    .status-item .status-label {
+        margin-bottom: 5px;
+    }
+}
+
+/* Print Styles */
+@media print {
+    .methane-dashboard,
+    .methane-data-management,
+    .methane-analytics-admin {
+        box-shadow: none;
+    }
+    
+    .methane-stat-card,
+    .methane-quick-actions,
+    .methane-recent-activity,
+    .methane-system-status {
+        box-shadow: none;
+        border: 1px solid #ccc;
+    }
+    
+    .action-buttons,
+    .bulk-action-buttons {
+        display: none;
+    }
+    
+    .analytics-chart {
+        border: 1px solid #ccc;
+    }
+}
+
+/* Dark Mode Support (for WordPress 5.7+) */
+@media (prefers-color-scheme: dark) {
+    .auto-color-scheme {
+        --methane-admin-bg: #1e1e1e;
+        --methane-admin-bg-white: #2c2c2c;
+        --methane-admin-border: #3c3c3c;
+        --methane-admin-text: #e0e0e0;
+        --methane-admin-text-light: #b0b0b0;
+    }
+}
+
+/* Accessibility Improvements */
+.methane-admin *:focus {
+    outline: 2px solid var(--methane-admin-primary);
+    outline-offset: 2px;
+}
+
+.methane-admin .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+/* High Contrast Mode */
+@media (prefers-contrast: high) {
+    .methane-stat-card,
+    .methane-quick-actions,
+    .methane-recent-activity,
+    .methane-system-status {
+        border: 2px solid currentColor;
+    }
+    
+    .action-buttons .button,
+    .bulk-action-buttons .button {
+        border: 2px solid currentColor;
+    }
+}
