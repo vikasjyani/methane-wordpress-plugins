@@ -1,0 +1,130 @@
+{% extends "layouts/base_layout.html" %}
+
+{% block title %}Demand Projection - Visualization - KSEB Energy Futures{% endblock %}
+
+{% block content %}
+<div class="module-container">
+    <h2>Demand Projection: Visualization & Analysis</h2>
+    <p>View, compare, and analyze demand forecast scenarios.</p>
+
+    <div class="top-controls-visualization">
+        <div class="form-group-inline">
+            <div class="form-group">
+                <label for="scenario-select-viz">Select Scenario(s):</label>
+                <select id="scenario-select-viz" name="scenarioViz" multiple size="3">
+                    <option value="scen_base_202401" selected>Baseline_Forecast_20240801</option>
+                    <option value="scen_high_growth_202402">HighGrowth_EV_20240802</option>
+                    <option value="scen_low_carbon_202403">LowCarbon_RE_Integration_20240803</option>
+                </select>
+            </div>
+            <button id="compare-scenarios-btn" class="btn-primary">Compare Selected</button>
+        </div>
+        <div class="filters-panel">
+            <h4>Filters:</h4>
+            <div class="form-group-inline">
+                <div class="form-group">
+                    <label for="filter-sector">Sector:</label>
+                    <select id="filter-sector" name="filterSector">
+                        <option value="all">All Sectors</option>
+                        <option value="domestic">Domestic</option>
+                        <option value="commercial">Commercial</option>
+                        <option value="industrial_ht">Industrial (HT)</option>
+                        <!-- Add other sectors -->
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="filter-model">Model:</label>
+                    <select id="filter-model" name="filterModel">
+                        <option value="all">All Models</option>
+                        <option value="arima">ARIMA</option>
+                        <option value="ets">Exponential Smoothing</option>
+                        <!-- Add other models -->
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="filter-years">Years:</label>
+                    <input type="text" id="filter-years" name="filterYears" placeholder="e.g., 2025-2035">
+                </div>
+                <button id="apply-filters-btn" class="btn-secondary">Apply Filters</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="content-grid-visualization">
+        <section class="chart-section main-chart">
+            <h3>Aggregated Demand Forecast</h3>
+            <div id="aggregated-demand-chart-container" class="chart-placeholder-large">
+                <p>Aggregated demand forecast chart will appear here.</p>
+                <div id="aggregated-demand-chart"></div> <!-- Actual chart div -->
+            </div>
+        </section>
+
+        <section class="chart-section side-chart">
+            <h3>Sector Breakdown</h3>
+            <div id="sector-breakdown-chart-container" class="chart-placeholder-medium">
+                <p>Sector breakdown chart will appear here.</p>
+                <div id="sector-breakdown-chart"></div> <!-- Actual chart div -->
+            </div>
+        </section>
+
+        <section class="table-section full-width-table">
+            <h3>Model Performance Metrics</h3>
+            <div class="table-container">
+                <table id="model-performance-table" class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Scenario</th>
+                            <th>Sector</th>
+                            <th>Model</th>
+                            <th>MAPE (%)</th>
+                            <th>RMSE</th>
+                            <th>Coverage</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Baseline_Forecast_20240801</td><td>Domestic</td><td>ARIMA</td><td>2.5</td><td>150.2</td><td>95%</td></tr>
+                        <tr><td>Baseline_Forecast_20240801</td><td>Commercial</td><td>ETS</td><td>3.1</td><td>80.5</td><td>90%</td></tr>
+                        <!-- More sample data -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section class="table-section full-width-table">
+            <h3>Detailed Results Table</h3>
+             <div class="table-container">
+                <table id="detailed-results-table" class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Year</th>
+                            <th>Month</th>
+                            <th>Scenario</th>
+                            <th>Sector</th>
+                            <th>Forecasted Demand (MU)</th>
+                            <th>Lower Bound</th>
+                            <th>Upper Bound</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>2025</td><td>Jan</td><td>Baseline</td><td>Domestic</td><td>1350.0</td><td>1300</td><td>1400</td></tr>
+                        <tr><td>2025</td><td>Jan</td><td>Baseline</td><td>Commercial</td><td>950.0</td><td>920</td><td>980</td></tr>
+                        <!-- More sample data -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </div>
+
+    <div class="form-actions bottom-actions">
+        <button type="button" id="export-csv-btn" class="btn-secondary">Export as CSV</button>
+        <button type="button" id="export-pdf-btn" class="btn-secondary">Export as PDF</button>
+        <button type="button" id="save-consolidated-btn" class="btn-primary">Save Consolidated Data</button>
+    </div>
+
+</div>
+{% endblock %}
+
+{% block scripts %}
+<!-- Optional: Add page-specific JS or CDN link for charting library -->
+<!-- e.g., <script src="https://cdn.plot.ly/plotly-latest.min.js"></script> -->
+{% endblock %}

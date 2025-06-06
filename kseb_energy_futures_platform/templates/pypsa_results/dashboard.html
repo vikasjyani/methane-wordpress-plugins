@@ -1,0 +1,108 @@
+{% extends "layouts/base_layout.html" %}
+
+{% block title %}PyPSA Results Dashboard - KSEB Energy Futures{% endblock %}
+
+{% block content %}
+<div class="module-container results-dashboard-container">
+    <h2 id="pypsa-dashboard-title">Scenario: <span class="scenario-name-placeholder">{{ scenario_id or "Default_Scenario" }}</span> - Results Dashboard</h2>
+
+    <nav class="results-tabs-nav">
+        <ul>
+            <li><a href="#" class="tab-link active" data-tab="overview" id="tab-overview">Overview</a></li>
+            <li><a href="#" class="tab-link" data-tab="dispatch" id="tab-dispatch">Dispatch Analysis</a></li>
+            <li><a href="#" class="tab-link" data-tab="capacity" id="tab-capacity">Capacity & Investment</a></li>
+            <li><a href="#" class="tab-link" data-tab="costs" id="tab-costs">Cost Breakdown</a></li>
+            <li><a href="#" class="tab-link" data-tab="emissions" id="tab-emissions">Emissions Profile</a></li>
+            <li><a href="#" class="tab-link" data-tab="network" id="tab-network">Network Visualization</a></li>
+            <li><a href="#" class="tab-link" data-tab="reports" id="tab-reports">Download Reports</a></li>
+        </ul>
+    </nav>
+
+    <div id="content-overview" class="tab-content active">
+        <h3>Overview & Key Metrics</h3>
+        <div class="key-metrics-grid">
+            <div class="metric-card">
+                <h4>Total System Cost</h4>
+                <p id="metric-total-cost" class="metric-value">₹ --- Cr</p>
+                <span class="metric-detail">NPV over study period</span>
+            </div>
+            <div class="metric-card">
+                <h4>CO₂ Emissions</h4>
+                <p id="metric-co2-emissions" class="metric-value">--- MT/year</p>
+                <span class="metric-detail">Average annual emissions</span>
+            </div>
+            <div class="metric-card">
+                <h4>Renewable Energy Share</h4>
+                <p id="metric-re-share" class="metric-value">--- %</p>
+                <span class="metric-detail">Of total generation in final year</span>
+            </div>
+             <div class="metric-card">
+                <h4>Curtailment Levels</h4>
+                <p id="metric-curtailment" class="metric-value">--- GWh</p>
+                <span class="metric-detail">Total RE curtailment</span>
+            </div>
+        </div>
+        <div class="charts-grid-overview">
+            <section class="chart-section-pypsa-results">
+                <h4>Investment Timeline (Capacity Additions)</h4>
+                <div id="investment-timeline-chart" class="chart-placeholder-large">
+                    <p>Investment timeline chart will appear here.</p>
+                </div>
+            </section>
+            <section class="chart-section-pypsa-results">
+                <h4>System Evolution (Generation Mix)</h4>
+                <div id="system-evolution-chart" class="chart-placeholder-large">
+                    <p>System evolution chart will appear here.</p>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <div id="content-dispatch" class="tab-content" style="display:none;">
+        <h3>Dispatch Analysis</h3>
+        <p>Detailed dispatch plots, merit order, and curtailment analysis will be shown here.</p>
+        <div id="dispatch-merit-order-chart" class="chart-placeholder-large"><p>Merit Order / Dispatch Stack Chart</p></div>
+        <div id="dispatch-timeseries-chart" class="chart-placeholder-large"><p>Dispatch Timeseries (Sample Period)</p></div>
+    </div>
+
+    <div id="content-capacity" class="tab-content" style="display:none;">
+        <h3>Capacity & Investment Results</h3>
+        <p>Installed capacities by technology, new investments, and retirement details.</p>
+        <div id="capacity-by-tech-chart" class="chart-placeholder-large"><p>Installed Capacity by Technology (Bar Chart)</p></div>
+        <div id="investment-by-year-chart" class="chart-placeholder-large"><p>New Investment by Year & Technology (Stacked Bar)</p></div>
+    </div>
+
+    <div id="content-costs" class="tab-content" style="display:none;">
+        <h3>Cost Breakdown</h3>
+        <p>Detailed breakdown of capital, operational, fuel, and carbon costs.</p>
+        <div id="cost-breakdown-pie-chart" class="chart-placeholder-medium"><p>Cost Component Breakdown (Pie Chart)</p></div>
+         <div id="cost-per-tech-chart" class="chart-placeholder-medium"><p>Levelized Cost per Technology (LCOE)</p></div>
+    </div>
+
+    <div id="content-emissions" class="tab-content" style="display:none;">
+        <h3>Emissions Profile</h3>
+        <p>Annual emissions, emissions by source, and comparison against targets.</p>
+        <div id="annual-emissions-chart" class="chart-placeholder-large"><p>Annual CO2 Emissions (Line Chart)</p></div>
+    </div>
+
+    <div id="content-network" class="tab-content" style="display:none;">
+        <h3>Network Visualization & Analysis</h3>
+        <p>Interactive network map showing flows, congestion, and line loadings. (Requires advanced JS library integration - placeholder for now).</p>
+        <div id="network-map-placeholder" class="chart-placeholder-large" style="background-color: #e0e0e0;">
+            <p>Interactive Network Map (Placeholder)</p>
+            <small>This would typically use a library like Leaflet or a specialized network viz tool.</small>
+        </div>
+    </div>
+
+    <div id="content-reports" class="tab-content" style="display:none;">
+        <h3>Download Reports & Data</h3>
+        <p>Download detailed simulation results, input data summaries, and generated reports.</p>
+        <ul>
+            <li><a href="#" id="download-summary-report-pdf">Summary Report (PDF)</a></li>
+            <li><a href="#" id="download-full-results-csv">Full Results (CSV archive)</a></li>
+            <li><a href="#" id="download-network-data-json">Network Data (JSON for PyPSA-EUR)</a></li>
+        </ul>
+    </div>
+
+</div>
+{% endblock %}

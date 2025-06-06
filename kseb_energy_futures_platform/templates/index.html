@@ -1,0 +1,62 @@
+{% extends "layouts/base_layout.html" %}
+
+{% block title %}Home - KSEB Energy Futures Platform{% endblock %}
+
+{% block content %}
+<div class="top-bar">
+    <div class="project-info">
+        <span>Current Project: <strong id="current-project-name">Sample Project Alpha</strong></span>
+        <button id="change-project-btn">Change Project</button>
+    </div>
+</div>
+
+<div class="home-grid">
+    <aside class="left-panel">
+        <section class="recent-projects">
+            <h2>Recent Projects</h2>
+            <ul id="recent-projects-list" class="recent-projects-list">
+                <li><a href="#">Project HydroWave</a> (Last Opened: 2024-07-28)</li>
+                <li><a href="#">Project SolarFlare</a> (Last Opened: 2024-07-27)</li>
+                <li><a href="#">Project WindSong</a> (Last Opened: 2024-07-25)</li>
+            </ul>
+        </section>
+
+        <section class="recent-activities">
+            <h2>Recent Activities</h2>
+            <ul id="recent-activities-list">
+                <li>User John Doe updated demand forecast for Project HydroWave.</li>
+                <li>System completed PyPSA simulation for Project SolarFlare.</li>
+                <li>New data source 'WeatherGrid X' added by Admin.</li>
+            </ul>
+        </section>
+    </aside>
+
+    <main class="main-content-home">
+        <section class="quick-actions-panel">
+            <h2>Quick Actions</h2>
+            <div class="actions-grid">
+                <button id="new-project-btn">New Project</button>
+                <button id="open-project-btn">Open Project</button>
+                <button id="save-project-btn">Save Project</button>
+                <button id="run-pypsa-btn">Run PyPSA Model</button>
+                <button id="view-results-btn">View Results</button>
+                <button id="data-manager-btn">Data Manager</button>
+                <button id="user-settings-btn">User Settings</button>
+                <button id="help-docs-btn">Help/Docs</button>
+            </div>
+        </section>
+    </main>
+
+    <aside class="right-panel">
+        <section class="system-status-dashboard">
+            <h2>System Status</h2>
+            <ul id="system-status-list">
+                <li>PyPSA Solver: <span class="status-ok">Online</span></li>
+                <li>Database: <span class="status-ok">Connected</span></li>
+                <li>Compute Resources: <span class="status-warning">High Load</span></li>
+                <li>Last Backup: <span id="last-backup-status">2024-07-29 02:00 AM</span></li>
+            </ul>
+        </section>
+    </aside>
+</div>
+{% endblock %}

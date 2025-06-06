@@ -1,0 +1,90 @@
+{% extends "layouts/base_layout.html" %}
+
+{% block title %}Admin - Feature Management - KSEB Energy Futures{% endblock %}
+
+{% block content %}
+<div class="module-container admin-panel-container">
+    <h2>Admin Panel: Feature Management</h2>
+    <p>Enable or disable platform features globally or for specific projects (project-level TBD).</p>
+
+    <div class="status-bar admin-status">
+        <span><strong>Current Project:</strong> <span id="admin-current-project">Global Configuration</span></span>
+        <span><strong>Configuration Level:</strong> <span id="admin-config-level">System-Wide</span></span>
+    </div>
+
+    <div class="feature-tables-container">
+        <section class="feature-category">
+            <h3>Core Features</h3>
+            <div class="table-container">
+                <table id="core-features-table" class="data-table feature-table">
+                    <thead>
+                        <tr>
+                            <th>Feature</th>
+                            <th>Status (Enabled)</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody id="core-features-tbody">
+                        <!-- Sample Row (to be populated by JS) -->
+                        <tr>
+                            <td>Demand Projection Module</td>
+                            <td><label class="toggle-switch"><input type="checkbox" data-feature-id="demand_projection" checked><span class="slider"></span></label></td>
+                            <td>Module for forecasting future electricity demand.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section class="feature-category">
+            <h3>Advanced Features</h3>
+            <div class="table-container">
+                <table id="advanced-features-table" class="data-table feature-table">
+                    <thead>
+                        <tr>
+                            <th>Feature</th>
+                            <th>Status (Enabled)</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody id="advanced-features-tbody">
+                         <tr>
+                            <td>Load Profile Generation (ML Methods)</td>
+                            <td><label class="toggle-switch"><input type="checkbox" data-feature-id="lp_ml_methods"><span class="slider"></span></label></td>
+                            <td>Use Machine Learning for advanced load profile synthesis.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section class="feature-category">
+            <h3>Experimental Features</h3>
+            <div class="table-container">
+                <table id="experimental-features-table" class="data-table feature-table">
+                    <thead>
+                        <tr>
+                            <th>Feature</th>
+                            <th>Status (Enabled)</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody id="experimental-features-tbody">
+                        <tr>
+                            <td>Real-time Co-optimisation</td>
+                            <td><label class="toggle-switch"><input type="checkbox" data-feature-id="realtime_coopt"><span class="slider"></span></label></td>
+                            <td>Experimental feature for near real-time market simulation.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </div>
+
+    <div class="form-actions">
+        <button type="button" id="reset-features-to-defaults-btn" class="btn-secondary">Reset to Defaults</button>
+        <button type="button" id="export-feature-config-btn" class="btn-secondary">Export Config</button>
+        <button type="button" id="apply-feature-changes-btn" class="btn-primary">Apply Changes</button>
+    </div>
+</div>
+{% endblock %}

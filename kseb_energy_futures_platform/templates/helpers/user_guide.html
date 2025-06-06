@@ -1,0 +1,62 @@
+{% extends "layouts/base_layout.html" %}
+
+{% block title %}User Guide - KSEB Energy Futures{% endblock %}
+
+{% block content %}
+<div class="module-container helper-page-container">
+    <h2>User Guide & Documentation</h2>
+    <p>Find help on using the KSEB Energy Futures Platform, its modules, and features.</p>
+
+    <div class="user-guide-search-bar">
+        <input type="search" id="user-guide-search" placeholder="Search User Guide...">
+        <button type="button" class="btn-secondary">Search</button>
+    </div>
+
+    <div class="user-guide-layout">
+        <aside class="user-guide-toc">
+            <h3>Table of Contents</h3>
+            <ul id="user-guide-toc-list">
+                <li><a href="#" data-topic="introduction">1. Introduction</a>
+                    <ul>
+                        <li><a href="#" data-topic="platform_overview">1.1 Platform Overview</a></li>
+                        <li><a href="#" data-topic="getting_started">1.2 Getting Started</a></li>
+                    </ul>
+                </li>
+                <li><a href="#" data-topic="project_management">2. Project Management</a>
+                    <ul>
+                        <li><a href="#" data-topic="create_project">2.1 Creating a New Project</a></li>
+                        <li><a href="#" data-topic="load_project">2.2 Loading Existing Projects</a></li>
+                    </ul>
+                </li>
+                <li><a href="#" data-topic="demand_projection">3. Demand Projection Module</a>
+                    <ul>
+                        <li><a href="#" data-topic="dp_data_input">3.1 Data Input & Configuration</a></li>
+                        <li><a href="#" data-topic="dp_visualization">3.2 Visualization & Analysis</a></li>
+                    </ul>
+                </li>
+                <li><a href="#" data-topic="load_profile">4. Load Profile Generation</a></li>
+                <li><a href="#" data-topic="pypsa_modeling">5. PyPSA Co-optimisation</a></li>
+                <li><a href="#" data-topic="pypsa_results">6. PyPSA Results Visualization</a></li>
+                <li><a href="#" data-topic="admin_panel">7. Admin Panel</a></li>
+                <li><a href="#" data-topic="faq">8. FAQ & Troubleshooting</a></li>
+            </ul>
+        </aside>
+
+        <main class="user-guide-content-area">
+            <h3 id="guide-content-title">Welcome to the User Guide</h3>
+            <div id="guide-content-main">
+                <p>Welcome to the KSEB Energy Futures Platform user guide. This guide provides comprehensive information about the platform's features, functionalities, and workflows.</p>
+                <p>Please select a topic from the Table of Contents on the left to view detailed information. You can also use the search bar above to quickly find relevant topics.</p>
+                <h4>Getting Started</h4>
+                <p>If you are new to the platform, we recommend starting with the "Getting Started" section under "Introduction". This will walk you through the initial setup and basic navigation.</p>
+            </div>
+        </main>
+    </div>
+
+    <div class="form-actions helper-page-actions">
+        <button type="button" id="user-guide-download-pdf-btn" class="btn-secondary">Download as PDF</button>
+        <button type="button" id="user-guide-print-btn" class="btn-secondary">Print Current Section</button>
+        <button type="button" id="user-guide-feedback-btn" class="btn-primary">Provide Feedback</button>
+    </div>
+</div>
+{% endblock %}

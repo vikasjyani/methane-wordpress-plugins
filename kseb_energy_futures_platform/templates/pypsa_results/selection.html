@@ -1,0 +1,62 @@
+{% extends "layouts/base_layout.html" %}
+
+{% block title %}PyPSA Results Selection - KSEB Energy Futures{% endblock %}
+
+{% block content %}
+<div class="module-container">
+    <h2>PyPSA Co-optimisation Modeling: Results Selection</h2>
+    <p>Select a completed PyPSA simulation scenario to view detailed results or compare multiple scenarios.</p>
+
+    <div class="form-section">
+        <h3>Available Simulation Results</h3>
+        <div class="table-container">
+            <table id="pypsa-available-results-table" class="data-table">
+                <thead>
+                    <tr>
+                        <th>Select</th>
+                        <th>Scenario Name</th>
+                        <th>Creation Date</th>
+                        <th>Status</th>
+                        <th>Input Load Profile</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody id="pypsa-results-tbody">
+                    <!-- Sample Row (to be populated by JS) -->
+                    <tr>
+                        <td><input type="radio" name="selectedPyPSAScenario" value="CoOpt_Baseline_20240810"></td>
+                        <td>CoOpt_Baseline_20240810</td>
+                        <td>2024-08-10 15:30</td>
+                        <td class="status-ok">Completed</td>
+                        <td>Baseline_Hourly_2025-2030_MW</td>
+                        <td>Baseline run with default settings.</td>
+                    </tr>
+                    <tr>
+                        <td><input type="radio" name="selectedPyPSAScenario" value="CoOpt_HighRE_20240811"></td>
+                        <td>CoOpt_HighRE_20240811</td>
+                        <td>2024-08-11 10:00</td>
+                        <td class="status-ok">Completed</td>
+                        <td>HighGrowth_EV_2025-2040_MW</td>
+                        <td>High RE penetration scenario.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="form-section">
+        <h3>Selected Scenario for Viewing</h3>
+        <div id="pypsa-selected-scenario-details" class="settings-display-box">
+            <p><strong>Name:</strong> <span id="selected-pypsa-scenario-name">-</span></p>
+            <p><strong>Description:</strong> <span id="selected-pypsa-scenario-desc">-</span></p>
+            <p>Please select a scenario from the table above.</p>
+        </div>
+    </div>
+
+    <div class="form-actions">
+        <button type="button" id="upload-pypsa-network-btn" class="btn-secondary">Upload Custom Network</button>
+        <button type="button" id="compare-pypsa-scenarios-btn" class="btn-secondary">Compare Selected Scenarios</button>
+        <button type="button" id="view-pypsa-results-btn" class="btn-primary" disabled>View Results Dashboard</button>
+    </div>
+</div>
+{% endblock %}

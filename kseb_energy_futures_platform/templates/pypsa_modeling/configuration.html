@@ -1,0 +1,139 @@
+{% extends "layouts/base_layout.html" %}
+
+{% block title %}PyPSA Model Configuration - KSEB Energy Futures{% endblock %}
+
+{% block content %}
+<div class="module-container">
+    <h2>PyPSA Co-optimisation Modeling: Configuration & Execution</h2>
+    <p>Configure PyPSA model parameters, define scenarios, and run co-optimisation simulations.</p>
+
+    <div class="status-bar pypsa-status">
+        <span><strong>Base Template Status:</strong> <span id="pypsa-template-status" class="status-ok">Ready (KSEB_Reference_Model_v2.1)</span></span>
+        <span><strong>Selected Load Profile:</strong> <span id="pypsa-load-profile-status" class="status-ok">Baseline_Hourly_2025-2030_MW (Ready)</span></span>
+        <span><strong>Network Data:</strong> <span id="pypsa-network-data-status" class="status-warning">Needs Validation</span></span>
+    </div>
+
+    <div class="content-grid-pypsa">
+        <section class="config-section-pypsa main-config-pypsa">
+            <h3>Scenario Configuration</h3>
+            <div class="form-group">
+                <label for="pypsa-scenario-name">Scenario Name:</label>
+                <input type="text" id="pypsa-scenario-name" name="scenarioName" value="CoOpt_Baseline_2025_2030">
+            </div>
+            <div class="form-group">
+                <label for="pypsa-scenario-desc">Scenario Description:</label>
+                <textarea id="pypsa-scenario-desc" name="scenarioDescription" rows="2">Baseline co-optimisation run for the period 2025-2030 using reference model settings.</textarea>
+            </div>
+
+            <h4>Model Settings (from KSEB_Reference_Model_v2.1.xlsx)</h4>
+            <div class="settings-display-box">
+                <p><strong>Cost Data:</strong> Capital costs, FOM, VOM from 'technology_costs_2024.xlsx'.</p>
+                <p><strong>RE Potentials:</strong> Solar PV (District-wise), Onshore Wind (Site-specific) from 're_potentials_kerala_2024.csv'.</p>
+                <p><strong>Transmission Lines:</strong> Existing AC lines based on 'kseb_network_topology_2023.xlsx'. New HVDC links allowed on predefined corridors.</p>
+                <p><strong>Constraints:</strong> CO2 emission cap: 5 MT/year (2030), Min RE share: 40% by 2030.</p>
+            </div>
+
+            <h4>Override Settings (Optional)</h4>
+            <div class="form-group-inline">
+                <div class="form-group">
+                    <label for="pypsa-override-years">Custom Investment Years (CSV):</label>
+                    <input type="text" id="pypsa-override-years" name="overrideYears" placeholder="e.g., 2025,2028,2030">
+                </div>
+            </div>
+            <div class="form-group-inline">
+                 <div class="form-group">
+                    <label for="pypsa-generator-clustering">Generator Clustering:</label>
+                    <select id="pypsa-generator-clustering" name="generatorClustering">
+                        <option value="default">Default (from template)</option>
+                        <option value="spatial">Spatial (per bus)</option>
+                        <option value="techno_economic">Techno-economic (group similar)</option>
+                        <option value="none">No Clustering (High Detail)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="pypsa-transmission-expansion">Transmission Expansion:</label>
+                    <select id="pypsa-transmission-expansion" name="transmissionExpansion">
+                        <option value="default">Default (from template)</option>
+                        <option value="ac_only">AC Lines Only</option>
+                        <option value="ac_hvdc">AC & HVDC Links</option>
+                        <option value="fixed">Fixed Network (No Expansion)</option>
+                    </select>
+                </div>
+            </div>
+        </section>
+
+        <aside class="summary-solver-pypsa">
+            <section class="config-section-pypsa">
+                <h3>System Components Summary</h3>
+                <div class="table-container small-table">
+                    <table id="pypsa-components-summary-table" class="data-table">
+                        <thead><tr><th>Component</th><th>Count</th><th>Notes</th></tr></thead>
+                        <tbody>
+                            <tr><td>Buses</td><td>55</td><td>(110kV, 220kV, 400kV)</td></tr>
+                            <tr><td>Lines (Existing)</td><td>120</td><td>AC lines</td></tr>
+                            <tr><td>Transformers</td><td>75</td><td></td></tr>
+                            <tr><td>Generators (Existing)</td><td>85</td><td>Hydro, Thermal, Solar</td></tr>
+                            <tr><td>Generators (New Candidates)</td><td>250</td><td>Solar, Wind, Storage</td></tr>
+                            <tr><td>Storage Units</td><td>30</td><td>Battery, PHS</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section class="config-section-pypsa">
+                <h3>Solver Configuration</h3>
+                <div class="form-group">
+                    <label for="pypsa-solver">Solver:</label>
+                    <select id="pypsa-solver" name="solver">
+                        <option value="gurobi" selected>Gurobi</option>
+                        <option value="cplex">CPLEX</option>
+                        <option value="cbc">CBC (Open Source)</option>
+                        <option value="glpk">GLPK (Open Source)</option>
+                    </select>
+                </div>
+                <div class="form-group-inline">
+                    <div class="form-group">
+                        <label for="pypsa-time-limit">Time Limit (seconds):</label>
+                        <input type="number" id="pypsa-time-limit" name="timeLimit" value="36000">
+                    </div>
+                    <div class="form-group">
+                        <label for="pypsa-mip-gap">MIP Gap (%):</label>
+                        <input type="number" id="pypsa-mip-gap" name="mipGap" value="0.5" step="0.1">
+                    </div>
+                </div>
+                <div class="checkbox-group">
+                    <div><input type="checkbox" id="pypsa-warm-start" name="warmStart" checked><label for="pypsa-warm-start">Use warm start if available</label></div>
+                    <div><input type="checkbox" id="pypsa-enable-logging" name="enableLogging" checked><label for="pypsa-enable-logging">Enable detailed solver logging</label></div>
+                </div>
+            </section>
+        </aside>
+    </div>
+
+    <div id="pypsa-validation-status-area" class="status-display-area" style="display:none; margin-top:1rem; padding:0.75rem; border-radius:4px;">
+        <!-- Validation status will be shown here by JS -->
+    </div>
+
+    <div class="form-actions">
+        <button type="button" id="validate-pypsa-model-btn" class="btn-secondary">Validate Model Files</button>
+        <button type="button" id="run-pypsa-simulation-btn" class="btn-primary">Run PyPSA Simulation</button>
+        <button type="button" id="expert-mode-pypsa-btn" class="btn-tertiary">Expert Mode</button>
+    </div>
+
+    <!-- PyPSA Simulation Progress Modal -->
+    <div id="pypsa-progress-modal" class="modal" style="display:none;">
+        <div class="modal-content">
+            <span class="close-modal-btn" id="close-pypsa-modal-btn">&times;</span>
+            <h3>PyPSA Simulation Progress</h3>
+            <div id="pypsa-job-id-display">Job ID: -</div>
+            <div class="progress-bar-container">
+                <div id="pypsa-progress-bar" class="progress-bar" style="width:0%;">0%</div>
+            </div>
+            <div id="pypsa-current-step-display">Status: Initializing...</div>
+            <div class="modal-actions">
+                <button type="button" id="cancel-pypsa-simulation-btn" class="btn-secondary">Cancel Simulation</button>
+            </div>
+        </div>
+    </div>
+
+</div>
+{% endblock %}

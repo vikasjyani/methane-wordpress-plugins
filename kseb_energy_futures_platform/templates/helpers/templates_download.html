@@ -1,0 +1,80 @@
+{% extends "layouts/base_layout.html" %}
+
+{% block title %}Template Downloads - KSEB Energy Futures{% endblock %}
+
+{% block content %}
+<div class="module-container helper-page-container">
+    <h2>Template Downloads</h2>
+    <p>Download standard templates for data input, configuration files, and reporting formats.</p>
+
+    <section class="template-download-section">
+        <h3>Available Templates</h3>
+        <p>Click the "Download" button next to a template to save it to your local system. Refer to the documentation section below for details on each template's structure and usage.</p>
+        <div class="table-container">
+            <table id="available-templates-table" class="data-table">
+                <thead>
+                    <tr>
+                        <th>Template Name</th>
+                        <th>Category</th>
+                        <th>Description</th>
+                        <th>File Type</th>
+                        <th>Version</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody id="available-templates-tbody">
+                    <!-- Rows will be populated by JS or can be static if API is not used -->
+                    <tr>
+                        <td>Demand Input File</td>
+                        <td>Demand Projection</td>
+                        <td>Standard format for historical demand data (sector-wise, monthly/hourly).</td>
+                        <td>Excel (.xlsx)</td>
+                        <td>2.1</td>
+                        <td><button class="btn-primary btn-small download-template-btn" data-template-id="demand_input_v2.1">Download</button></td>
+                    </tr>
+                    <tr>
+                        <td>Load Curve Template</td>
+                        <td>Load Profile</td>
+                        <td>8760 hourly load points for a typical year.</td>
+                        <td>CSV (.csv)</td>
+                        <td>1.5</td>
+                        <td><button class="btn-primary btn-small download-template-btn" data-template-id="load_curve_8760_v1.5">Download</button></td>
+                    </tr>
+                    <tr>
+                        <td>PyPSA Network Data</td>
+                        <td>PyPSA Modeling</td>
+                        <td>Base network data including buses, lines, transformers, and generator types.</td>
+                        <td>Excel (.xlsx)</td>
+                        <td>KSEB_Ref_v2.1</td>
+                        <td><button class="btn-primary btn-small download-template-btn" data-template-id="pypsa_network_kseb_v2.1">Download</button></td>
+                    </tr>
+                    <tr>
+                        <td>Technology Cost File</td>
+                        <td>PyPSA Modeling</td>
+                        <td>Assumptions for capital costs, FOM, VOM, lifetime, efficiency for various technologies.</td>
+                        <td>Excel (.xlsx)</td>
+                        <td>TechData_2024_v1.2</td>
+                        <td><button class="btn-primary btn-small download-template-btn" data-template-id="tech_cost_2024_v1.2">Download</button></td>
+                    </tr>
+                     <tr>
+                        <td>Reporting Format</td>
+                        <td>General</td>
+                        <td>Standard MS Word template for project reports and summaries.</td>
+                        <td>Word (.docx)</td>
+                        <td>1.0</td>
+                        <td><button class="btn-primary btn-small download-template-btn" data-template-id="report_format_v1.0">Download</button></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <section class="template-documentation-section">
+        <h3>Template Documentation</h3>
+        <div id="template-doc-content" class="settings-display-box">
+            <p>Select a template by clicking its name or "Download" button to view its documentation here (this is a placeholder).</p>
+            <p>Detailed information about the selected template's structure, required fields, data formats, and usage guidelines will be displayed in this section.</p>
+        </div>
+    </section>
+</div>
+{% endblock %}

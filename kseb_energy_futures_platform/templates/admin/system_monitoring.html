@@ -1,0 +1,117 @@
+{% extends "layouts/base_layout.html" %}
+
+{% block title %}Admin - System Monitoring - KSEB Energy Futures{% endblock %}
+
+{% block content %}
+<div class="module-container admin-panel-container">
+    <h2>Admin Panel: System Monitoring Dashboard</h2>
+    <p>Overview of system health, active processes, performance metrics, and error logs.</p>
+
+    <div class="system-health-overview">
+        <div class="metric-card">
+            <h4>System Health</h4>
+            <p id="system-health-status" class="metric-value status-ok">Healthy</p>
+            <span class="metric-detail">Last check: Just now</span>
+        </div>
+        <div class="metric-card">
+            <h4>Platform Uptime</h4>
+            <p id="platform-uptime" class="metric-value">99.98%</p>
+            <span class="metric-detail">Since last restart (7 days ago)</span>
+        </div>
+         <div class="metric-card">
+            <h4>Active User Sessions</h4>
+            <p id="active-sessions" class="metric-value">12</p>
+            <span class="metric-detail">Current logged-in users</span>
+        </div>
+        <div class="metric-card">
+            <h4>Pending Jobs</h4>
+            <p id="pending-jobs-count" class="metric-value">3</p>
+            <span class="metric-detail">In queue across all users</span>
+        </div>
+    </div>
+
+    <section class="monitoring-section">
+        <h3>Real-time System Metrics</h3>
+        <div class="realtime-metrics-grid">
+            <div class="metric-display"><strong>CPU Usage:</strong> <span id="metric-cpu-usage" class="status-ok">15%</span> (Load Avg: 0.8)</div>
+            <div class="metric-display"><strong>Memory Usage:</strong> <span id="metric-memory-usage" class="status-warning">65%</span> (Used: 10.4GB / Total: 16GB)</div>
+            <div class="metric-display"><strong>Disk I/O:</strong> <span id="metric-disk-io">Read: 5MB/s, Write: 2MB/s</span></div>
+            <div class="metric-display"><strong>Database Connections:</strong> <span id="metric-db-connections" class="status-ok">25</span> (Max: 100)</div>
+        </div>
+    </section>
+
+    <section class="monitoring-section">
+        <h3>Active Jobs Queue</h3>
+        <div class="table-container">
+            <table id="active-jobs-table" class="data-table">
+                <thead>
+                    <tr>
+                        <th>Job ID</th>
+                        <th>Type</th>
+                        <th>User</th>
+                        <th>Submitted</th>
+                        <th>Progress</th>
+                        <th>Est. ETA / Status</th>
+                    </tr>
+                </thead>
+                <tbody id="active-jobs-tbody">
+                    <!-- Sample Row (to be populated by JS) -->
+                    <tr>
+                        <td>pypsa_job_788</td>
+                        <td>PyPSA Simulation</td>
+                        <td>user_A</td>
+                        <td>2024-08-15 10:30 AM</td>
+                        <td><div class="progress-bar-container small-progress"><div class="progress-bar" style="width:60%;">60%</div></div></td>
+                        <td>Running (25 mins left)</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <section class="monitoring-section">
+        <h3>Performance Graphs</h3>
+        <div class="charts-grid-admin">
+            <div class="chart-section-admin">
+                <h4>API Response Time (ms)</h4>
+                <div id="api-response-time-chart" class="chart-placeholder-medium"><p>API Response Time Chart</p></div>
+            </div>
+            <div class="chart-section-admin">
+                <h4>Database Query Time (ms)</h4>
+                <div id="db-query-time-chart" class="chart-placeholder-medium"><p>DB Query Time Chart</p></div>
+            </div>
+        </div>
+    </section>
+
+    <section class="monitoring-section">
+        <h3>Error Logs (Last 24 Hours)</h3>
+        <div class="table-container error-log-table-container">
+            <table id="error-logs-table" class="data-table">
+                <thead>
+                    <tr>
+                        <th>Timestamp</th>
+                        <th>Severity</th>
+                        <th>Module</th>
+                        <th>Message</th>
+                    </tr>
+                </thead>
+                <tbody id="error-logs-tbody">
+                    <!-- Sample Row (to be populated by JS) -->
+                    <tr>
+                        <td>2024-08-15 11:05:23</td>
+                        <td class="status-error">ERROR</td>
+                        <td>DemandProjection</td>
+                        <td>Failed to load historical data: File format not supported.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <div class="form-actions">
+        <button type="button" id="download-system-logs-btn" class="btn-secondary">Download Full Logs</button>
+        <button type="button" id="clear-system-cache-btn" class="btn-secondary">Clear System Cache</button>
+        <button type="button" id="restart-platform-services-btn" class="btn-danger">Restart Platform Services</button>
+    </div>
+</div>
+{% endblock %}

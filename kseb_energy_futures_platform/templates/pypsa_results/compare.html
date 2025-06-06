@@ -1,0 +1,92 @@
+{% extends "layouts/base_layout.html" %}
+
+{% block title %}PyPSA Scenario Comparison - KSEB Energy Futures{% endblock %}
+
+{% block content %}
+<div class="module-container">
+    <h2>PyPSA Co-optimisation Modeling: Scenario Comparison Tool</h2>
+    <p>Select multiple scenarios and metrics to compare their outcomes side-by-side.</p>
+
+    <div class="content-grid-pypsa-compare">
+        <aside class="compare-selection-panel">
+            <section class="form-section">
+                <h3>Select Scenarios to Compare (Max 3)</h3>
+                <div id="pypsa-scenario-checkboxes" class="checkbox-group vertical-checkbox-group">
+                    <div><input type="checkbox" id="scen1_compare" name="scenariosToCompare" value="CoOpt_Baseline_20240810"><label for="scen1_compare">CoOpt_Baseline_20240810</label></div>
+                    <div><input type="checkbox" id="scen2_compare" name="scenariosToCompare" value="CoOpt_HighRE_20240811"><label for="scen2_compare">CoOpt_HighRE_20240811</label></div>
+                    <div><input type="checkbox" id="scen3_compare" name="scenariosToCompare" value="CoOpt_CarbonCap_20240812"><label for="scen3_compare">CoOpt_CarbonCap_20240812</label></div>
+                    <!-- More scenarios can be added here or populated by JS -->
+                </div>
+            </section>
+
+            <section class="form-section">
+                <h3>Select Comparison Metrics</h3>
+                <div id="pypsa-metrics-checkboxes" class="checkbox-group vertical-checkbox-group">
+                    <div><input type="checkbox" id="metric_total_cost_compare" name="metricsToCompare" value="total_cost" checked><label for="metric_total_cost_compare">Total System Cost</label></div>
+                    <div><input type="checkbox" id="metric_re_share_compare" name="metricsToCompare" value="re_share" checked><label for="metric_re_share_compare">Renewable Energy Share</label></div>
+                    <div><input type="checkbox" id="metric_emissions_compare" name="metricsToCompare" value="co2_emissions"><label for="metric_emissions_compare">CO₂ Emissions</label></div>
+                    <div><input type="checkbox" id="metric_avg_price_compare" name="metricsToCompare" value="avg_electricity_price"><label for="metric_avg_price_compare">Avg. Electricity Price</label></div>
+                    <div><input type="checkbox" id="metric_curtailment_compare" name="metricsToCompare" value="curtailment"><label for="metric_curtailment_compare">RE Curtailment</label></div>
+                </div>
+            </section>
+            <button type="button" id="run-pypsa-comparison-btn" class="btn-primary full-width-btn">Run Comparison</button>
+        </aside>
+
+        <main class="compare-results-panel">
+            <h3>Side-by-Side Comparison</h3>
+            <div id="pypsa-comparison-table-container" class="table-container">
+                <table id="pypsa-comparison-table" class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Metric</th>
+                            <th>Scenario A (Placeholder)</th>
+                            <th>Scenario B (Placeholder)</th>
+                            <th>Scenario C (Placeholder)</th>
+                        </tr>
+                    </thead>
+                    <tbody id="pypsa-comparison-tbody">
+                        <!-- Sample Row (to be populated by JS) -->
+                        <tr>
+                            <td>Total System Cost (₹ Cr)</td>
+                            <td>150,000</td>
+                            <td>145,000</td>
+                            <td>155,000</td>
+                        </tr>
+                        <tr>
+                            <td>RE Share (%)</td>
+                            <td>45%</td>
+                            <td>55%</td>
+                            <td>50%</td>
+                        </tr>
+                         <tr>
+                            <td>CO₂ Emissions (MT/year)</td>
+                            <td>4.5</td>
+                            <td>3.8</td>
+                            <td>3.5</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="charts-grid-compare">
+                <section class="chart-section-pypsa-compare">
+                    <h4>Technology Mix Comparison (Final Year Capacity)</h4>
+                    <div id="tech-mix-comparison-chart" class="chart-placeholder-medium"><p>Technology Mix Chart</p></div>
+                </section>
+                <section class="chart-section-pypsa-compare">
+                    <h4>Cost Evolution Comparison</h4>
+                    <div id="cost-evolution-comparison-chart" class="chart-placeholder-medium"><p>Cost Evolution Chart</p></div>
+                </section>
+                 <section class="chart-section-pypsa-compare full-span-compare-chart">
+                    <h4>Reliability Metrics (e.g., LOLP, EENS)</h4>
+                    <div id="reliability-metrics-comparison-chart" class="chart-placeholder-medium"><p>Reliability Metrics Chart</p></div>
+                </section>
+            </div>
+             <div class="form-actions bottom-actions">
+                <button type="button" id="export-pypsa-comparison-btn" class="btn-secondary">Export Comparison Data</button>
+                <button type="button" id="create-pypsa-presentation-btn" class="btn-secondary">Create Presentation Slides</button>
+            </div>
+        </main>
+    </div>
+</div>
+{% endblock %}
