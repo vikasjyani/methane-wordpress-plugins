@@ -1,38 +1,48 @@
 {% extends "layouts/base_layout.html" %}
 
-{% block title %}Demand Projection - Data Input - KSEB Energy Futures{% endblock %}
+<!-- Set the page title for Demand Projection Data Input page -->
+{% block title %}Demand Projection - Data Input & Config - KSEB Energy Futures{% endblock %}
 
 {% block content %}
-<div class="module-container">
+<!-- Main container for the Demand Projection module -->
+<div class="module-container demand-projection-container"> <!-- Added specific class -->
     <h2>Demand Projection: Data Input & Configuration</h2>
-    <p>Upload historical demand data, configure forecast parameters, and initiate projection runs.</p>
+    <p>Upload historical demand data, configure forecast parameters, and initiate projection runs for various scenarios.</p>
 
+    <!-- Top action buttons and file status display -->
     <div class="top-actions">
         <div class="file-status-display">
-            <strong>File Status:</strong> <span id="demand-file-status">No file uploaded.</span>
+            <strong>Current Data File Status:</strong>
+            <span id="demand-file-status" class="status-warning">No file uploaded or processed yet.</span>
         </div>
-        <button type="button" id="upload-demand-file-btn" class="btn-primary">Upload New File</button>
-        <button type="button" id="download-template-btn" class="btn-secondary">Download Template</button>
-        <button type="button" id="view-help-demand-btn" class="btn-secondary">View Help</button>
-        <input type="file" id="demand-file-input" style="display: none;">
+        <!-- Button to trigger file input dialog -->
+        <button type="button" id="upload-demand-file-btn" class="btn btn-primary">Upload New Data File</button>
+        <!-- Hidden file input, triggered by the button above -->
+        <input type="file" id="demand-file-input" style="display: none;" accept=".csv, .xlsx, .xls">
+        <button type="button" id="download-template-btn" class="btn btn-secondary">Download Data Template</button>
+        <button type="button" id="view-help-demand-btn" class="btn btn-secondary">View Help/Documentation</button>
     </div>
 
+    <!-- Main content grid for this page -->
     <div class="content-grid-demand">
+        <!-- Left panel for sectors list and historical data preview -->
         <aside class="left-panel-demand">
-            <h3>Sectors</h3>
+            <h3>Sectors Overview</h3>
+            <!-- Static list of sectors, could be dynamic in a full app -->
             <ul id="sector-list" class="item-list">
-                <li>Domestic</li>
-                <li>Commercial</li>
-                <li>Industrial (LT)</li>
-                <li>Industrial (HT)</li>
-                <li>Agricultural</li>
-                <li>Public Lighting</li>
-                <li>Traction</li>
-                <li>Bulk Supply</li>
+                <li>Domestic Sector</li>
+                <li>Commercial Establishments</li>
+                <li>Industrial (Low Tension)</li>
+                <li>Industrial (High Tension)</li>
+                <li>Agricultural & Irrigation</li>
+                <li>Public Lighting & Utilities</li>
+                <li>Railway Traction</li>
+                <li>Bulk Supply & Interstate</li>
             </ul>
 
-            <h3>Historical Data View</h3>
-            <p>A snapshot of the uploaded historical demand data.</p>
+            <h3 style="margin-top: var(--spacing-lg);">Historical Data Preview</h3>
+            <p><small>A snapshot of the uploaded historical demand data (sample shown).</small></p>
+            <!-- Table container for a small preview of historical data -->
             <div class="table-container small-table">
                 <table id="historical-data-table" class="data-table">
                     <thead>
@@ -44,32 +54,38 @@
                         </tr>
                     </thead>
                     <tbody>
+                        <!-- Sample rows; actual data would be populated by JS after file upload -->
                         <tr><td>2022</td><td>Jan</td><td>Domestic</td><td>1200.5</td></tr>
                         <tr><td>2022</td><td>Jan</td><td>Commercial</td><td>850.2</td></tr>
                         <tr><td>2022</td><td>Feb</td><td>Domestic</td><td>1150.0</td></tr>
-                        <!-- More sample data or populated by JS -->
+                        <tr><td colspan="4"><i>Upload a file to see more data...</i></td></tr>
                     </tbody>
                 </table>
             </div>
         </aside>
 
+        <!-- Main content area for charts and forecast configuration -->
         <main class="main-content-demand">
             <h3>Historical Demand Trends</h3>
+            <!-- Placeholder div where the historical demand chart will be rendered by Plotly.js -->
             <div id="historical-chart-container" class="chart-placeholder">
-                <p>Historical demand chart will appear here after data is loaded/processed.</p>
-                <div id="historical-chart"></div> <!-- Actual chart div -->
+                <p>Historical demand trends chart will appear here after data is loaded/processed.</p>
+                <div id="historical-chart"></div> <!-- Actual Plotly chart target div -->
             </div>
 
+            <!-- Section for configuring forecast parameters -->
             <div class="form-section forecast-config-section">
                 <h3>Forecast Configuration</h3>
                 <div class="form-group">
                     <label for="scenario-name-input">Scenario Name:</label>
-                    <input type="text" id="scenario-name-input" name="scenarioName" value="Baseline_Forecast_YYYYMMDD">
+                    <input type="text" id="scenario-name-input" name="scenarioName" value="Baseline_Forecast_{{ "now"|date("YYYYMMDD") }}">
+                    <small>A unique name for this forecast scenario run.</small>
                 </div>
                 <div class="form-group-inline">
                     <div class="form-group">
-                        <label for="target-year-select">Base Year (Actuals End):</label>
-                        <select id="target-year-select" name="targetYear">
+                        <label for="target-year-select">Base Year (End of Actuals):</label>
+                        <select id="target-year-select" name="baseYear">
+                            <!-- Options could be populated dynamically based on uploaded data -->
                             <option value="2022">2022</option>
                             <option value="2023" selected>2023</option>
                             <option value="2024">2024</option>
@@ -81,67 +97,74 @@
                             <option value="2030">2030</option>
                             <option value="2035">2035</option>
                             <option value="2040" selected>2040</option>
+                            <option value="2045">2045</option>
                             <option value="2050">2050</option>
                         </select>
                     </div>
                 </div>
                  <div class="form-group">
-                    <input type="checkbox" id="exclude-covid-checkbox" name="excludeCovid" value="true" checked>
-                    <label for="exclude-covid-checkbox">Exclude COVID Anomaly Years (e.g., 2020-2021) from base trend</label>
+                    <input type="checkbox" id="exclude-covid-checkbox" name="excludeCovidYears" value="true" checked>
+                    <label for="exclude-covid-checkbox">Exclude COVID Anomaly Years (e.g., 2020-2021) from base trend calculation</label>
                 </div>
 
-                <h4>Sector-wise Model Configuration</h4>
+                <h4>Sector-wise Model Configuration (Simplified)</h4>
+                <p><small>Configure forecasting models and assumptions for each sector. Detailed model parameters would be in an advanced section.</small></p>
                 <div class="table-container">
                     <table id="sector-model-config-table" class="data-table">
                         <thead>
                             <tr>
                                 <th>Sector</th>
-                                <th>Forecasting Model</th>
-                                <th>Growth Rate (%)</th>
-                                <th>Parameters</th>
+                                <th>Forecasting Model Type</th>
+                                <th>Assumed Annual Growth Rate (%)</th>
+                                <th>Key Drivers (Optional)</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
                         <tbody>
+                            <!-- Sample rows, could be dynamically generated based on sectors in data -->
                             <tr>
                                 <td>Domestic</td>
-                                <td>ARIMA</td>
-                                <td><input type="number" value="5.5" step="0.1"></td>
-                                <td>(p,d,q)=(1,1,1)</td>
-                                <td><button class="btn-small">Configure</button></td>
+                                <td><select name="model_domestic"><option value="ARIMA" selected>ARIMA</option><option value="ETS">ETS</option><option value="Regression">Regression</option></select></td>
+                                <td><input type="number" value="5.5" step="0.1" name="g_dom"></td>
+                                <td><input type="text" placeholder="e.g., GDP, Population" name="d_dom"></td>
+                                <td><button type="button" class="btn btn-tertiary btn-small">Configure Details</button></td>
                             </tr>
                             <tr>
                                 <td>Commercial</td>
-                                <td>Exponential Smoothing</td>
-                                <td><input type="number" value="4.0" step="0.1"></td>
-                                <td>alpha=0.2, beta=0.1</td>
-                                <td><button class="btn-small">Configure</button></td>
+                                <td><select name="model_comm"><option value="ETS" selected>Exponential Smoothing</option><option value="ARIMA">ARIMA</option></select></td>
+                                <td><input type="number" value="4.0" step="0.1" name="g_comm"></td>
+                                <td><input type="text" placeholder="e.g., GVA Services" name="d_comm"></td>
+                                <td><button type="button" class="btn btn-tertiary btn-small">Configure Details</button></td>
                             </tr>
                              <tr>
                                 <td>Industrial (HT)</td>
-                                <td>Linear Regression</td>
-                                <td><input type="number" value="3.5" step="0.1"></td>
-                                <td>drivers=[GDP, GVA_Industry]</td>
-                                <td><button class="btn-small">Configure</button></td>
+                                <td><select name="model_ind"><option value="Regression" selected>Linear Regression</option><option value="ARIMA">ARIMA</option></select></td>
+                                <td><input type="number" value="3.5" step="0.1" name="g_ind"></td>
+                                <td><input type="text" placeholder="e.g., GVA Industry, IIP" name="d_ind"></td>
+                                <td><button type="button" class="btn btn-tertiary btn-small">Configure Details</button></td>
                             </tr>
-                            <!-- More sectors -->
+                            <!-- More sectors would be listed here -->
                         </tbody>
                     </table>
                 </div>
-            </div>
+            </div> <!-- End of forecast-config-section -->
+
+            <!-- Area to display status of forecast job -->
+            <div id="run-forecast-status" class="status-display-area" style="display:none;"></div>
+
 
             <div class="form-actions">
-                <button type="button" id="reset-config-btn" class="btn-secondary">Reset Config</button>
-                <button type="button" id="validate-data-btn" class="btn-tertiary">Validate Data</button>
-                <button type="button" id="run-forecast-btn" class="btn-primary">Run Forecast</button>
-                <button type="button" id="view-previous-runs-btn" class="btn-secondary">View Previous Runs</button>
+                <button type="button" id="reset-config-btn" class="btn btn-secondary">Reset Configuration</button>
+                <button type="button" id="validate-data-btn" class="btn btn-tertiary">Validate Data & Config</button>
+                <button type="button" id="run-forecast-btn" class="btn btn-primary">Run Forecast Scenario</button>
+                <button type="button" id="view-previous-runs-btn" class="btn btn-secondary">View Previous Forecast Runs</button>
             </div>
         </main>
-    </div>
+    </div> <!-- End of content-grid-demand -->
 </div>
 {% endblock %}
 
 {% block scripts %}
-<!-- Optional: Add page-specific JS or CDN link for charting library -->
-<!-- e.g., <script src="https://cdn.plot.ly/plotly-latest.min.js"></script> -->
+<!-- Page-specific scripts can be added here if needed -->
+<!-- For example, if a complex charting library required specific initialization beyond main.js -->
 {% endblock %}

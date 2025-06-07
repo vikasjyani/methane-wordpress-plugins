@@ -1,1 +1,2 @@
-# KSEB Energy Futures Platform - Project Management Module
+# This file makes the 'project_management' directory a Python package.
+from .routes import project_bp

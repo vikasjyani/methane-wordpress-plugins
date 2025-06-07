@@ -1,108 +1,126 @@
 {% extends "layouts/base_layout.html" %}
 
-{% block title %}PyPSA Results Dashboard - KSEB Energy Futures{% endblock %}
+<!-- Set the page title for PyPSA Results Dashboard -->
+{% block title %}PyPSA Results Dashboard - {{ scenario_id }} - KSEB Energy Futures{% endblock %}
+
+{% block main_container_class %}results-dashboard-container{% endblock %} <!-- Use wider container for dashboard -->
 
 {% block content %}
-<div class="module-container results-dashboard-container">
-    <h2 id="pypsa-dashboard-title">Scenario: <span class="scenario-name-placeholder">{{ scenario_id or "Default_Scenario" }}</span> - Results Dashboard</h2>
+<!-- Main container for the PyPSA Results Dashboard -->
+<div class="module-container pypsa-results-dashboard"> <!-- Specific class for dashboard styling -->
+    <!-- Page title, dynamically includes the scenario ID being viewed -->
+    <h2 id="pypsa-dashboard-title">Scenario: <span class="scenario-name-placeholder">{{ scenario_id or "Default_Scenario_ID" }}</span> - PyPSA Results Dashboard</h2>
 
+    <!-- Tab navigation for different sections of the results dashboard -->
     <nav class="results-tabs-nav">
         <ul>
-            <li><a href="#" class="tab-link active" data-tab="overview" id="tab-overview">Overview</a></li>
+            <!-- Each link triggers a JavaScript function to show the corresponding tab content -->
+            <li><a href="#" class="tab-link active" data-tab="overview" id="tab-overview">Overview & Key Metrics</a></li>
             <li><a href="#" class="tab-link" data-tab="dispatch" id="tab-dispatch">Dispatch Analysis</a></li>
             <li><a href="#" class="tab-link" data-tab="capacity" id="tab-capacity">Capacity & Investment</a></li>
-            <li><a href="#" class="tab-link" data-tab="costs" id="tab-costs">Cost Breakdown</a></li>
+            <li><a href="#" class="tab-link" data-tab="costs" id="tab-costs">Cost Analysis</a></li>
             <li><a href="#" class="tab-link" data-tab="emissions" id="tab-emissions">Emissions Profile</a></li>
             <li><a href="#" class="tab-link" data-tab="network" id="tab-network">Network Visualization</a></li>
             <li><a href="#" class="tab-link" data-tab="reports" id="tab-reports">Download Reports</a></li>
         </ul>
     </nav>
 
+    <!-- Content area for the "Overview" tab, shown by default -->
     <div id="content-overview" class="tab-content active">
         <h3>Overview & Key Metrics</h3>
+        <!-- Grid for displaying key performance indicators (KPIs) / metrics -->
         <div class="key-metrics-grid">
-            <div class="metric-card">
-                <h4>Total System Cost</h4>
-                <p id="metric-total-cost" class="metric-value">₹ --- Cr</p>
-                <span class="metric-detail">NPV over study period</span>
-            </div>
-            <div class="metric-card">
-                <h4>CO₂ Emissions</h4>
-                <p id="metric-co2-emissions" class="metric-value">--- MT/year</p>
-                <span class="metric-detail">Average annual emissions</span>
-            </div>
-            <div class="metric-card">
-                <h4>Renewable Energy Share</h4>
-                <p id="metric-re-share" class="metric-value">--- %</p>
-                <span class="metric-detail">Of total generation in final year</span>
-            </div>
-             <div class="metric-card">
-                <h4>Curtailment Levels</h4>
-                <p id="metric-curtailment" class="metric-value">--- GWh</p>
-                <span class="metric-detail">Total RE curtailment</span>
-            </div>
+            <!-- Metric cards populated by JavaScript from API data -->
+            <div class="metric-card"><h4>Total System Cost</h4><p id="metric-total-cost" class="metric-value">Loading...</p><span class="metric-detail">NPV over study period</span></div>
+            <div class="metric-card"><h4>CO₂ Emissions</h4><p id="metric-co2-emissions" class="metric-value">Loading...</p><span class="metric-detail">Average annual emissions</span></div>
+            <div class="metric-card"><h4>Renewable Energy Share</h4><p id="metric-re-share" class="metric-value">Loading...</p><span class="metric-detail">Of total generation in final year</span></div>
+            <div class="metric-card"><h4>Total Curtailment</h4><p id="metric-curtailment" class="metric-value">Loading...</p><span class="metric-detail">Annual RE curtailment (GWh)</span></div>
         </div>
+        <!-- Grid for overview charts -->
         <div class="charts-grid-overview">
             <section class="chart-section-pypsa-results">
-                <h4>Investment Timeline (Capacity Additions)</h4>
-                <div id="investment-timeline-chart" class="chart-placeholder-large">
-                    <p>Investment timeline chart will appear here.</p>
-                </div>
+                <h4>Investment Timeline (Capacity Additions - MW or Cost)</h4>
+                <!-- Placeholder div where Plotly.js will render the investment timeline chart -->
+                <div id="investment-timeline-chart" class="chart-placeholder-large"><p>Investment timeline chart loading...</p></div>
             </section>
             <section class="chart-section-pypsa-results">
-                <h4>System Evolution (Generation Mix)</h4>
-                <div id="system-evolution-chart" class="chart-placeholder-large">
-                    <p>System evolution chart will appear here.</p>
-                </div>
+                <h4>System Generation Evolution (Mix - TWh)</h4>
+                <!-- Placeholder div where Plotly.js will render the system evolution chart -->
+                <div id="system-evolution-chart" class="chart-placeholder-large"><p>System evolution chart loading...</p></div>
             </section>
         </div>
     </div>
 
+    <!-- Content area for the "Dispatch Analysis" tab, hidden by default -->
     <div id="content-dispatch" class="tab-content" style="display:none;">
         <h3>Dispatch Analysis</h3>
-        <p>Detailed dispatch plots, merit order, and curtailment analysis will be shown here.</p>
-        <div id="dispatch-merit-order-chart" class="chart-placeholder-large"><p>Merit Order / Dispatch Stack Chart</p></div>
-        <div id="dispatch-timeseries-chart" class="chart-placeholder-large"><p>Dispatch Timeseries (Sample Period)</p></div>
+        <p>Detailed dispatch plots, merit order stacks, and curtailment analysis for selected periods.</p>
+        <!-- Placeholder divs for dispatch-related charts -->
+        <div id="dispatch-merit-order-chart" class="chart-placeholder-large"><p>Merit Order / Dispatch Stack Chart (Placeholder)</p></div>
+        <div id="dispatch-timeseries-chart" class="chart-placeholder-large" style="margin-top: var(--spacing-lg);"><p>Dispatch Timeseries for a Sample Period (Placeholder)</p></div>
+        <!-- Filters for dispatch period (e.g., date range, typical day) would go here -->
     </div>
 
+    <!-- Content area for the "Capacity & Investment" tab -->
     <div id="content-capacity" class="tab-content" style="display:none;">
         <h3>Capacity & Investment Results</h3>
-        <p>Installed capacities by technology, new investments, and retirement details.</p>
-        <div id="capacity-by-tech-chart" class="chart-placeholder-large"><p>Installed Capacity by Technology (Bar Chart)</p></div>
-        <div id="investment-by-year-chart" class="chart-placeholder-large"><p>New Investment by Year & Technology (Stacked Bar)</p></div>
+        <p>View detailed installed capacities by technology, new investments per period, and planned retirements.</p>
+        <div id="capacity-by-tech-chart" class="chart-placeholder-large"><p>Installed Capacity by Technology (Bar Chart - Placeholder)</p></div>
+        <div id="investment-by-year-chart" class="chart-placeholder-large" style="margin-top: var(--spacing-lg);"><p>New Investment by Year & Technology (Stacked Bar - Placeholder)</p></div>
     </div>
 
+    <!-- Content area for the "Cost Analysis" tab -->
     <div id="content-costs" class="tab-content" style="display:none;">
-        <h3>Cost Breakdown</h3>
-        <p>Detailed breakdown of capital, operational, fuel, and carbon costs.</p>
-        <div id="cost-breakdown-pie-chart" class="chart-placeholder-medium"><p>Cost Component Breakdown (Pie Chart)</p></div>
-         <div id="cost-per-tech-chart" class="chart-placeholder-medium"><p>Levelized Cost per Technology (LCOE)</p></div>
-    </div>
-
-    <div id="content-emissions" class="tab-content" style="display:none;">
-        <h3>Emissions Profile</h3>
-        <p>Annual emissions, emissions by source, and comparison against targets.</p>
-        <div id="annual-emissions-chart" class="chart-placeholder-large"><p>Annual CO2 Emissions (Line Chart)</p></div>
-    </div>
-
-    <div id="content-network" class="tab-content" style="display:none;">
-        <h3>Network Visualization & Analysis</h3>
-        <p>Interactive network map showing flows, congestion, and line loadings. (Requires advanced JS library integration - placeholder for now).</p>
-        <div id="network-map-placeholder" class="chart-placeholder-large" style="background-color: #e0e0e0;">
-            <p>Interactive Network Map (Placeholder)</p>
-            <small>This would typically use a library like Leaflet or a specialized network viz tool.</small>
+        <h3>Cost Analysis</h3>
+        <p>Detailed breakdown of system costs: capital (CAPEX), operational (OPEX), fuel, carbon, and transmission costs.</p>
+        <div class="charts-grid-overview"> <!-- Re-using grid for side-by-side small charts -->
+            <div id="cost-component-breakdown-chart" class="chart-placeholder-medium"><p>Total Cost Component Breakdown (Pie Chart - Placeholder)</p></div>
+            <div id="levelized-cost-per-tech-chart" class="chart-placeholder-medium"><p>Levelized Cost per Technology (LCOE - Bar Chart - Placeholder)</p></div>
         </div>
     </div>
 
+    <!-- Content area for the "Emissions Profile" tab -->
+    <div id="content-emissions" class="tab-content" style="display:none;">
+        <h3>Emissions Profile</h3>
+        <p>Analysis of CO₂ emissions: annual totals, emissions by source/technology, and comparison against defined targets or caps.</p>
+        <div id="annual-emissions-chart" class="chart-placeholder-large"><p>Annual CO₂ Emissions Trajectory (Line Chart - Placeholder)</p></div>
+        <div id="emissions-by-source-chart" class="chart-placeholder-medium" style="margin-top: var(--spacing-lg);"><p>Emissions by Source (Stacked Bar/Pie - Placeholder)</p></div>
+    </div>
+
+    <!-- Content area for the "Network Visualization" tab -->
+    <div id="content-network" class="tab-content" style="display:none;">
+        <h3>Network Visualization & Analysis</h3>
+        <p>Interactive map of the transmission network showing flows, congestion, line loadings, and nodal prices (LMPs).
+           <em>(Note: This typically requires advanced JavaScript libraries and significant data processing.)</em></p>
+        <!-- Placeholder for an interactive network map -->
+        <div id="network-map-placeholder" class="chart-placeholder-large" style="background-color: #e9ecef;">
+            <p>Interactive Network Map Area (Advanced Visualization - Placeholder)</p>
+            <small>This section would integrate a specialized network graph visualization tool.</small>
+        </div>
+    </div>
+
+    <!-- Content area for the "Download Reports" tab -->
     <div id="content-reports" class="tab-content" style="display:none;">
         <h3>Download Reports & Data</h3>
-        <p>Download detailed simulation results, input data summaries, and generated reports.</p>
-        <ul>
-            <li><a href="#" id="download-summary-report-pdf">Summary Report (PDF)</a></li>
-            <li><a href="#" id="download-full-results-csv">Full Results (CSV archive)</a></li>
-            <li><a href="#" id="download-network-data-json">Network Data (JSON for PyPSA-EUR)</a></li>
+        <p>Download detailed simulation results, input data summaries, and auto-generated reports in various formats.</p>
+        <ul class="download-list"> <!-- Simple list for download links -->
+            <li><a href="#" id="download-summary-report-pdf" class="btn btn-primary">Download Summary Report (PDF)</a></li>
+            <li><a href="#" id="download-full-results-csv" class="btn btn-secondary">Download Full Results (CSV Archive .zip)</a></li>
+            <li><a href="#" id="download-network-data-json" class="btn btn-secondary">Download Network Data (Optimized - JSON)</a></li>
+            <li><a href="#" id="download-input-assumptions-xlsx" class="btn btn-secondary">Download Input Assumptions (Excel)</a></li>
         </ul>
     </div>
 
 </div>
+{% endblock %}
+
+{% block scripts %}
+<!-- Additional page-specific scripts, if any, for the dashboard -->
+<script>
+    // Small script to pass scenario_id from Flask to a global JS variable if needed by main.js immediately
+    // Or, main.js can parse it from the URL or a data attribute on a DOM element.
+    // For this setup, main.js will extract it from the title or a dedicated element.
+    // const currentPyPSAScenarioId = "{{ scenario_id }}";
+    // console.log("Dashboard for PyPSA Scenario ID:", currentPyPSAScenarioId);
+</script>
 {% endblock %}

@@ -1,130 +1,148 @@
 {% extends "layouts/base_layout.html" %}
 
-{% block title %}Demand Projection - Visualization - KSEB Energy Futures{% endblock %}
+<!-- Set the page title for Demand Projection Visualization page -->
+{% block title %}Demand Projection - Visualization & Analysis - KSEB Energy Futures{% endblock %}
 
 {% block content %}
-<div class="module-container">
+<!-- Main container for the Demand Projection visualization module -->
+<div class="module-container demand-projection-viz-container"> <!-- Added specific class -->
     <h2>Demand Projection: Visualization & Analysis</h2>
-    <p>View, compare, and analyze demand forecast scenarios.</p>
+    <p>View, compare, and analyze various demand forecast scenarios and their outcomes.</p>
 
+    <!-- Top controls for scenario selection and filtering -->
     <div class="top-controls-visualization">
         <div class="form-group-inline">
             <div class="form-group">
-                <label for="scenario-select-viz">Select Scenario(s):</label>
+                <label for="scenario-select-viz">Select Scenario(s) to Visualize/Compare:</label>
+                <!-- Dropdown for selecting one or more scenarios (JS might enhance this for multi-select) -->
                 <select id="scenario-select-viz" name="scenarioViz" multiple size="3">
-                    <option value="scen_base_202401" selected>Baseline_Forecast_20240801</option>
-                    <option value="scen_high_growth_202402">HighGrowth_EV_20240802</option>
-                    <option value="scen_low_carbon_202403">LowCarbon_RE_Integration_20240803</option>
+                    <!-- Options populated by JS or could be pre-filled if scenarios are passed from backend -->
+                    <option value="scen_base_202401" selected>Baseline_Forecast_20240801 (Simulated)</option>
+                    <option value="scen_high_growth_202402">HighGrowth_EV_20240802 (Simulated)</option>
+                    <option value="scen_low_carbon_202403">LowCarbon_RE_Integration_20240803 (Simulated)</option>
+                    <option value="fcst_job_12345">Forecast Job 12345 (Example)</option>
                 </select>
             </div>
-            <button id="compare-scenarios-btn" class="btn-primary">Compare Selected</button>
+            <button type="button" id="compare-scenarios-btn" class="btn btn-primary">Load/Compare Selected</button>
         </div>
+
+        <!-- Panel for filtering displayed data -->
         <div class="filters-panel">
-            <h4>Filters:</h4>
+            <h4>Filter Displayed Data:</h4>
             <div class="form-group-inline">
                 <div class="form-group">
-                    <label for="filter-sector">Sector:</label>
-                    <select id="filter-sector" name="filterSector">
-                        <option value="all">All Sectors</option>
+                    <label for="filter-sector-viz">Sector:</label>
+                    <select id="filter-sector-viz" name="filterSectorViz">
+                        <option value="all_sectors" selected>All Sectors (Aggregated)</option>
                         <option value="domestic">Domestic</option>
                         <option value="commercial">Commercial</option>
                         <option value="industrial_ht">Industrial (HT)</option>
-                        <!-- Add other sectors -->
+                        <!-- More sectors loaded dynamically or statically -->
                     </select>
                 </div>
                 <div class="form-group">
-                    <label for="filter-model">Model:</label>
-                    <select id="filter-model" name="filterModel">
-                        <option value="all">All Models</option>
+                    <label for="filter-model-viz">Forecasting Model (if applicable):</label>
+                    <select id="filter-model-viz" name="filterModelViz">
+                        <option value="all_models" selected>All Models</option>
                         <option value="arima">ARIMA</option>
                         <option value="ets">Exponential Smoothing</option>
-                        <!-- Add other models -->
+                        <option value="regression">Regression</option>
                     </select>
                 </div>
                 <div class="form-group">
-                    <label for="filter-years">Years:</label>
-                    <input type="text" id="filter-years" name="filterYears" placeholder="e.g., 2025-2035">
+                    <label for="filter-years-viz">Year Range:</label>
+                    <input type="text" id="filter-years-viz" name="filterYearsViz" placeholder="e.g., 2025-2035">
                 </div>
-                <button id="apply-filters-btn" class="btn-secondary">Apply Filters</button>
+                <button type="button" id="apply-filters-btn-viz" class="btn btn-secondary">Apply Filters</button>
             </div>
         </div>
     </div>
 
+    <!-- Grid layout for displaying charts and tables -->
     <div class="content-grid-visualization">
+        <!-- Section for the main aggregated demand forecast chart -->
         <section class="chart-section main-chart">
             <h3>Aggregated Demand Forecast</h3>
+            <!-- Placeholder div where the aggregated demand chart will be rendered by Plotly.js -->
             <div id="aggregated-demand-chart-container" class="chart-placeholder-large">
-                <p>Aggregated demand forecast chart will appear here.</p>
-                <div id="aggregated-demand-chart"></div> <!-- Actual chart div -->
+                <p>Aggregated demand forecast chart(s) will appear here upon scenario selection.</p>
+                <div id="aggregated-demand-chart"></div> <!-- Actual Plotly chart target -->
             </div>
         </section>
 
+        <!-- Section for the sector breakdown chart -->
         <section class="chart-section side-chart">
-            <h3>Sector Breakdown</h3>
+            <h3>Sectoral Breakdown (for selected year)</h3>
+            <!-- Placeholder div where the sector breakdown chart (e.g., pie or bar) will be rendered -->
             <div id="sector-breakdown-chart-container" class="chart-placeholder-medium">
-                <p>Sector breakdown chart will appear here.</p>
-                <div id="sector-breakdown-chart"></div> <!-- Actual chart div -->
+                <p>Sectoral breakdown chart will appear here.</p>
+                <div id="sector-breakdown-chart"></div> <!-- Actual Plotly chart target -->
             </div>
         </section>
 
+        <!-- Section for displaying model performance metrics -->
         <section class="table-section full-width-table">
-            <h3>Model Performance Metrics</h3>
+            <h3>Forecasting Model Performance Metrics (Sample)</h3>
             <div class="table-container">
                 <table id="model-performance-table" class="data-table">
                     <thead>
                         <tr>
                             <th>Scenario</th>
                             <th>Sector</th>
-                            <th>Model</th>
-                            <th>MAPE (%)</th>
-                            <th>RMSE</th>
-                            <th>Coverage</th>
+                            <th>Model Used</th>
+                            <th>MAPE (%)</th> <!-- Mean Absolute Percentage Error -->
+                            <th>RMSE (MU)</th> <!-- Root Mean Square Error -->
+                            <th>Coverage (95% PI)</th> <!-- Prediction Interval Coverage -->
+                            <th>Backtest Period</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr><td>Baseline_Forecast_20240801</td><td>Domestic</td><td>ARIMA</td><td>2.5</td><td>150.2</td><td>95%</td></tr>
-                        <tr><td>Baseline_Forecast_20240801</td><td>Commercial</td><td>ETS</td><td>3.1</td><td>80.5</td><td>90%</td></tr>
-                        <!-- More sample data -->
+                        <!-- Sample rows; actual data would be populated by JS -->
+                        <tr><td>Baseline_Forecast_20240801</td><td>Domestic</td><td>ARIMA(2,1,1)</td><td>2.5</td><td>150.2</td><td>94%</td><td>2018-2022</td></tr>
+                        <tr><td>Baseline_Forecast_20240801</td><td>Commercial</td><td>ETS(A,N,A)</td><td>3.1</td><td>80.5</td><td>92%</td><td>2018-2022</td></tr>
+                        <tr><td colspan="7"><i>Select a scenario to view detailed model performance metrics.</i></td></tr>
                     </tbody>
                 </table>
             </div>
         </section>
 
+        <!-- Section for a detailed results table -->
         <section class="table-section full-width-table">
-            <h3>Detailed Results Table</h3>
-             <div class="table-container">
+            <h3>Detailed Forecast Results Table</h3>
+             <div class="table-container" style="max-height: 400px; overflow-y: auto;"> <!-- Scrollable table -->
                 <table id="detailed-results-table" class="data-table">
                     <thead>
                         <tr>
                             <th>Year</th>
-                            <th>Month</th>
+                            <th>Month/Period</th>
                             <th>Scenario</th>
                             <th>Sector</th>
                             <th>Forecasted Demand (MU)</th>
-                            <th>Lower Bound</th>
-                            <th>Upper Bound</th>
+                            <th>Lower Bound (95% CI)</th>
+                            <th>Upper Bound (95% CI)</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr><td>2025</td><td>Jan</td><td>Baseline</td><td>Domestic</td><td>1350.0</td><td>1300</td><td>1400</td></tr>
-                        <tr><td>2025</td><td>Jan</td><td>Baseline</td><td>Commercial</td><td>950.0</td><td>920</td><td>980</td></tr>
-                        <!-- More sample data -->
+                        <!-- Sample rows; actual data would be populated by JS -->
+                        <tr><td>2025</td><td>January</td><td>Baseline_Forecast_20240801</td><td>Domestic</td><td>1350.0</td><td>1300.0</td><td>1400.0</td></tr>
+                        <tr><td>2025</td><td>January</td><td>Baseline_Forecast_20240801</td><td>Commercial</td><td>950.0</td><td>920.0</td><td>980.0</td></tr>
+                        <tr><td colspan="7"><i>Select a scenario to view detailed forecast values.</i></td></tr>
                     </tbody>
                 </table>
             </div>
         </section>
     </div>
 
+    <!-- Action buttons at the bottom of the page -->
     <div class="form-actions bottom-actions">
-        <button type="button" id="export-csv-btn" class="btn-secondary">Export as CSV</button>
-        <button type="button" id="export-pdf-btn" class="btn-secondary">Export as PDF</button>
-        <button type="button" id="save-consolidated-btn" class="btn-primary">Save Consolidated Data</button>
+        <button type="button" id="export-csv-btn-viz" class="btn btn-secondary">Export Aggregated Data (CSV)</button>
+        <button type="button" id="export-pdf-btn-viz" class="btn btn-secondary">Export Charts as PDF</button>
+        <button type="button" id="save-consolidated-btn" class="btn btn-primary">Save/Finalize Scenario Results</button>
     </div>
 
 </div>
 {% endblock %}
 
 {% block scripts %}
-<!-- Optional: Add page-specific JS or CDN link for charting library -->
-<!-- e.g., <script src="https://cdn.plot.ly/plotly-latest.min.js"></script> -->
+<!-- Additional scripts specific to this visualization page can be added here -->
 {% endblock %}

@@ -1,70 +1,78 @@
 {% extends "layouts/base_layout.html" %}
 
+<!-- Set the page title for Load Existing Project page -->
 {% block title %}Load Existing Project - KSEB Energy Futures{% endblock %}
 
 {% block content %}
-<div class="form-container">
+<!-- Main container for the form -->
+<div class="form-container project-form-container">
     <h2>Load Existing Project</h2>
-    <p>Select and load a previously created energy futures project.</p>
+    <p>Select and load a previously created energy futures project to continue your work.</p>
 
+    <!-- Section for choosing how to select a project -->
     <div class="form-section">
         <h3>Select Project Method</h3>
-        <div class="form-group radio-group">
+        <div class="form-group radio-group"> <!-- Grouping radio buttons -->
             <div>
                 <input type="radio" id="method-recent" name="loadProjectMethod" value="recent" checked>
-                <label for="method-recent">From Recent Projects</label>
+                <label for="method-recent">From Recent Projects List</label>
             </div>
             <div>
                 <input type="radio" id="method-browse" name="loadProjectMethod" value="browse">
-                <label for="method-browse">Browse from File System</label>
-                 <input type="text" id="project-path-input" name="projectPath" placeholder="Enter project path or use Browse" style="display:none; margin-left:10px; width: 300px;">
-                 <!-- <button type="button" id="browse-filesystem-btn" style="display:none; margin-left:5px;">Browse...</button> -->
+                <label for="method-browse">Browse from File System (Simulated Path Input)</label>
+                <!-- Input field for manually entering a project path, shown/hidden by JS -->
+                <input type="text" id="project-path-input" name="projectPath" placeholder="Enter full project path, e.g., /user/projects/MyExistingProject" style="display:none; margin-left:2rem; width: calc(100% - 2rem);">
+                <!-- A real "Browse" button would require OS-level dialogs, not feasible in pure web/mockup -->
+                <!-- <button type="button" id="browse-filesystem-btn" class="btn btn-tertiary btn-small" style="display:none; margin-left:5px;">Browse...</button> -->
             </div>
         </div>
     </div>
 
+    <!-- Section to display recent projects, shown if "From Recent Projects" is selected -->
     <div id="recent-projects-section" class="form-section">
         <h3>Recent Projects</h3>
-        <table id="recent-projects-table" class="data-table">
-            <thead>
-                <tr>
-                    <th>Select</th>
-                    <th>Project Name</th>
-                    <th>Location/Path</th>
-                    <th>Last Modified</th>
-                </tr>
-            </thead>
-            <tbody id="recent-projects-tbody">
-                <!-- Sample Row (to be populated by JS) -->
-                <tr>
-                    <td><input type="radio" name="selectedProjectPath" value="/sim/path/to/Project_HydroWave"></td>
-                    <td>Project HydroWave</td>
-                    <td>/sim/path/to/Project_HydroWave</td>
-                    <td>2024-07-28</td>
-                </tr>
-                <tr>
-                    <td><input type="radio" name="selectedProjectPath" value="/sim/path/to/Project_SolarFlare"></td>
-                    <td>Project SolarFlare</td>
-                    <td>/sim/path/to/Project_SolarFlare</td>
-                    <td>2024-07-27</td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-
-    <div class="form-section">
-        <h3>Selected Project Details</h3>
-        <div id="selected-project-details">
-            <p><strong>Name:</strong> <span id="selected-project-name">-</span></p>
-            <p><strong>Path:</strong> <span id="selected-project-path">-</span></p>
-            <p><strong>Status:</strong> <span id="selected-project-status">No project selected or validated.</span></p>
+        <!-- Table to list recent projects, populated by JavaScript -->
+        <div class="table-container">
+            <table id="recent-projects-table" class="data-table">
+                <thead>
+                    <tr>
+                        <th>Select</th> <!-- Radio button for selection -->
+                        <th>Project Name</th>
+                        <th>Location/Path (Simulated)</th>
+                        <th>Last Modified</th>
+                    </tr>
+                </thead>
+                <tbody id="recent-projects-tbody">
+                    <!-- Rows will be populated by JavaScript based on API response -->
+                    <!-- Sample static row (content will be replaced by JS) -->
+                    <tr>
+                        <td colspan="4">Loading recent projects...</td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
     </div>
 
+    <!-- Section to display details of the project selected for loading -->
+    <div class="form-section">
+        <h3>Selected Project Details</h3>
+        <!-- Area to display information about the chosen project -->
+        <div id="selected-project-details" class="settings-display-box"> <!-- Reusing style from PyPSA page -->
+            <p><strong>Name:</strong> <span id="selected-project-name">-</span></p>
+            <p><strong>Path:</strong> <span id="selected-project-path">-</span></p>
+            <p><strong>Status:</strong> <span id="selected-project-status">No project selected. Please choose one from the list or enter a path.</span></p>
+            <!-- More details like description, creation date could be added here by JS -->
+        </div>
+    </div>
+
+    <!-- Action buttons for the form -->
     <div class="form-actions">
-        <button type="button" id="cancel-load-project-btn" class="btn-secondary">Cancel</button>
-        <button type="button" id="validate-project-btn" class="btn-tertiary">Validate Project</button>
-        <button type="button" id="load-project-btn" class="btn-primary">Load Project</button>
+        <!-- Cancel button typically navigates away -->
+        <button type="button" id="cancel-load-project-btn" class="btn btn-secondary">Cancel</button>
+        <!-- Validate button to check project integrity before loading -->
+        <button type="button" id="validate-project-btn" class="btn btn-tertiary">Validate Selected Project</button>
+        <!-- Load button to proceed with loading the project, handled by JavaScript -->
+        <button type="button" id="load-project-btn" class="btn btn-primary" disabled>Load Project</button>
     </div>
 </div>
 {% endblock %}

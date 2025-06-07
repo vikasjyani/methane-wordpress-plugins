@@ -1,62 +1,102 @@
 {% extends "layouts/base_layout.html" %}
 
-{% block title %}User Guide - KSEB Energy Futures{% endblock %}
+<!-- Set the page title for the User Guide page -->
+{% block title %}User Guide - KSEB Energy Futures Platform{% endblock %}
 
 {% block content %}
-<div class="module-container helper-page-container">
-    <h2>User Guide & Documentation</h2>
-    <p>Find help on using the KSEB Energy Futures Platform, its modules, and features.</p>
+<!-- Main container for the User Guide page -->
+<div class="module-container helper-page-container user-guide-page"> <!-- Added specific class -->
+    <h2>User Guide & Platform Documentation</h2>
+    <p>Find comprehensive help and step-by-step instructions on using the KSEB Energy Futures Platform, its various modules, and key features.</p>
 
+    <!-- Search bar for the user guide (visual placeholder, no backend search implemented) -->
     <div class="user-guide-search-bar">
-        <input type="search" id="user-guide-search" placeholder="Search User Guide...">
-        <button type="button" class="btn-secondary">Search</button>
+        <input type="search" id="user-guide-search" aria-label="Search User Guide" placeholder="Search User Guide (e.g., 'create project', 'PyPSA results')...">
+        <button type="button" class="btn btn-primary">Search</button> <!-- Search button also a placeholder -->
     </div>
 
+    <!-- Two-column layout for Table of Contents (TOC) and Content Area -->
     <div class="user-guide-layout">
+        <!-- Left column for the Table of Contents -->
         <aside class="user-guide-toc">
             <h3>Table of Contents</h3>
+            <!-- Unordered list for TOC items. Click events handled by JavaScript. -->
             <ul id="user-guide-toc-list">
-                <li><a href="#" data-topic="introduction">1. Introduction</a>
+                <li><a href="#" data-topic="introduction" class="active-topic">1. Introduction</a>
                     <ul>
-                        <li><a href="#" data-topic="platform_overview">1.1 Platform Overview</a></li>
-                        <li><a href="#" data-topic="getting_started">1.2 Getting Started</a></li>
+                        <li><a href="#" data-topic="platform_overview">1.1 Platform Overview & Architecture</a></li>
+                        <li><a href="#" data-topic="getting_started">1.2 Getting Started: First Steps</a></li>
+                        <li><a href="#" data-topic="ui_navigation">1.3 Navigating the User Interface</a></li>
                     </ul>
                 </li>
                 <li><a href="#" data-topic="project_management">2. Project Management</a>
                     <ul>
                         <li><a href="#" data-topic="create_project">2.1 Creating a New Project</a></li>
-                        <li><a href="#" data-topic="load_project">2.2 Loading Existing Projects</a></li>
+                        <li><a href="#" data-topic="load_project">2.2 Loading & Managing Projects</a></li>
+                        <li><a href="#" data-topic="project_settings">2.3 Project Settings & Configuration</a></li>
                     </ul>
                 </li>
                 <li><a href="#" data-topic="demand_projection">3. Demand Projection Module</a>
                     <ul>
-                        <li><a href="#" data-topic="dp_data_input">3.1 Data Input & Configuration</a></li>
-                        <li><a href="#" data-topic="dp_visualization">3.2 Visualization & Analysis</a></li>
+                        <li><a href="#" data-topic="dp_data_input">3.1 Data Input & Validation</a></li>
+                        <li><a href="#" data-topic="dp_configuration">3.2 Forecast Configuration & Models</a></li>
+                        <li><a href="#" data-topic="dp_visualization">3.3 Visualizing Demand Forecasts</a></li>
                     </ul>
                 </li>
-                <li><a href="#" data-topic="load_profile">4. Load Profile Generation</a></li>
-                <li><a href="#" data-topic="pypsa_modeling">5. PyPSA Co-optimisation</a></li>
-                <li><a href="#" data-topic="pypsa_results">6. PyPSA Results Visualization</a></li>
-                <li><a href="#" data-topic="admin_panel">7. Admin Panel</a></li>
-                <li><a href="#" data-topic="faq">8. FAQ & Troubleshooting</a></li>
+                <li><a href="#" data-topic="load_profile">4. Load Profile Generation Module</a>
+                     <ul>
+                        <li><a href="#" data-topic="lp_creation">4.1 Creating Load Profiles</a></li>
+                        <li><a href="#" data-topic="lp_analysis">4.2 Analyzing Load Profiles</a></li>
+                    </ul>
+                </li>
+                <li><a href="#" data-topic="pypsa_modeling">5. PyPSA Co-optimisation Modeling</a>
+                     <ul>
+                        <li><a href="#" data-topic="pypsa_config">5.1 Model Configuration & Scenarios</a></li>
+                        <li><a href="#" data-topic="pypsa_run">5.2 Running PyPSA Simulations</a></li>
+                    </ul>
+                </li>
+                <li><a href="#" data-topic="pypsa_results">6. PyPSA Results Visualization</a>
+                     <ul>
+                        <li><a href="#" data-topic="pyr_dashboard">6.1 Results Dashboard Overview</a></li>
+                        <li><a href="#" data-topic="pyr_compare">6.2 Comparing Scenarios</a></li>
+                    </ul>
+                </li>
+                <li><a href="#" data-topic="admin_panel">7. Admin Panel (for Administrators)</a>
+                     <ul>
+                        <li><a href="#" data-topic="admin_features">7.1 Feature Management</a></li>
+                        <li><a href="#" data-topic="admin_monitoring">7.2 System Monitoring</a></li>
+                    </ul>
+                </li>
+                <li><a href="#" data-topic="templates_guide">8. Using Data Templates</a></li>
+                <li><a href="#" data-topic="faq_troubleshooting">9. FAQ & Troubleshooting</a></li>
             </ul>
         </aside>
 
+        <!-- Right column for displaying the content of the selected TOC topic -->
         <main class="user-guide-content-area">
+            <!-- Title of the current guide section, updated by JavaScript -->
             <h3 id="guide-content-title">Welcome to the User Guide</h3>
+            <!-- Main content div, updated by JavaScript with placeholder text for now -->
             <div id="guide-content-main">
-                <p>Welcome to the KSEB Energy Futures Platform user guide. This guide provides comprehensive information about the platform's features, functionalities, and workflows.</p>
-                <p>Please select a topic from the Table of Contents on the left to view detailed information. You can also use the search bar above to quickly find relevant topics.</p>
+                <p>Welcome to the KSEB Energy Futures Platform user guide. This guide provides comprehensive information about the platform's features, functionalities, and workflows designed to assist in energy planning and analysis for Kerala.</p>
+                <p>Please select a topic from the Table of Contents on the left to view detailed information. You can also use the search bar above to quickly find relevant topics (search functionality is a placeholder for now).</p>
+
                 <h4>Getting Started</h4>
-                <p>If you are new to the platform, we recommend starting with the "Getting Started" section under "Introduction". This will walk you through the initial setup and basic navigation.</p>
+                <p>If you are new to the platform, we recommend starting with the <strong>"1.2 Getting Started: First Steps"</strong> section under "Introduction". This will walk you through the initial setup, basic navigation, and how to create or load your first project.</p>
+
+                <h4>How to Use This Guide</h4>
+                <p>Navigate through the sections using the Table of Contents. Each section provides explanations of the module's purpose, steps for common tasks, descriptions of input parameters, and guidance on interpreting results. For information on data formats and downloadable files, please refer to the "Templates Download" page accessible from the main navigation or by searching here.</p>
+
+                <p><em>This user guide is currently a placeholder. In a full implementation, each section would contain detailed content, images, and possibly video tutorials.</em></p>
             </div>
         </main>
-    </div>
+    </div> <!-- End of user-guide-layout -->
 
+    <!-- Action buttons for the User Guide page -->
     <div class="form-actions helper-page-actions">
-        <button type="button" id="user-guide-download-pdf-btn" class="btn-secondary">Download as PDF</button>
-        <button type="button" id="user-guide-print-btn" class="btn-secondary">Print Current Section</button>
-        <button type="button" id="user-guide-feedback-btn" class="btn-primary">Provide Feedback</button>
+        <button type="button" id="user-guide-download-pdf-btn" class="btn btn-secondary">Download Full Guide (PDF)</button>
+        <button type="button" id="user-guide-print-btn" class="btn btn-secondary">Print Current Section</button>
+        <button type="button" id="user-guide-feedback-btn" class="btn btn-primary">Provide Feedback on this Guide</button>
     </div>
 </div>
 {% endblock %}

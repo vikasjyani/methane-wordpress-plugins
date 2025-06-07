@@ -1,80 +1,69 @@
 {% extends "layouts/base_layout.html" %}
 
-{% block title %}Template Downloads - KSEB Energy Futures{% endblock %}
+<!-- Set the page title for Template Downloads page -->
+{% block title %}Download Data Templates - KSEB Energy Futures{% endblock %}
 
 {% block content %}
-<div class="module-container helper-page-container">
-    <h2>Template Downloads</h2>
-    <p>Download standard templates for data input, configuration files, and reporting formats.</p>
+<!-- Main container for the Template Downloads page -->
+<div class="module-container helper-page-container templates-download-page"> <!-- Added specific class -->
+    <h2>Downloadable Data Templates</h2>
+    <p>Download standard templates for various data inputs, configuration files, and reporting formats used across the KSEB Energy Futures Platform. Using these templates ensures compatibility and streamlines data preparation.</p>
 
+    <!-- Section for the table of available templates -->
     <section class="template-download-section">
         <h3>Available Templates</h3>
-        <p>Click the "Download" button next to a template to save it to your local system. Refer to the documentation section below for details on each template's structure and usage.</p>
+        <p><small>Click on a template name to view its documentation below. Click the "Download" button to save the template file to your local system. Ensure you have appropriate software (e.g., MS Excel, a text editor) to open these files.</small></p>
+        <!-- Table container for responsive behavior -->
         <div class="table-container">
+            <!-- Table listing available templates, populated by JavaScript from an API or static list -->
             <table id="available-templates-table" class="data-table">
                 <thead>
                     <tr>
                         <th>Template Name</th>
-                        <th>Category</th>
-                        <th>Description</th>
+                        <th>Module / Category</th>
+                        <th>Brief Description</th>
                         <th>File Type</th>
                         <th>Version</th>
-                        <th>Action</th>
+                        <th>Action</th> <!-- For download buttons -->
                     </tr>
                 </thead>
                 <tbody id="available-templates-tbody">
-                    <!-- Rows will be populated by JS or can be static if API is not used -->
-                    <tr>
-                        <td>Demand Input File</td>
-                        <td>Demand Projection</td>
-                        <td>Standard format for historical demand data (sector-wise, monthly/hourly).</td>
-                        <td>Excel (.xlsx)</td>
-                        <td>2.1</td>
-                        <td><button class="btn-primary btn-small download-template-btn" data-template-id="demand_input_v2.1">Download</button></td>
-                    </tr>
-                    <tr>
-                        <td>Load Curve Template</td>
-                        <td>Load Profile</td>
-                        <td>8760 hourly load points for a typical year.</td>
-                        <td>CSV (.csv)</td>
-                        <td>1.5</td>
-                        <td><button class="btn-primary btn-small download-template-btn" data-template-id="load_curve_8760_v1.5">Download</button></td>
-                    </tr>
-                    <tr>
-                        <td>PyPSA Network Data</td>
-                        <td>PyPSA Modeling</td>
-                        <td>Base network data including buses, lines, transformers, and generator types.</td>
-                        <td>Excel (.xlsx)</td>
-                        <td>KSEB_Ref_v2.1</td>
-                        <td><button class="btn-primary btn-small download-template-btn" data-template-id="pypsa_network_kseb_v2.1">Download</button></td>
-                    </tr>
-                    <tr>
-                        <td>Technology Cost File</td>
-                        <td>PyPSA Modeling</td>
-                        <td>Assumptions for capital costs, FOM, VOM, lifetime, efficiency for various technologies.</td>
-                        <td>Excel (.xlsx)</td>
-                        <td>TechData_2024_v1.2</td>
-                        <td><button class="btn-primary btn-small download-template-btn" data-template-id="tech_cost_2024_v1.2">Download</button></td>
-                    </tr>
-                     <tr>
-                        <td>Reporting Format</td>
-                        <td>General</td>
-                        <td>Standard MS Word template for project reports and summaries.</td>
-                        <td>Word (.docx)</td>
-                        <td>1.0</td>
-                        <td><button class="btn-primary btn-small download-template-btn" data-template-id="report_format_v1.0">Download</button></td>
-                    </tr>
+                    <!-- Rows will be populated by JavaScript (fetchAndPopulateTemplatesTable) -->
+                    <!-- If JS fails or for non-JS environments, content passed from Flask context could be rendered here -->
+                    {% if static_templates %}
+                        {% for template in static_templates %}
+                        <tr>
+                            <td><a href="#" class="template-doc-link" data-template-id="{{ template.id }}">{{ template.name }}</a></td>
+                            <td>{{ template.category }}</td>
+                            <td>{{ template.description }}</td>
+                            <td>{{ template.file_type }}</td>
+                            <td>{{ template.version }}</td>
+                            <td><a href="{{ url_for('static', filename=template.download_link|replace('/static/', '')) if template.download_link.startswith('/static/') else template.download_link }}" class="btn btn-primary btn-small download-template-btn" data-template-id="{{ template.id }}" download>Download</a></td>
+                        </tr>
+                        {% endfor %}
+                    {% else %}
+                        <tr><td colspan="6">Loading available templates...</td></tr>
+                    {% endif %}
                 </tbody>
             </table>
         </div>
     </section>
 
+    <!-- Section for displaying documentation of the selected template -->
     <section class="template-documentation-section">
-        <h3>Template Documentation</h3>
-        <div id="template-doc-content" class="settings-display-box">
-            <p>Select a template by clicking its name or "Download" button to view its documentation here (this is a placeholder).</p>
-            <p>Detailed information about the selected template's structure, required fields, data formats, and usage guidelines will be displayed in this section.</p>
+        <h3>Template Documentation & Structure</h3>
+        <!-- Content area for template documentation, updated by JavaScript -->
+        <div id="template-doc-content" class="settings-display-box"> <!-- Reusing style -->
+            <p>Please click on a template name from the table above to view its detailed documentation here.</p>
+            <p>The documentation will include information about the template's purpose, structure, required fields, data formats, example entries, and common usage guidelines to ensure correct data input for the platform's modules.</p>
         </div>
     </section>
+
+    <!-- Informational note about template versions -->
+    <div class="form-section" style="margin-top: var(--spacing-lg); padding-top: var(--spacing-md); border-top: 1px solid var(--border-color);">
+        <h4>Note on Template Versions:</h4>
+        <p><small>Always ensure you are using the latest version of a template unless a specific older version is required for compatibility with ongoing projects. Template versions are updated periodically to reflect changes in modeling requirements or data standards.</small></p>
+    </div>
+
 </div>
 {% endblock %}

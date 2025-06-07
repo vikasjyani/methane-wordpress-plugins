@@ -1,1 +1,2 @@
-# KSEB Energy Futures Platform - Admin Module
+# This file makes the 'admin' directory a Python package.
+from .routes import admin_bp

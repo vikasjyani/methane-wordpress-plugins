@@ -1,88 +1,106 @@
 {% extends "layouts/base_layout.html" %}
 
+<!-- Set the page title for Create New Project page -->
 {% block title %}Create New Project - KSEB Energy Futures{% endblock %}
 
 {% block content %}
-<div class="form-container">
+<!-- Main container for the form -->
+<div class="form-container project-form-container"> <!-- Added specific class for project forms -->
     <h2>Create New Project</h2>
-    <p>Define the details for your new energy futures project.</p>
+    <p>Define the details for your new energy futures analysis project.</p>
 
+    <!-- Form for creating a new project. Submission handled by JavaScript. -->
     <form id="create-project-form">
+        <!-- Section for basic project details -->
         <div class="form-section">
             <h3>Project Details</h3>
             <div class="form-group">
                 <label for="project-name-input">Project Name:</label>
-                <input type="text" id="project-name-input" name="projectName" required>
+                <input type="text" id="project-name-input" name="projectName" required placeholder="e.g., Kerala Solar Expansion 2030">
             </div>
             <div class="form-group">
                 <label for="project-description-input">Description:</label>
-                <textarea id="project-description-input" name="projectDescription" rows="3"></textarea>
+                <textarea id="project-description-input" name="projectDescription" rows="3" placeholder="Briefly describe the project's objectives and scope."></textarea>
             </div>
             <div class="form-group">
-                <label for="project-location-input">Project Location:</label>
-                <input type="text" id="project-location-input" name="projectLocation" placeholder="e.g., /user/projects/ (leave blank for default)">
-                <!-- <button type="button" id="browse-location-btn">Browse</button> -->
-                <small>Specify a directory path. If left blank, a default location will be used.</small>
+                <label for="project-location-input">Project Location (Simulated Path):</label>
+                <input type="text" id="project-location-input" name="projectLocation" placeholder="e.g., /user/projects/ (leave blank for default path)">
+                <!-- Actual file system browsing button would require more complex backend/frontend interaction -->
+                <!-- <button type="button" id="browse-location-btn" class="btn btn-tertiary btn-small">Browse</button> -->
+                <small>Specify a base directory path for project files. If blank, a default location will be used (simulated).</small>
             </div>
              <div class="form-group">
                 <label for="project-type-select">Project Type:</label>
                 <select id="project-type-select" name="projectType">
-                    <option value="wind_power">Wind Power</option>
-                    <option value="solar_pv">Solar PV</option>
-                    <option value="hydro_power">Hydro Power</option>
-                    <option value="grid_stability">Grid Stability</option>
-                    <option value="mixed_renewable">Mixed Renewable</option>
-                    <option value="custom">Custom</option>
+                    <option value="wind_power_assessment">Wind Power Assessment</option>
+                    <option value="solar_pv_siting">Solar PV Siting</option>
+                    <option value="hydro_power_feasibility">Hydro Power Feasibility</option>
+                    <option value="grid_stability_analysis">Grid Stability Analysis</option>
+                    <option value="mixed_renewable_integration">Mixed Renewable Integration</option>
+                    <option value="long_term_expansion_planning">Long-term Expansion Planning</option>
+                    <option value="custom_research">Custom Research</option>
                 </select>
             </div>
         </div>
 
+        <!-- Section for project initialization settings -->
         <div class="form-section">
             <h3>Initialization Settings</h3>
             <div class="form-group">
                 <input type="checkbox" id="initialize-sample-data-checkbox" name="initializeSampleData" value="true">
-                <label for="initialize-sample-data-checkbox">Initialize with sample data templates</label>
+                <label for="initialize-sample-data-checkbox">Initialize with sample data templates (e.g., sample demand, costs)</label>
             </div>
             <div class="form-group">
                 <label for="copy-settings-from-select">Copy settings from existing project (optional):</label>
                 <select id="copy-settings-from-select" name="copySettingsFrom">
-                    <option value="">None</option>
+                    <option value="">None (Use platform defaults)</option>
+                    <!-- Sample projects; this would be populated dynamically in a full app -->
                     <option value="proj_abc_123">Sample Project Alpha (proj_abc_123)</option>
                     <option value="proj_def_456">Old Hydro Study (proj_def_456)</option>
+                    <option value="proj_ghi_789">KSEB Reference Case 2022 (proj_ghi_789)</option>
                 </select>
+                <small>If selected, relevant configurations (e.g., technology costs, default assumptions) will be copied.</small>
             </div>
         </div>
 
+        <!-- Section for selecting which templates to include in the new project structure -->
         <div class="form-section">
             <h3>Template Selection</h3>
-            <p>Select which file/folder templates to include in the new project:</p>
-            <div class="checkbox-group">
+            <p>Select which standard file/folder templates to include in the new project structure:</p>
+            <div class="checkbox-group template-selection-group"> <!-- Added specific class for styling if needed -->
                 <div>
-                    <input type="checkbox" id="template-pypsa-config" name="templatesToInclude" value="pypsa_config" checked>
-                    <label for="template-pypsa-config">PyPSA Configuration Files</label>
+                    <input type="checkbox" id="template-pypsa-config" name="templatesToInclude" value="pypsa_config_files" checked>
+                    <label for="template-pypsa-config">PyPSA Configuration Files (networks, scenarios)</label>
                 </div>
                 <div>
-                    <input type="checkbox" id="template-demand-data" name="templatesToInclude" value="demand_data_csv" checked>
-                    <label for="template-demand-data">Demand Data (Sample CSV)</label>
+                    <input type="checkbox" id="template-demand-data" name="templatesToInclude" value="demand_data_samples_csv" checked>
+                    <label for="template-demand-data">Demand Data (Sample CSV/Excel format)</label>
                 </div>
                 <div>
-                    <input type="checkbox" id="template-load-profiles" name="templatesToInclude" value="load_profiles_json">
-                    <label for="template-load-profiles">Load Profiles (Sample JSON)</label>
+                    <input type="checkbox" id="template-load-profiles" name="templatesToInclude" value="load_profiles_samples_json">
+                    <label for="template-load-profiles">Load Profiles (Sample JSON/CSV format)</label>
                 </div>
                 <div>
-                    <input type="checkbox" id="template-gis-data" name="templatesToInclude" value="gis_boundaries_geojson">
-                    <label for="template-gis-data">GIS Boundaries (GeoJSON)</label>
+                    <input type="checkbox" id="template-gis-data" name="templatesToInclude" value="gis_boundaries_geojson_samples">
+                    <label for="template-gis-data">GIS Boundaries & Constraints (Sample GeoJSON)</label>
                 </div>
                  <div>
-                    <input type="checkbox" id="template-reporting-scripts" name="templatesToInclude" value="reporting_scripts_py">
-                    <label for="template-reporting-scripts">Reporting Scripts (Python Stubs)</label>
+                    <input type="checkbox" id="template-reporting-scripts" name="templatesToInclude" value="reporting_scripts_python_stubs">
+                    <label for="template-reporting-scripts">Reporting Scripts (Python Stubs for Matplotlib/Pandas)</label>
+                </div>
+                <div>
+                    <input type="checkbox" id="template-cost-assumptions" name="templatesToInclude" value="technology_cost_assumptions_excel">
+                    <label for="template-cost-assumptions">Technology Cost Assumptions (Excel Template)</label>
                 </div>
             </div>
         </div>
 
+        <!-- Action buttons for the form -->
         <div class="form-actions">
-            <button type="button" id="cancel-create-project-btn" class="btn-secondary">Cancel</button>
-            <button type="submit" id="create-project-btn" class="btn-primary">Create Project</button>
+            <!-- Cancel button typically navigates away or clears the form -->
+            <button type="button" id="cancel-create-project-btn" class="btn btn-secondary">Cancel</button>
+            <!-- Submit button to create the project, handled by JavaScript -->
+            <button type="submit" id="create-project-btn" class="btn btn-primary">Create Project</button>
         </div>
     </form>
 </div>
