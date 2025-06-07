@@ -13,7 +13,20 @@
     <div class="status-bar load-profile-status">
         <span><strong>Base Shape Template Status:</strong> <span id="lp-template-status" class="status-ok">Ready (Default KSEB Shapes Loaded)</span></span>
         <span><strong>Historical Years Available (for shaping):</strong> <span id="lp-historical-years">2018-2023</span></span>
-        <!-- This could also show selected demand scenario's energy total if applicable -->
+    </div>
+
+    <!-- File Upload Section for Load Curve Template -->
+    <div class="form-section template-upload-section">
+        <h3>Upload Custom Load Curve Template (Optional)</h3>
+        <div class="form-group">
+            <label for="load-curve-template-file-input">Select Load Curve Template File (.xlsx, .xls):</label>
+            <div style="display: flex; gap: 10px;">
+                <input type="file" id="load-curve-template-file-input" name="load_curve_template_file" accept=".xlsx, .xls" class="form-control-file" style="flex-grow: 1;">
+                <button type="button" id="upload-load-curve-template-btn" class="btn btn-secondary btn-small">Upload & Process Template</button>
+            </div>
+            <span id="load-curve-template-status" class="status-text" style="display: block; margin-top: 5px;"></span>
+            <small>If provided, this template will be used for base shapes and targets. Otherwise, system defaults will be applied.</small>
+        </div>
     </div>
 
     <!-- Main content grid for layout -->

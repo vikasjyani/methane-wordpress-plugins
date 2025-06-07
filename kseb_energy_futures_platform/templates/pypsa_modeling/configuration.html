@@ -11,17 +11,33 @@
 
     <!-- Status bar displaying information about base templates and selected inputs -->
     <div class="status-bar pypsa-status">
-        <span><strong>Base Network Template:</strong> <span id="pypsa-template-status" class="status-ok">KSEB_Reference_Grid_v2.1 (Loaded)</span></span>
+        <!-- This span will be updated by JS after template upload -->
+        <span><strong>PyPSA Base Template Status:</strong> <span id="pypsa-template-upload-status" class="status-warning">No template uploaded yet. Please upload a PyPSA input template.</span></span>
         <!-- JS should update this based on user selection from Load Profile module or project settings -->
-        <span><strong>Selected Load Profile:</strong> <span id="pypsa-load-profile-status" class="status-warning">Baseline_Hourly_2025-2030_MW (Pending Validation)</span></span>
-        <span><strong>Technology Cost Data:</strong> <span id="pypsa-cost-data-status" class="status-ok">TechData_2024_v1.2 (Loaded)</span></span>
+        <span><strong>Selected Load Profile:</strong> <span id="pypsa-load-profile-status" class="status-ok">LP_Default_2025-2040 (Default)</span></span>
+        <!-- Tech cost data could also come from template or be separate -->
+    </div>
+
+    <!-- File Upload Section for PyPSA Input Template -->
+    <div class="form-section template-upload-section"> <!-- Reusing class for consistent styling -->
+        <h3>Upload PyPSA Input Template</h3>
+        <div class="form-group">
+            <label for="pypsa-template-file-input">Select PyPSA Input Template File (.xlsx, .xls):</label>
+            <div style="display: flex; gap: 10px; align-items: center;"> <!-- Flex container for input and button -->
+                <input type="file" id="pypsa-template-file-input" name="pypsa_template_file" accept=".xlsx, .xls" class="form-control-file" style="flex-grow: 1;">
+                <button type="button" id="upload-pypsa-template-btn" class="btn btn-secondary btn-small">Upload & Process Template</button>
+            </div>
+            <!-- Span to show status of template processing -->
+            <span id="pypsa-template-processing-status" class="status-text" style="display: block; margin-top: 5px;"></span>
+            <small>This Excel file should contain sheets for 'Settings', 'Buses', 'Generators', 'Lines', 'Demand', costs, etc., as per PyPSA conventions.</small>
+        </div>
     </div>
 
     <!-- Main grid layout for PyPSA configuration -->
     <div class="content-grid-pypsa">
         <!-- Left/Main panel for scenario definition and overrides -->
         <section class="config-section-pypsa main-config-pypsa">
-            <h3>Scenario Configuration</h3>
+            <h3>Scenario Configuration (Overrides & Settings from Template)</h3> <!-- Title adjusted -->
             <div class="form-group">
                 <label for="pypsa-scenario-name">PyPSA Scenario Name:</label>
                 <input type="text" id="pypsa-scenario-name" name="scenarioName" value="CoOpt_Baseline_Expansion_2025-2040">
@@ -32,68 +48,65 @@
                 <textarea id="pypsa-scenario-desc" name="scenarioDescription" rows="3" placeholder="Describe the key assumptions, objectives, or changes for this scenario.">Baseline co-optimisation run for the period 2025-2040 using reference KSEB model settings, standard load profile, and default technology costs. Focus on meeting demand with least cost G&T expansion.</textarea>
             </div>
 
-            <h4>Base Model Settings (from KSEB_Reference_Grid_v2.1.xlsx - Display Only)</h4>
+            <h4>Base Model Settings (from Uploaded Template - Display Only)</h4>
             <!-- Display box for showing key assumptions from the base template (non-editable here) -->
-            <div class="settings-display-box">
-                <p><strong>Cost Data Source:</strong> Technology costs, FOM, VOM from 'technology_costs_2024_v1.2.xlsx'.</p>
-                <p><strong>Renewable Energy Potentials:</strong> Solar PV (District-wise), Onshore Wind (Site-specific) from 're_potentials_kerala_2024update.csv'.</p>
-                <p><strong>Transmission Network:</strong> Existing AC lines and substations based on 'kseb_network_topology_2023_final.xlsx'. New HVDC links allowed on predefined corridors.</p>
-                <p><strong>Default Constraints:</strong> CO₂ emission cap: 5 MT/annum (by 2030), Minimum RE share: 40% by 2030 (overall energy).</p>
-                <p><strong>Planning Horizon:</strong> Default 2025-2040, with investment periods [2025, 2030, 2035, 2040].</p>
+            <div id="pypsa-settings-display-box" class="settings-display-box"> <!-- Added ID for JS targeting -->
+                <p><i>Upload a PyPSA template to see a summary of its 'Settings' sheet here (e.g., Scenario_Info, CO2_Limits tables).</i></p>
+                <!-- Example of how it might look after population by JS:
+                <p><strong>Scenario Name (from template):</strong> Test_Scenario_2030</p>
+                <p><strong>Years (from template):</strong> 2025,2030</p>
+                <p><strong>CO2 Limit (2030 from template):</strong> 8.0 MT</p>
+                -->
             </div>
 
-            <h4>Override Settings (Optional)</h4>
+            <h4>Override Settings (Optional - Applied to Uploaded Template Data)</h4>
             <div class="form-group-inline">
                 <div class="form-group">
                     <label for="pypsa-override-years">Custom Investment Years (CSV):</label>
-                    <input type="text" id="pypsa-override-years" name="overrideYears" placeholder="e.g., 2025,2027,2030,2033,2035 (if different from default)">
-                    <small>Overrides the default planning horizon investment periods.</small>
+                    <input type="text" id="pypsa-override-years" name="overrideYears" placeholder="e.g., 2025,2027,2030,2033,2035">
+                    <small>Overrides investment periods defined in the template or default settings.</small>
                 </div>
                  <div class="form-group">
                     <label for="pypsa-co2-cap-override">CO₂ Emission Cap (MT/annum for final year):</label>
                     <input type="number" id="pypsa-co2-cap-override" name="co2CapOverride" placeholder="e.g., 4.0">
-                    <small>Overrides default CO₂ cap. Leave blank for template default.</small>
+                    <small>Overrides CO₂ cap from template. Leave blank to use template value.</small>
                 </div>
             </div>
             <div class="form-group-inline">
                  <div class="form-group">
                     <label for="pypsa-generator-clustering">Generator Siting & Clustering Strategy:</label>
                     <select id="pypsa-generator-clustering" name="generatorClustering">
-                        <option value="default_template">Default (from base template)</option>
+                        <option value="template_default">Use Setting from Template</option>
                         <option value="per_bus_spatial">Spatial (per bus/ substation)</option>
-                        <option value="regional_techno_economic">Regional Techno-economic (group similar types)</option>
-                        <option value="no_clustering_high_detail">No Clustering (Very High Detail - longer solve)</option>
+                        <option value="regional_techno_economic">Regional Techno-economic</option>
+                        <option value="no_clustering">No Clustering (High Detail)</option>
                     </select>
                 </div>
                 <div class="form-group">
                     <label for="pypsa-transmission-expansion">Transmission Expansion Strategy:</label>
                     <select id="pypsa-transmission-expansion" name="transmissionExpansion">
-                        <option value="default_template">Default (from base template - AC & HVDC candidates)</option>
-                        <option value="ac_lines_only">AC Lines Only (No new HVDC)</option>
-                        <option value="hvdc_corridors_only">HVDC Corridors Only (No new AC lines)</option>
-                        <option value="fixed_network_no_expansion">Fixed Network (No Expansion - operational simulation only)</option>
+                        <option value="template_default">Use Setting from Template</option>
+                        <option value="ac_only_expansion">AC Lines Only Expansion</option>
+                        <option value="ac_hvdc_expansion">AC & HVDC Links Expansion</option>
+                        <option value="fixed_network">Fixed Network (No Expansion)</option>
                     </select>
                 </div>
             </div>
-            <!-- TODO: Add more override options like discount rate, specific technology constraints etc. -->
         </section>
 
         <!-- Right panel for system components summary and solver configuration -->
         <aside class="summary-solver-pypsa">
             <section class="config-section-pypsa">
-                <h3>System Components Summary (from Base Template)</h3>
-                <!-- Table displaying a summary of components in the base PyPSA network model -->
-                <div class="table-container small-table"> <!-- small-table for limited height with scroll -->
+                <h3>System Components Summary (from Uploaded Template)</h3>
+                <div class="table-container small-table">
                     <table id="pypsa-components-summary-table" class="data-table">
-                        <thead><tr><th>Component Type</th><th>Count</th><th>Key Notes/Voltage Levels</th></tr></thead>
-                        <tbody>
-                            <tr><td>Buses (Substations)</td><td>55</td><td>(400kV, 220kV, 110kV)</td></tr>
-                            <tr><td>Lines (Existing AC)</td><td>120</td><td>Various lengths & capacities</td></tr>
-                            <tr><td>Transformers (Existing)</td><td>75</td><td>Inter-voltage level</td></tr>
-                            <tr><td>Generators (Existing)</td><td>85</td><td>Hydro, Thermal, Solar PV, Wind</td></tr>
-                            <tr><td>Generators (New Candidates)</td><td>~300</td><td>Solar PV, Wind (On/Offshore), Storage</td></tr>
-                            <tr><td>Storage Units (Existing & New)</td><td>~40</td><td>Battery (Li-ion), PHS Candidates</td></tr>
-                            <tr><td>Links (HVDC Candidates)</td><td>5</td><td>Predefined corridors</td></tr>
+                        <thead><tr><th>Component Type</th><th>Count from Template</th></tr></thead>
+                        <tbody id="pypsa-components-tbody"> <!-- Target for JS population -->
+                            <tr><td colspan="2"><i>Upload template to see summary.</i></td></tr>
+                            <!-- Example after JS populates:
+                            <tr><td>Buses</td><td>55</td></tr>
+                            <tr><td>Generators</td><td>85</td></tr>
+                            -->
                         </tbody>
                     </table>
                 </div>
@@ -108,13 +121,13 @@
                         <option value="cplex">CPLEX</option>
                         <option value="cbc">CBC (Open Source)</option>
                         <option value="glpk">GLPK (Open Source)</option>
-                        <option value=" highs">HiGHS (Open Source)</option>
+                        <option value="highs">HiGHS (Open Source)</option>
                     </select>
                 </div>
                 <div class="form-group-inline">
                     <div class="form-group">
                         <label for="pypsa-time-limit">Time Limit (seconds):</label>
-                        <input type="number" id="pypsa-time-limit" name="timeLimit" value="72000"> <!-- 20 hours -->
+                        <input type="number" id="pypsa-time-limit" name="timeLimit" value="72000">
                     </div>
                     <div class="form-group">
                         <label for="pypsa-mip-gap">MIP Gap Tolerance (%):</label>
@@ -122,43 +135,34 @@
                     </div>
                 </div>
                 <div class="checkbox-group">
-                    <div><input type="checkbox" id="pypsa-warm-start" name="warmStartEnabled" checked><label for="pypsa-warm-start">Use warm start if available (from previous run)</label></div>
-                    <div><input type="checkbox" id="pypsa-enable-logging" name="solverLoggingEnabled" checked><label for="pypsa-enable-logging">Enable detailed solver diagnostic logging</label></div>
+                    <div><input type="checkbox" id="pypsa-warm-start" name="warmStartEnabled" checked><label for="pypsa-warm-start">Use warm start if available</label></div>
+                    <div><input type="checkbox" id="pypsa-enable-logging" name="solverLoggingEnabled" checked><label for="pypsa-enable-logging">Enable detailed solver logging</label></div>
                     <div><input type="checkbox" id="pypsa-shadow-prices" name="calculateShadowPrices"><label for="pypsa-shadow-prices">Calculate Shadow Prices (Duals)</label></div>
                 </div>
             </section>
         </aside>
     </div> <!-- End of content-grid-pypsa -->
 
-    <!-- Area to display validation status messages from the backend -->
     <div id="pypsa-validation-status-area" class="status-display-area" style="display:none; margin-top:var(--spacing-lg);">
-        <!-- Validation status messages will be dynamically inserted here by JavaScript -->
     </div>
 
-    <!-- Action buttons for the PyPSA configuration page -->
     <div class="form-actions">
-        <button type="button" id="validate-pypsa-model-btn" class="btn btn-secondary">Validate Model Configuration</button>
+        <button type="button" id="validate-pypsa-model-btn" class="btn btn-secondary">Validate Model Setup</button>
         <button type="button" id="run-pypsa-simulation-btn" class="btn btn-primary">Run PyPSA Simulation</button>
         <button type="button" id="expert-mode-pypsa-btn" class="btn btn-tertiary">Expert Mode Options</button>
         <button type="button" id="view-pypsa-results-main-btn" class="btn btn-secondary" onclick="window.location.href='{{url_for('pypsa_results_selection_page')}}'">View All PyPSA Results</button>
     </div>
 
-    <!-- Modal dialog for displaying PyPSA simulation progress -->
     <div id="pypsa-progress-modal" class="modal" style="display:none;">
         <div class="modal-content">
             <span class="close-modal-btn" id="close-pypsa-modal-btn" title="Close (does not cancel job)">&times;</span>
             <h3>PyPSA Simulation Progress</h3>
-            <!-- Job ID will be populated by JavaScript -->
             <div id="pypsa-job-id-display">Job ID: -</div>
-            <!-- Progress bar container -->
             <div class="progress-bar-container">
-                <!-- Progress bar itself, width and text updated by JavaScript -->
                 <div id="pypsa-progress-bar" class="progress-bar" style="width:0%;">0%</div>
             </div>
-            <!-- Current step/status message, updated by JavaScript -->
             <div id="pypsa-current-step-display" style="margin-top: var(--spacing-sm); font-size: 0.9rem;">Status: Initializing...</div>
             <div class="modal-actions">
-                <!-- Button to attempt canceling the simulation (functionality is simulated) -->
                 <button type="button" id="cancel-pypsa-simulation-btn" class="btn btn-danger">Cancel Simulation (Simulated)</button>
             </div>
         </div>
