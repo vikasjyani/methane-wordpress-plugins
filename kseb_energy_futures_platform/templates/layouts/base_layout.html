@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Block for page-specific titles. Defaults to "KSEB Energy Futures" -->
+    <title>{% block title %}KSEB Energy Futures{% endblock %}</title>
+    <!-- Link to the main stylesheet -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <!-- CDN for Plotly.js charting library -->
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <!-- Block for additional page-specific head elements (e.g., extra CSS, meta tags) -->
+    {% block head_extra %}{% endblock %}
+</head>
+<body>
+    <!-- Main header section for the platform -->
+    <header>
+        <h1>KSEB Energy Futures Platform</h1>
+        <!-- Main navigation placeholder (currently simple home link) -->
+        <nav>
+            <ul>
+                <li><a href="{{ url_for('index') }}">Home</a></li>
+                <!-- Future navigation links for modules can be added here -->
+                <!-- Example: <li><a href="{{ url_for('project_bp.list_projects') }}">Projects</a></li> -->
+                 <li><a href="{{ url_for('user_guide_page') }}">User Guide</a></li>
+                 <li><a href="{{ url_for('admin_feature_management_page') }}">Admin</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Main content area where page-specific content will be injected -->
+    <main class="{% block main_container_class %}container{% endblock %}">
+        {# This is a Jinja comment. Flash messages could be displayed here if implemented #}
+        {# {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %} #}
+
+        <!-- Content block to be filled by child templates -->
+        {% block content %}
+        {% endblock %}
+    </main>
+
+    <!-- Main footer section -->
+    <footer>
+        <p>&copy; Kerala State Electricity Board (KSEB) {% block current_year %}{{ "now"|date("Y") }}{% endblock %}. All Rights Reserved (Simulated Platform).</p>
+        <p>KSEB Energy Futures Platform - For Planning & Analysis Purposes</p>
+    </footer>
+
+    <!-- Link to the main JavaScript file, loaded at the end of the body for better performance -->
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+
+    <!-- Block for additional page-specific scripts -->
+    {% block scripts %}{% endblock %}
+</body>
+</html>

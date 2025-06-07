@@ -1,0 +1,121 @@
+{% extends "layouts/base_layout.html" %}
+
+<!-- Set the page title for Admin System Monitoring page -->
+{% block title %}Admin Panel - System Monitoring - KSEB Energy Futures{% endblock %}
+
+{% block content %}
+<!-- Main container for the Admin System Monitoring Dashboard -->
+<div class="module-container admin-panel-container">
+    <h2>Admin Panel: System Monitoring Dashboard</h2>
+    <p>Overview of system health, active processes, real-time performance metrics, and recent error logs.</p>
+
+    <!-- Grid for displaying key system health and uptime metrics -->
+    <div class="system-health-overview">
+        <!-- Metric cards populated by JavaScript from API data -->
+        <div class="metric-card">
+            <h4>Overall System Health</h4>
+            <p id="system-health-status" class="metric-value status-ok">Loading...</p>
+            <span class="metric-detail" id="system-health-last-check">Last check: Pending...</span>
+        </div>
+        <div class="metric-card">
+            <h4>Platform Uptime</h4>
+            <p id="platform-uptime" class="metric-value">Loading...</p>
+            <span class="metric-detail" id="platform-uptime-since">Since: Pending...</span>
+        </div>
+         <div class="metric-card">
+            <h4>Active User Sessions</h4>
+            <p id="active-sessions" class="metric-value">Loading...</p>
+            <span class="metric-detail">Current concurrent logged-in users</span>
+        </div>
+        <div class="metric-card">
+            <h4>Pending Background Jobs</h4>
+            <p id="pending-jobs-count" class="metric-value">Loading...</p>
+            <span class="metric-detail">Jobs in queue across all modules</span>
+        </div>
+    </div>
+
+    <!-- Section for displaying real-time system metrics -->
+    <section class="monitoring-section">
+        <h3>Real-time System Metrics (Simulated)</h3>
+        <!-- Grid for various real-time metrics, populated by JavaScript -->
+        <div class="realtime-metrics-grid">
+            <div class="metric-display"><strong>CPU Usage:</strong> <span id="metric-cpu-usage">Loading...</span></div>
+            <div class="metric-display"><strong>Memory Usage:</strong> <span id="metric-memory-usage">Loading...</span></div>
+            <div class="metric-display"><strong>Disk I/O Activity:</strong> <span id="metric-disk-io">Loading...</span></div>
+            <div class="metric-display"><strong>Database Connections:</strong> <span id="metric-db-connections">Loading...</span></div>
+        </div>
+    </section>
+
+    <!-- Section for displaying the queue of active background jobs -->
+    <section class="monitoring-section">
+        <h3>Active Jobs Queue (Platform-Wide)</h3>
+        <div class="table-container">
+            <!-- Table listing active jobs, populated by JavaScript -->
+            <table id="active-jobs-table" class="data-table">
+                <thead>
+                    <tr>
+                        <th>Job ID</th>
+                        <th>Job Type</th>
+                        <th>Submitted By User</th>
+                        <th>Submission Time</th>
+                        <th>Progress</th>
+                        <th>Current Status / Step</th>
+                    </tr>
+                </thead>
+                <tbody id="active-jobs-tbody">
+                    <!-- JavaScript will populate rows here -->
+                    <tr><td colspan="6">Loading active jobs...</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- Section for performance monitoring graphs -->
+    <section class="monitoring-section">
+        <h3>Performance Graphs (Last Hour - Simulated)</h3>
+        <!-- Grid layout for performance charts -->
+        <div class="charts-grid-admin">
+            <div class="chart-section-admin">
+                <h4>API Response Time (ms)</h4>
+                <!-- Placeholder div where Plotly.js will render the API response time chart -->
+                <div id="api-response-time-chart" class="chart-placeholder-medium"><p>API Response Time Chart Loading...</p></div>
+            </div>
+            <div class="chart-section-admin">
+                <h4>Database Query Time (ms)</h4>
+                <!-- Placeholder div where Plotly.js will render the DB query time chart -->
+                <div id="db-query-time-chart" class="chart-placeholder-medium"><p>DB Query Time Chart Loading...</p></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section for displaying recent error logs -->
+    <section class="monitoring-section">
+        <h3>Error Logs (Last 24 Hours - Simulated)</h3>
+        <!-- Scrollable table container for error logs -->
+        <div class="table-container error-log-table-container">
+            <!-- Table listing error logs, populated by JavaScript -->
+            <table id="error-logs-table" class="data-table error-logs-table"> <!-- Added specific class -->
+                <thead>
+                    <tr>
+                        <th>Timestamp</th>
+                        <th>Severity Level</th>
+                        <th>Source Module</th>
+                        <th>Error Message</th>
+                    </tr>
+                </thead>
+                <tbody id="error-logs-tbody">
+                    <!-- JavaScript will populate rows here -->
+                    <tr><td colspan="4">Loading error logs...</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- Action buttons for system administration tasks -->
+    <div class="form-actions">
+        <button type="button" id="download-system-logs-btn" class="btn btn-secondary">Download Full System Logs</button>
+        <button type="button" id="clear-system-cache-btn" class="btn btn-warning">Clear System Caches</button> <!-- Changed to warning -->
+        <button type="button" id="restart-platform-services-btn" class="btn btn-danger">Restart Platform Services</button>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,63 @@
+{% extends "layouts/base_layout.html" %}
+
+<!-- Set the page title for PyPSA Results Selection page -->
+{% block title %}Select PyPSA Results - KSEB Energy Futures{% endblock %}
+
+{% block content %}
+<!-- Main container for the PyPSA Results module -->
+<div class="module-container pypsa-results-container"> <!-- Added specific class -->
+    <h2>PyPSA Co-optimisation Modeling: Results Selection</h2>
+    <p>Select a completed PyPSA simulation scenario to view its detailed results dashboard or choose multiple scenarios for comparison.</p>
+
+    <!-- Section for displaying available simulation results -->
+    <div class="form-section">
+        <h3>Available Completed Simulation Results</h3>
+        <p><small>Select a scenario from the table below. Click "View Results Dashboard" to analyze it in detail, or "Compare Selected Scenarios" to compare multiple runs.</small></p>
+        <!-- Table container for responsive behavior on smaller screens -->
+        <div class="table-container">
+            <!-- Table listing available PyPSA results, populated by JavaScript -->
+            <table id="pypsa-available-results-table" class="data-table">
+                <thead>
+                    <tr>
+                        <th>Select</th> <!-- Radio button for single selection to view dashboard -->
+                        <th>Scenario Name / ID</th>
+                        <th>Creation Date</th>
+                        <th>Status</th>
+                        <th>Source Load Profile ID</th>
+                        <th>Brief Description</th>
+                        <th>Size (MB)</th> <!-- Simulated size of results data -->
+                    </tr>
+                </thead>
+                <tbody id="pypsa-results-tbody">
+                    <!-- Rows will be populated by JavaScript from API call -->
+                    <!-- Sample static row shown for structure, will be replaced by JS -->
+                    <tr>
+                        <td colspan="7">Loading available PyPSA results...</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Section displaying details of the currently selected scenario -->
+    <div class="form-section">
+        <h3>Selected Scenario for Viewing</h3>
+        <!-- Display box for details of the scenario chosen from the table -->
+        <div id="pypsa-selected-scenario-details" class="settings-display-box"> <!-- Reusing style -->
+            <p><strong>Scenario Name/ID:</strong> <span id="selected-pypsa-scenario-name">-</span></p>
+            <p><strong>Description:</strong> <span id="selected-pypsa-scenario-desc">-</span></p>
+            <p><i>Please select a scenario from the table above to view its details and enable actions.</i></p>
+        </div>
+    </div>
+
+    <!-- Action buttons for this page -->
+    <div class="form-actions">
+        <!-- Button to upload a custom/external PyPSA network (results) file - placeholder -->
+        <button type="button" id="upload-pypsa-network-btn" class="btn btn-tertiary">Upload External PyPSA Network/Results</button>
+        <!-- Button to navigate to the scenario comparison page -->
+        <button type="button" id="compare-pypsa-scenarios-btn" class="btn btn-secondary">Compare Scenarios</button>
+        <!-- Button to view the detailed dashboard for the selected scenario, enabled by JS upon selection -->
+        <button type="button" id="view-pypsa-results-btn" class="btn btn-primary" disabled>View Results Dashboard</button>
+    </div>
+</div>
+{% endblock %}

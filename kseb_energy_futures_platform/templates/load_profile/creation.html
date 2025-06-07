@@ -1,0 +1,174 @@
+{% extends "layouts/base_layout.html" %}
+
+<!-- Set the page title for Load Profile Creation page -->
+{% block title %}Load Profile Creation & Configuration - KSEB Energy Futures{% endblock %}
+
+{% block content %}
+<!-- Main container for the Load Profile module -->
+<div class="module-container load-profile-container"> <!-- Added specific class -->
+    <h2>Load Profile Generation: Creation & Configuration</h2>
+    <p>Configure parameters and generate synthetic hourly (or sub-hourly) load profiles based on demand scenarios and specified load shape adjustments.</p>
+
+    <!-- Status bar displaying information about templates and available data -->
+    <div class="status-bar load-profile-status">
+        <span><strong>Base Shape Template Status:</strong> <span id="lp-template-status" class="status-ok">Ready (Default KSEB Shapes Loaded)</span></span>
+        <span><strong>Historical Years Available (for shaping):</strong> <span id="lp-historical-years">2018-2023</span></span>
+    </div>
+
+    <!-- File Upload Section for Load Curve Template -->
+    <div class="form-section template-upload-section">
+        <h3>Upload Custom Load Curve Template (Optional)</h3>
+        <div class="form-group">
+            <label for="load-curve-template-file-input">Select Load Curve Template File (.xlsx, .xls):</label>
+            <div style="display: flex; gap: 10px;">
+                <input type="file" id="load-curve-template-file-input" name="load_curve_template_file" accept=".xlsx, .xls" class="form-control-file" style="flex-grow: 1;">
+                <button type="button" id="upload-load-curve-template-btn" class="btn btn-secondary btn-small">Upload & Process Template</button>
+            </div>
+            <span id="load-curve-template-status" class="status-text" style="display: block; margin-top: 5px;"></span>
+            <small>If provided, this template will be used for base shapes and targets. Otherwise, system defaults will be applied.</small>
+        </div>
+    </div>
+
+    <!-- Main content grid for layout -->
+    <div class="content-grid-load-profile">
+        <!-- Left panel for generation method and core configuration -->
+        <section class="config-section-lp main-config-lp"> <!-- Added specific class -->
+            <h3>Generation Method & Core Configuration</h3>
+
+            <!-- Section for choosing the generation method -->
+            <div class="form-group">
+                <label>Select Load Profile Generation Method:</label>
+                <div class="radio-group-horizontal"> <!-- Horizontal layout for radio buttons -->
+                    <div><input type="radio" id="method-scaling" name="generationMethod" value="base_year_scaling" checked><label for="method-scaling">Base Year Scaling</label></div>
+                    <div><input type="radio" id="method-statistical" name="generationMethod" value="statistical_pattern"><label for="method-statistical">Statistical Pattern Synthesis</label></div>
+                    <div><input type="radio" id="method-ml" name="generationMethod" value="ml_gan_vae"><label for="method-ml">Machine Learning (GAN/VAE)</label></div>
+                </div>
+            </div>
+
+            <h4>Base Configuration</h4>
+            <div class="form-group-inline">
+                <div class="form-group">
+                    <label for="lp-base-year">Base Year (for scaling/pattern source):</label>
+                    <select id="lp-base-year" name="baseYear">
+                        <!-- Options could be dynamic based on available historical data -->
+                        <option value="2022">2022</option>
+                        <option value="2023" selected>2023</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="lp-demand-scenario">Source Demand Scenario (for energy totals):</label>
+                    <!-- Dropdown populated by JavaScript with available demand scenarios -->
+                    <select id="lp-demand-scenario" name="demandScenario">
+                        <option value="">Loading scenarios...</option>
+                    </select>
+                </div>
+            </div>
+
+            <h4>Target Period for Generated Profile</h4>
+             <div class="form-group-inline">
+                <div class="form-group">
+                    <label for="lp-start-year">Start Year:</label>
+                    <select id="lp-start-year" name="startYear">
+                        <!-- Example years, could be dynamic -->
+                        <option value="2024">2024</option>
+                        <option value="2025" selected>2025</option>
+                        <option value="2030">2030</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="lp-end-year">End Year:</label>
+                    <select id="lp-end-year" name="endYear">
+                        <option value="2030" selected>2030</option>
+                        <option value="2035">2035</option>
+                        <option value="2040">2040</option>
+                        <option value="2050">2050</option>
+                    </select>
+                </div>
+            </div>
+
+            <h4>Output Profile Configuration</h4>
+            <div class="form-group-inline">
+                <div class="form-group">
+                    <label for="lp-frequency">Temporal Frequency:</label>
+                    <select id="lp-frequency" name="frequency">
+                        <option value="hourly" selected>Hourly (8760 points/year)</option>
+                        <option value="30min">30-minute</option>
+                        <option value="15min">15-minute</option>
+                        <option value="daily_avg">Daily Average (365 points/year)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="lp-unit">Load Unit:</label>
+                    <select id="lp-unit" name="unit">
+                        <option value="MW" selected>MW (Average Power)</option>
+                        <option value="kWh_interval">kWh (Energy per interval)</option> <!-- Clarified kWh meaning -->
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="lp-timezone">Time Zone:</label>
+                    <select id="lp-timezone" name="timezone">
+                        <option value="IST" selected>IST (Asia/Kolkata)</option>
+                        <option value="UTC">UTC</option>
+                    </select>
+                </div>
+            </div>
+             <div class="form-group">
+                <label for="lp-profile-name">Generated Profile Name (Optional):</label>
+                <input type="text" id="lp-profile-name" name="profileName" placeholder="Auto-generated if blank, e.g., LP_Scenario_2025-2030_Hourly">
+            </div>
+        </section>
+
+        <!-- Right panel for load shape adjustments -->
+        <aside class="adjustments-section-lp"> <!-- Added specific class -->
+            <h3>Load Shape Adjustments</h3>
+            <div class="form-group">
+                <!-- Range slider for peak load factor adjustment -->
+                <label for="lp-peak-factor">Peak Load Factor (Typical Range: 0.7 - 0.95):</label>
+                <input type="range" id="lp-peak-factor" name="peakLoadFactor" min="0.5" max="1.0" value="0.85" step="0.01">
+                <span class="range-value">0.85</span> <!-- Value display updated by JS -->
+                <small>Adjusts the ratio of peak load to average load.</small>
+            </div>
+            <div class="form-group">
+                <!-- Range slider for base load factor adjustment -->
+                <label for="lp-base-factor">Base Load Factor (Typical Range: 0.3 - 0.6):</label>
+                <input type="range" id="lp-base-factor" name="baseLoadFactor" min="0.2" max="0.8" value="0.40" step="0.01">
+                 <span class="range-value">0.40</span> <!-- Value display updated by JS -->
+                 <small>Adjusts the ratio of minimum load to average load.</small>
+            </div>
+            <div class="form-group">
+                <label for="lp-seasonal-adjust">Seasonal Adjustments (e.g., Summer Peak % increase):</label>
+                <input type="text" id="lp-seasonal-adjust" name="seasonalAdjustments" placeholder="E.g., Summer: +10%, Monsoon: -5%">
+                <small>Define percentage adjustments for different seasons.</small>
+            </div>
+
+            <h4>Special Day Profiles & Adjustments</h4>
+            <div class="checkbox-group">
+                <div><input type="checkbox" id="spd-holidays" name="specialDays" value="national_holidays" checked><label for="spd-holidays">Apply National Holiday Profiles</label></div>
+                <div><input type="checkbox" id="spd-weekends" name="specialDays" value="typical_weekends" checked><label for="spd-weekends">Differentiate Weekend/Weekday Profiles</label></div>
+                <div><input type="checkbox" id="spd-custom" name="specialDays" value="user_defined_special_days"><label for="spd-custom">Include User-defined Special Days (e.g., local festivals)</label></div>
+            </div>
+            <!-- Placeholder for a more detailed custom special day configuration area -->
+            <div id="custom-special-days-config" style="margin-top: var(--spacing-sm); display: none;">
+                <textarea placeholder="Define custom special days and their profile adjustments here..." rows="3"></textarea>
+            </div>
+        </aside>
+    </div> <!-- End of content-grid-load-profile -->
+
+    <!-- Area where the load profile preview chart will be rendered by Plotly.js -->
+    <div id="load-profile-preview-area" class="chart-placeholder" style="display:none; min-height:300px; margin-top:var(--spacing-lg);">
+        <p>Load profile preview chart will appear here after clicking "Preview Profile".</p>
+        <div id="lp-preview-chart"></div> <!-- Actual Plotly chart target -->
+    </div>
+     <!-- Area to display status of generation job -->
+    <div id="generate-lp-status" class="status-display-area" style="display:none; margin-top:var(--spacing-md);"></div>
+
+
+    <!-- Action buttons for the form -->
+    <div class="form-actions">
+        <button type="button" id="preview-load-profile-btn" class="btn btn-secondary">Preview Profile Shape</button>
+        <button type="button" id="generate-load-profile-btn" class="btn btn-primary">Generate Load Profile</button>
+        <button type="button" id="advanced-options-lp-btn" class="btn btn-tertiary">Advanced Configuration</button>
+        <button type="button" id="view-generated-profiles-btn" class="btn btn-secondary" onclick="window.location.href='{{ url_for('load_profile_analysis_page')}}'">View Generated Profiles</button>
+    </div>
+</div>
+{% endblock %}

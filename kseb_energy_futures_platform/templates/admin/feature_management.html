@@ -1,0 +1,97 @@
+{% extends "layouts/base_layout.html" %}
+
+<!-- Set the page title for Admin Feature Management page -->
+{% block title %}Admin Panel - Feature Management - KSEB Energy Futures{% endblock %}
+
+{% block content %}
+<!-- Main container for the Admin Panel -->
+<div class="module-container admin-panel-container">
+    <h2>Admin Panel: Platform Feature Management</h2>
+    <p>Enable or disable specific platform features and modules. Changes may require application restart or may apply dynamically for certain features (simulated).</p>
+
+    <!-- Status bar displaying current configuration context -->
+    <div class="status-bar admin-status">
+        <span><strong>Current Project Context:</strong> <span id="admin-current-project">Global Configuration (System-Wide)</span></span>
+        <!-- Placeholder for future project-specific feature toggles -->
+        <span><strong>Configuration Level:</strong> <span id="admin-config-level" class="status-ok">System-Wide Settings</span></span>
+    </div>
+
+    <!-- Container for tables of features, organized by category -->
+    <div class="feature-tables-container">
+        <!-- Section for Core Features -->
+        <section class="feature-category">
+            <h3>Core Features (Generally should remain enabled)</h3>
+            <div class="table-container">
+                <!-- Table listing core features, populated by JavaScript -->
+                <table id="core-features-table" class="data-table feature-table">
+                    <thead>
+                        <tr>
+                            <th>Feature Name</th>
+                            <th>Status (Enabled)</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody id="core-features-tbody">
+                        <!-- JavaScript will populate rows here based on API response -->
+                        <tr><td colspan="3">Loading core features...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Section for Advanced Features -->
+        <section class="feature-category">
+            <h3>Advanced Features (Can be toggled based on license or user expertise)</h3>
+            <div class="table-container">
+                <!-- Table listing advanced features, populated by JavaScript -->
+                <table id="advanced-features-table" class="data-table feature-table">
+                    <thead>
+                        <tr>
+                            <th>Feature Name</th>
+                            <th>Status (Enabled)</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody id="advanced-features-tbody">
+                        <!-- JavaScript will populate rows here -->
+                         <tr><td colspan="3">Loading advanced features...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Section for Experimental Features -->
+        <section class="feature-category">
+            <h3>Experimental Features (Use with caution, may be unstable)</h3>
+            <div class="table-container">
+                <!-- Table listing experimental features, populated by JavaScript -->
+                <table id="experimental-features-table" class="data-table feature-table">
+                    <thead>
+                        <tr>
+                            <th>Feature Name</th>
+                            <th>Status (Enabled)</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody id="experimental-features-tbody">
+                        <!-- JavaScript will populate rows here -->
+                        <tr><td colspan="3">Loading experimental features...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </div> <!-- End of feature-tables-container -->
+
+    <!-- Area to display status messages from API calls -->
+    <div id="feature-apply-status" class="status-display-area" style="display:none;"></div>
+
+
+    <!-- Action buttons for managing feature configurations -->
+    <div class="form-actions">
+        <button type="button" id="reset-features-to-defaults-btn" class="btn btn-secondary">Reset to Platform Defaults</button>
+        <button type="button" id="export-feature-config-btn" class="btn btn-secondary">Export Current Configuration</button>
+        <!-- Apply Changes button triggers saving all current toggle states to the backend -->
+        <button type="button" id="apply-feature-changes-btn" class="btn btn-primary">Apply All Changes</button>
+    </div>
+</div>
+{% endblock %}

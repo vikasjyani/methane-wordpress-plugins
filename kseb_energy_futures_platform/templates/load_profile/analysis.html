@@ -1,0 +1,112 @@
+{% extends "layouts/base_layout.html" %}
+
+<!-- Set the page title for Load Profile Analysis page -->
+{% block title %}Load Profile Analysis & Visualization - KSEB Energy Futures{% endblock %}
+
+{% block content %}
+<!-- Main container for the Load Profile Analysis module -->
+<div class="module-container load-profile-analysis-container"> <!-- Added specific class -->
+    <h2>Load Profile Generation: Analysis & Visualization</h2>
+    <p>Analyze generated load profiles, view detailed statistics, visualize patterns, and compare different profiles.</p>
+
+    <!-- Informational bar displaying details of the currently selected/analyzed load profile -->
+    <div class="profile-info-bar">
+        <!-- These spans will be populated by JavaScript with the selected profile's data -->
+        <div><strong>Profile Name:</strong> <span id="lp-info-name">Default_Profile_2025-2030_Hourly</span></div>
+        <div><strong>Generated At:</strong> <span id="lp-info-date">N/A</span></div>
+        <div><strong>Source Demand Scenario:</strong> <span id="lp-info-demand-scenario">N/A</span></div>
+        <div><strong>Frequency:</strong> <span id="lp-info-freq">Hourly</span></div>
+        <div><strong>Data Points:</strong> <span id="lp-info-points">Approx. 52,560 records (for 6 years)</span></div>
+        <div><strong>Status:</strong> <span id="lp-info-status" class="status-ok">Ready for Analysis</span></div>
+        <!-- TODO: Add a dropdown here to select from available generated load profiles -->
+    </div>
+
+    <!-- Main grid layout for analysis content -->
+    <div class="content-grid-lp-analysis">
+        <!-- Main chart area, typically for annual heatmap or timeseries -->
+        <section class="chart-section-lp main-chart-lp">
+            <h3>Annual Load Profile Visualization</h3>
+            <!-- Placeholder div where the annual load profile (e.g., heatmap) will be rendered by Plotly.js -->
+            <div id="annual-load-profile-heatmap" class="chart-placeholder-large">
+                <p>Annual load profile heatmap or timeseries chart will appear here upon profile selection/processing.</p>
+            </div>
+        </section>
+
+        <!-- Right sidebar for analysis controls and statistical summary -->
+        <aside class="controls-stats-lp">
+            <div class="analysis-controls">
+                <h4>Analysis Controls</h4>
+                <div class="form-group">
+                    <label for="lp-analysis-year">Select Year for Detailed View:</label>
+                    <select id="lp-analysis-year" name="analysisYear">
+                        <!-- Options could be dynamically populated based on profile's year range -->
+                        <option value="2025" selected>2025</option>
+                        <option value="2026">2026</option>
+                        <option value="2027">2027</option>
+                        <option value="2028">2028</option>
+                        <option value="2029">2029</option>
+                        <option value="2030">2030</option>
+                        <option value="all_avg">All Years (Average Profile)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="lp-analysis-view">Chart View Type (for Annual Viz):</label>
+                    <select id="lp-analysis-view" name="analysisView">
+                        <option value="heatmap_hourly" selected>Hourly Heatmap</option>
+                        <option value="timeseries_daily_avg">Daily Average Timeseries</option>
+                        <option value="monthly_peak_load">Monthly Peak Load Distribution</option>
+                        <option value="weekly_profile_avg">Average Weekly Profile</option>
+                    </select>
+                </div>
+                 <div class="form-group">
+                    <label for="lp-analysis-metric">Metric to Display:</label>
+                    <select id="lp-analysis-metric" name="analysisMetric">
+                        <option value="load_mw" selected>Load (MW)</option>
+                        <option value="load_factor_hourly">Hourly Load Factor (%)</option>
+                        <!-- More metrics can be added -->
+                    </select>
+                </div>
+                <button type="button" id="lp-apply-analysis-filters" class="btn btn-secondary full-width-btn">Apply View Options</button>
+            </div>
+
+            <div class="statistical-summary">
+                <h4>Statistical Summary (Year: <span id="summary-year">2025</span>)</h4>
+                <!-- List to display key statistics, populated by JavaScript -->
+                <ul id="lp-stats-list">
+                    <li><strong>Peak Load:</strong> <span id="stat-peak-load">Calculating...</span></li>
+                    <li><strong>Base Load (Min):</strong> <span id="stat-base-load">Calculating...</span></li>
+                    <li><strong>Total Energy (GWh):</strong> <span id="stat-total-energy">Calculating...</span></li>
+                    <li><strong>Annual Load Factor (%):</strong> <span id="stat-load-factor">Calculating...</span></li>
+                    <li><strong>Std. Deviation (MW):</strong> <span id="stat-std-dev">Calculating...</span></li>
+                    <li><strong>Energy per Day (Avg MWh):</strong> <span id="stat-avg-daily-energy">Calculating...</span></li>
+                </ul>
+            </div>
+        </aside>
+
+        <!-- Section for daily load patterns chart -->
+        <section class="chart-section-lp">
+            <h3>Daily Load Patterns (Average Weekday/Weekend/Holiday)</h3>
+            <!-- Placeholder div for daily patterns chart (e.g., line chart) -->
+            <div id="daily-patterns-chart" class="chart-placeholder-medium">
+                <p>Average daily load patterns chart (e.g., weekday vs weekend) will appear here.</p>
+            </div>
+        </section>
+
+        <!-- Section for Load Duration Curve chart -->
+        <section class="chart-section-lp">
+            <h3>Load Duration Curve (LDC)</h3>
+            <!-- Placeholder div for LDC chart (line chart) -->
+            <div id="load-duration-curve-chart" class="chart-placeholder-medium">
+                <p>Load duration curve chart will appear here.</p>
+            </div>
+        </section>
+    </div> <!-- End of content-grid-lp-analysis -->
+
+    <!-- Action buttons at the bottom of the page -->
+    <div class="form-actions bottom-actions">
+        <button type="button" id="lp-export-analysis-btn" class="btn btn-secondary">Export Analysis Data (CSV)</button>
+        <button type="button" id="lp-compare-profiles-btn" class="btn btn-secondary">Compare With Another Profile</button>
+        <button type="button" id="lp-use-in-pypsa-btn" class="btn btn-primary">Link Profile to PyPSA Scenario</button>
+    </div>
+</div>
+{% endblock %}

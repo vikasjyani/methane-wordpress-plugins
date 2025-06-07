@@ -1,0 +1,361 @@
+/*
+    KSEB Energy Futures Platform - Main Stylesheet
+    Version: 1.0
+    Author: AI Software Engineer (Simulated)
+    Date: 2024-08-16 (Last Refinement)
+
+    This stylesheet defines the visual appearance for the KSEB Energy Futures Platform.
+    It includes global styles, layout rules, typography, form elements, tables,
+    modals, and module-specific styling. It utilizes CSS variables for theming
+    and aims for a clean, professional, and consistent look and feel.
+*/
+
+/* 1. Global Styles & CSS Variables
+-------------------------------------------------- */
+:root {
+    /* Color Palette */
+    --primary-color: #0056b3;       /* KSEB Blue - Main interactive color */
+    --secondary-color: #003366;     /* Darker KSEB Blue - For headers, important text */
+    --accent-color: #17a2b8;        /* Teal/Info Blue - For accents, specific buttons */
+    --success-color: #28a745;       /* Green - For success messages, positive indicators */
+    --warning-color: #ffc107;       /* Yellow - For warnings, cautionary items */
+    --danger-color: #dc3545;        /* Red - For errors, critical actions */
+
+    /* Background Colors */
+    --light-bg-color: #f0f2f5;      /* Main body background */
+    --medium-bg-color: #e9ecef;     /* For elements like footers, some cards */
+    --content-bg-color: #ffffff;    /* Primary background for content areas */
+    --panel-bg-color: #f8f9fa;      /* Slightly off-white for panels/asides within modules */
+
+    /* Text Colors */
+    --text-color: #333333;          /* Default text color */
+    --text-color-light: #555555;    /* Lighter text for descriptions, secondary info */
+    --text-color-on-primary: #ffffff; /* Text color on primary-color backgrounds */
+    --text-color-on-secondary: #ffffff;/* Text color on secondary-color backgrounds */
+
+    /* Borders & Shadows */
+    --border-color: #dee2e6;        /* Standard border color for inputs, tables, cards */
+    --border-radius-base: 6px;      /* Base border radius for most elements */
+    --box-shadow-soft: 0 2px 5px rgba(0,0,0,0.08); /* Subtle shadow for cards, panels */
+    --box-shadow-medium: 0 4px 10px rgba(0,0,0,0.12); /* More pronounced shadow for modals */
+
+    /* Typography */
+    --font-family-sans-serif: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+    --font-family-monospace: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    --font-size-base: 1rem;         /* Typically 16px */
+    --line-height-base: 1.6;
+
+    /* Spacing Units (based on --font-size-base) */
+    --spacing-unit: 1rem;           /* Base unit for margins, paddings */
+    --spacing-xs: calc(var(--spacing-unit) * 0.25); /* ~4px */
+    --spacing-sm: calc(var(--spacing-unit) * 0.5);  /* ~8px */
+    --spacing-md: var(--spacing-unit);             /* ~16px */
+    --spacing-lg: calc(var(--spacing-unit) * 1.5); /* ~24px */
+    --spacing-xl: calc(var(--spacing-unit) * 2);   /* ~32px */
+}
+
+/* Universal box-sizing and base HTML/body setup */
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
+html {
+    font-size: var(--font-size-base);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+    font-family: var(--font-family-sans-serif);
+    margin: 0;
+    padding: 0;
+    background-color: var(--light-bg-color);
+    color: var(--text-color);
+    line-height: var(--line-height-base);
+}
+
+/* 2. Layout Consistency & Main Structure
+-------------------------------------------------- */
+/* General purpose containers for page content */
+.container, .module-container, .admin-panel-container, .helper-page-container, .results-dashboard-container {
+    width: 95%;
+    max-width: 1400px;
+    margin: var(--spacing-md) auto;
+    padding: var(--spacing-lg);
+    background-color: var(--content-bg-color);
+    border-radius: var(--border-radius-base);
+    box-shadow: var(--box-shadow-soft);
+}
+.results-dashboard-container { max-width: 1600px; }
+.admin-panel-container { max-width: 1400px; }
+.helper-page-container { max-width: 1200px; }
+
+/* Header styling */
+header { /* ... (styles as previously defined, using variables) ... */ }
+/* Footer styling */
+footer { /* ... (styles as previously defined, using variables) ... */ }
+
+/* Common Grid Layouts (gap consistency) */
+.home-grid, .content-grid-demand, .content-grid-load-profile, .content-grid-lp-analysis,
+.content-grid-pypsa, .charts-grid-overview, .charts-grid-compare, .charts-grid-admin,
+.system-health-overview, .realtime-metrics-grid, .feature-tables-container, .user-guide-layout,
+.key-metrics-grid, .content-grid-pypsa-compare { /* Added pypsa-compare grid */
+    display: grid;
+    gap: var(--spacing-lg);
+}
+/* Specific column templates remain module-specific for clarity in earlier sections */
+
+
+/* Panel and Section Styling within modules */
+.left-panel, .main-content-home, .right-panel,
+.config-section-pypsa, .summary-solver-pypsa,
+.config-section-lp, .adjustments-section-lp,
+.analysis-controls, .statistical-summary, .chart-section-lp,
+.chart-section-pypsa-results, .chart-section-pypsa-compare,
+.compare-selection-panel, .compare-results-panel,
+.chart-section-admin,
+.user-guide-toc, .user-guide-content-area {
+    padding: var(--spacing-md);
+    border-radius: var(--border-radius-base);
+    box-shadow: var(--box-shadow-soft);
+    margin-bottom: var(--spacing-lg);
+}
+/* Panels that are slightly visually distinct (e.g. asides, config areas) */
+.config-section-pypsa, .analysis-controls, .statistical-summary,
+.user-guide-toc, .compare-selection-panel, .settings-display-box,
+.template-documentation-section #template-doc-content { /* Added template doc content */
+     background-color: var(--panel-bg-color);
+     border: 1px solid var(--border-color);
+}
+/* Wrappers that should not have their own styling */
+.feature-category, .template-download-section, .template-documentation-section {
+    padding: 0; box-shadow: none; background-color: transparent; margin-bottom: var(--spacing-lg);
+}
+
+
+/* 3. Navigation Elements (Main Nav & Tabs)
+-------------------------------------------------- */
+nav ul { /* Main navigation in header */ }
+/* Tab Navigation (e.g., PyPSA Results Dashboard) */
+.results-tabs-nav { /* ... (styles as previously defined, using variables) ... */ }
+.tab-content { /* ... (styles as previously defined, using variables) ... */ }
+
+
+/* 4. Forms and Inputs
+-------------------------------------------------- */
+.form-section { /* ... (styles as previously defined, using variables) ... */ }
+.form-group { /* ... (styles as previously defined, using variables) ... */ }
+.form-group label { /* ... (styles as previously defined, using variables) ... */ }
+input[type="text"], input[type="number"], input[type="search"], input[type="password"], input[type="email"],
+textarea, select { /* ... (styles as previously defined, using variables, including focus state) ... */ }
+textarea { /* ... */ }
+select { /* ... (includes custom arrow) ... */ }
+.form-group-inline { /* ... */ }
+
+/* Buttons */
+.btn, button, input[type="button"], input[type="submit"] { /* ... (base button styles, using variables) ... */ }
+.btn-primary { /* ... (using variables) ... */ }
+.btn-secondary { /* ... (using variables) ... */ }
+.btn-tertiary { /* ... (using variables) ... */ }
+.btn-danger { /* ... (using variables) ... */ }
+.btn-small { /* ... (using variables) ... */ }
+.full-width-btn { /* ... (using variables) ... */ }
+
+/* Checkboxes, Radios, Toggle Switches */
+.checkbox-group div, .radio-group div, .radio-group-horizontal div { /* ... */ }
+.radio-group-horizontal { /* ... */ }
+.checkbox-group label, .radio-group label, .radio-group-horizontal label { /* ... */ }
+input[type="checkbox"], input[type="radio"] { /* ... */ }
+.toggle-switch { /* ... (styles as previously defined, using variables) ... */ }
+.slider { /* ... */ } .slider:before { /* ... */ }
+input:checked + .slider { /* ... */ } input:focus + .slider { /* ... */ }
+input:checked + .slider:before { /* ... */ }
+span.range-value { /* For displaying range input value */ font-size: 0.9rem; color: var(--primary-color); margin-left: var(--spacing-sm); font-weight: bold;}
+
+
+/* 5. Tables
+-------------------------------------------------- */
+.table-container { /* ... (styles as previously defined, using variables) ... */ }
+.data-table { /* ... (styles as previously defined, using variables) ... */ }
+.data-table th, .data-table td { /* ... */ }
+.data-table th { /* ... */ }
+.data-table tbody tr:nth-child(even) { /* ... */ } .data-table tbody tr:hover { /* ... */ }
+.data-table input[type="number"] { /* For inputs within tables */ padding: var(--spacing-xs); width: 80px; font-size: 0.9rem; }
+.small-table { /* For tables with limited height and scroll */ max-height: 300px; overflow-y: auto; }
+.feature-table th:nth-child(2), .feature-table td:nth-child(2) { text-align: center; width: 120px; } /* Status column in admin feature table */
+.error-log-table-container { max-height: 300px; overflow-y: auto; }
+
+
+/* 6. Cards and Panels (includes Metric Cards, Info Displays)
+-------------------------------------------------- */
+.metric-card { /* For dashboard key metrics */
+    background-color: var(--content-bg-color); /* Usually white, or panel-bg if preferred */
+    padding: var(--spacing-md);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius-base);
+    box-shadow: var(--box-shadow-soft);
+    text-align: center;
+    margin-bottom: var(--spacing-md);
+}
+.metric-card h4 { /* ... (styles as previously defined, using variables) ... */ }
+.metric-card .metric-value { /* ... */ }
+.metric-card .metric-detail { /* ... */ }
+
+.settings-display-box { /* For displaying static config info (PyPSA, Template Docs) */
+    background-color: var(--panel-bg-color);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius-base);
+    padding: var(--spacing-md);
+    margin-bottom: var(--spacing-md);
+    font-size: 0.9rem;
+}
+.settings-display-box p { margin: var(--spacing-sm) 0; color: var(--text-color-light); }
+.settings-display-box p strong { color: var(--secondary-color); }
+
+
+/* 7. Modals
+-------------------------------------------------- */
+.modal { /* ... (styles as previously defined, using variables) ... */ }
+.modal-content { /* ... */ }
+.close-modal-btn { /* ... */ } .close-modal-btn:hover, .close-modal-btn:focus { /* ... */ }
+.modal h3 { /* ... */ }
+.progress-bar-container { /* ... (styles as previously defined, using variables) ... */ }
+.progress-bar { /* ... */ }
+.progress-bar-success { /* ... */ } .progress-bar-error { /* ... */ }
+.modal-actions { /* ... */ }
+
+
+/* 8. Typography
+-------------------------------------------------- */
+h1, h2, h3, h4, h5, h6 { /* ... (base heading styles, using variables) ... */ }
+/* Module/Page Titles */
+.module-container > h2, .form-container > h2 { /* Main title on a page */
+    font-size: 1.6rem; color: var(--secondary-color); margin-top: 0; margin-bottom: var(--spacing-sm);
+    padding-bottom: var(--spacing-md); border-bottom: 2px solid var(--primary-color);
+}
+/* Section Titles within a page */
+.module-container h3, .form-section h3, .config-section-pypsa h3, .feature-category h3,
+.user-guide-toc h3, .template-download-section h3, .chart-section-admin h3,
+.chart-section-pypsa-results h3, .compare-results-panel h3, .compare-selection-panel h3,
+.monitoring-section h3 { /* Added more specific section headers */
+    font-size: 1.3rem; color: var(--secondary-color); margin-bottom: var(--spacing-md);
+    padding-bottom: var(--spacing-sm); border-bottom: 1px solid var(--border-color);
+}
+/* Sub-section titles or card titles */
+.metric-card h4, .analysis-controls h4, .statistical-summary h4, .settings-display-box h4,
+.chart-section-admin h4, .chart-section-pypsa-results h4, .chart-section-pypsa-compare h4,
+.template-documentation-section #template-doc-content h4 { /* Added template doc h4 */
+    font-size: 1.15rem; color: var(--primary-color); margin-top:0; margin-bottom: var(--spacing-sm);
+}
+.user-guide-content-area h3 { font-size: 1.4rem; border-bottom: none; color:var(--secondary-color); }
+.user-guide-content-area h4 { font-size: 1.2rem; color: var(--primary-color); margin-top: var(--spacing-lg); }
+
+p { /* ... (styles as previously defined, using variables) ... */ }
+a { /* ... (styles as previously defined, using variables) ... */ }
+small, .text-small { /* ... */ }
+.form-group small { /* ... */ }
+
+/* Status text colors */
+.status-ok { color: var(--success-color); font-weight:normal; } /* Adjusted font-weight */
+.status-warning { color: var(--warning-color); font-weight:normal; }
+.status-error { color: var(--danger-color); font-weight:normal; }
+.status-completed { color: var(--success-color); }
+.status-running { color: var(--accent-color); }
+.status-failed { color: var(--danger-color); }
+/* Backgrounded status for more emphasis */
+.status-display-area { padding: var(--spacing-sm) var(--spacing-md); border-radius: var(--border-radius-base); margin-top: var(--spacing-md); font-size: 0.95rem; text-align: center;}
+.status-ok-bg { background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb;}
+.status-error-bg { background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb;}
+.status-warning-bg { background-color: #fff3cd; color: #856404; border: 1px solid #ffeeba;}
+
+
+/* 9. Utility Classes
+-------------------------------------------------- */
+.text-center { text-align: center !important; }
+.text-left { text-align: left !important; }
+.text-right { text-align: right !important; }
+.mt-1 { margin-top: var(--spacing-sm) !important; } .mt-2 { margin-top: var(--spacing-md) !important; } .mt-3 { margin-top: var(--spacing-lg) !important; }
+.mb-1 { margin-bottom: var(--spacing-sm) !important; } .mb-2 { margin-bottom: var(--spacing-md) !important; } .mb-3 { margin-bottom: var(--spacing-lg) !important; }
+.p-1 { padding: var(--spacing-sm) !important; } .p-2 { padding: var(--spacing-md) !important; } .p-3 { padding: var(--spacing-lg) !important; }
+.hidden { display: none !important; }
+
+
+/* 10. Specific Page/Module Refinements
+-------------------------------------------------- */
+/* Helper Pages (User Guide, Templates) */
+.user-guide-search-bar { /* ... (styles as previously defined, using variables) ... */ }
+#user-guide-search { /* ... */ } .user-guide-search-bar button { /* ... */ }
+.user-guide-toc { /* ... */ } #user-guide-toc-list { /* ... */ } #user-guide-toc-list ul { /* ... */ }
+#user-guide-toc-list li { /* ... */ } #user-guide-toc-list a { /* ... */ }
+#user-guide-toc-list a:hover { /* ... */ } #user-guide-toc-list a.active-topic { /* ... */ }
+.user-guide-content-area { /* ... */ }
+.helper-page-actions { /* ... */ }
+#available-templates-table th:last-child, #available-templates-table td:last-child { text-align: center; width: 120px; }
+.download-template-btn { font-size: 0.85rem !important; padding: var(--spacing-xs) var(--spacing-sm) !important; }
+
+/* Chart Placeholders */
+.chart-placeholder, .chart-placeholder-large, .chart-placeholder-medium { /* ... (styles as previously defined, using variables) ... */ }
+#annual-load-profile-heatmap canvas, #annual-load-profile-heatmap .plot-container { min-height: 400px !important; } /* Ensure heatmap has enough height */
+#api-response-time-chart, #db-query-time-chart { min-height: 250px; } /* Admin charts */
+
+/* PyPSA Status Bar Specifics */
+.pypsa-status span, .admin-status span { margin-right: var(--spacing-lg); } /* Status bars on PyPSA config and Admin */
+
+
+/* Responsive Adjustments (Consolidated at the end)
+-------------------------------------------------- */
+@media (max-width: 992px) { /* Medium devices (tablets, etc.) */
+    /* Stack grids to single column */
+    .home-grid, .content-grid-demand, .content-grid-load-profile, .content-grid-lp-analysis,
+    .content-grid-pypsa, .charts-grid-overview, .charts-grid-compare, .charts-grid-admin,
+    .system-health-overview, .realtime-metrics-grid, .feature-tables-container, .user-guide-layout,
+    .content-grid-visualization, .content-grid-pypsa-compare, .key-metrics-grid {
+        grid-template-columns: 1fr;
+    }
+    /* Ensure panels take full width when stacked */
+    .left-panel, .main-chart, .main-chart-lp, .main-config-pypsa, .summary-solver-pypsa,
+    .controls-stats-lp, .compare-selection-panel, .compare-results-panel, .user-guide-toc {
+        grid-column: 1 / -1;
+        margin-bottom: var(--spacing-lg);
+    }
+    .user-guide-toc { max-height: none; } /* Allow TOC to expand */
+
+    .container, .module-container, .form-container { width: 98%; padding: var(--spacing-md); } /* Slightly more width on tablets */
+
+    /* Stack elements in various header/status bars */
+    .top-actions, .status-bar, .profile-info-bar, .top-bar {
+        flex-direction: column; align-items: flex-start; gap: var(--spacing-sm);
+    }
+    .top-actions button, .status-bar span, .profile-info-bar div, .top-bar > * {
+        margin-left:0; margin-bottom: var(--spacing-sm);
+    }
+
+    .modal-content { width: 90%; margin: 10% auto; /* More margin from top */ }
+
+    /* Stack tab navigation vertically */
+    .results-tabs-nav ul { flex-direction: column; }
+    .results-tabs-nav li { margin-right: 0; margin-bottom: var(--spacing-xs); }
+    .results-tabs-nav a.tab-link { border-radius: var(--border-radius-base); border-bottom: 1px solid var(--border-color); }
+    .results-tabs-nav a.tab-link.active { border-radius: var(--border-radius-base); }
+}
+
+@media (max-width: 768px) { /* Small devices (phones) */
+    header h1 { font-size: 1.5rem; }
+    nav ul li { margin-right: var(--spacing-sm); } /* Reduce nav spacing */
+
+    /* Full-width buttons in forms/actions on small screens */
+    .form-actions, .bottom-actions, .modal-actions, .helper-page-actions { text-align: center; }
+    .form-actions button, .bottom-actions button, .modal-actions button, .helper-page-actions button {
+        width: 100%; margin-bottom: var(--spacing-sm); margin-left: 0;
+    }
+
+    /* Stack inline form groups */
+    .form-group-inline, .radio-group-horizontal { flex-direction: column; gap: 0; align-items: stretch; }
+    .form-group-inline .form-group { margin-bottom: var(--spacing-md); }
+    .radio-group-horizontal div { margin-bottom: var(--spacing-sm); }
+
+    /* User guide search bar stack */
+    .user-guide-search-bar { flex-direction: column; }
+    #user-guide-search { border-radius: var(--border-radius-base); margin-bottom: var(--spacing-sm); }
+    .user-guide-search-bar button { border-radius: var(--border-radius-base); margin-left: 0; width: 100%; }
+}
