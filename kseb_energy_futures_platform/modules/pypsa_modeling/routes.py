@@ -113,7 +113,9 @@ def api_validate_pypsa_model_setup(): # Renamed
     Returns:
         JSON: Success status, message, and detailed validation results.
     """
-    config_data_from_ui = request.json # This might contain override settings from UI
+    config_data_from_ui = request.json # Contains UI settings like scenario name, potentially overrides
+
+    # Retrieve the main PyPSA model data that was parsed from the uploaded template
     parsed_pypsa_data = current_app.config.get('PROCESSED_PYPSA_DATA')
 
     if not parsed_pypsa_data:
@@ -200,21 +202,29 @@ def api_run_pypsa_simulation():
     if not processed_pypsa_data:
         return jsonify({"success": False, "message": "PyPSA input template not processed. Please upload and process a template first."}), 400
 
-    # Potentially use some elements from config_data (UI overrides) and processed_pypsa_data (template data)
-    # For now, just log that processed data is available.
-    print(f"Initiating PyPSA run for '{scenario_name}'. Processed template data is available with {len(processed_pypsa_data)} sheets/tables.")
+    # In a real application, validation logic would:
+    # 1. Take `parsed_pypsa_data` (from template).
+    # 2. Take `config_data_from_ui` (which includes overrides).
+    # 3. Apply overrides to the template data conceptually.
+    # 4. Perform comprehensive validation on the merged/final configuration.
+    # For this simulation, we primarily check if the `parsed_pypsa_data` (template) itself has key elements.
+    print(f"Initiating PyPSA run for '{scenario_name}'. Processed template data is available with {len(parsed_pypsa_data)} sheets/tables.")
+    print(f"UI Overrides/Config received for run: {config_data}")
+
 
     job_id = f"pypsa_{str(uuid.uuid4())[:8]}"
     simulated_jobs = current_app.config.get('SIMULATED_JOBS', {})
     simulated_jobs[job_id] = {
         "type": "pypsa", "status": "queued", "progress": 0.0, "start_time": time.time(),
-        "config": config_data, "scenario_name": scenario_name,
+        "config_from_ui": config_data, # Store UI settings (which might include overrides)
+        "parsed_template_sheet_names": list(parsed_pypsa_data.keys()), # For reference
+        "scenario_name": scenario_name, # This name is from UI
         "user": request.headers.get("X-User-ID", "sim_user_pypsa")
     }
     current_app.config['SIMULATED_JOBS'] = simulated_jobs
 
     return jsonify({
-        "success": True, "message": f"PyPSA simulation for '{scenario_name}' initiated.",
+        "success": True, "message": f"PyPSA simulation for '{scenario_name}' initiated using uploaded template and UI settings.",
         "job_id": job_id, "scenario_name": scenario_name
     }), 202
 

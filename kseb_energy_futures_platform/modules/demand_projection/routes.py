@@ -40,13 +40,15 @@ def api_upload_demand_file():
     if file.filename == '':
         return jsonify({"success": False, "message": "No file selected for uploading."}), 400
 
-    if file: # Basic check for allowed extensions could be added here
+    if file: # Basic check for allowed extensions could be added here e.g. if not filename.lower().endswith(('.xlsx', '.xls')):
         filename = secure_filename(file.filename)
         upload_folder = current_app.config.get('UPLOAD_FOLDER')
-        if not upload_folder: # Should be configured in app.py
+        if not upload_folder: # UPLOAD_FOLDER should be configured in main app.py
             current_app.logger.error("UPLOAD_FOLDER not configured in Flask app.")
             return jsonify({"success": False, "message": "File upload path not configured on server."}), 500
 
+        # Ensure a unique temporary filename in case of concurrent uploads, though less critical for single user simulation
+        # For this prototype, simple filename is okay.
         temp_file_path = os.path.join(upload_folder, filename)
 
         try:
@@ -60,11 +62,12 @@ def api_upload_demand_file():
                 current_app.logger.error(f"Parsing failed for file '{filename}'.")
                 return jsonify({"success": False, "message": f"Failed to parse the uploaded file '{filename}'. Check file format and content."}), 500
 
-            # Store processed data in app.config (for this single-file simulation)
+            # Store processed data in app.config (for this single-file simulation).
+            # This makes the parsed data available to other endpoints/logic within the current app context.
             current_app.config['PROCESSED_DEMAND_DATA'] = parsed_data
-            current_app.logger.info(f"Successfully parsed and stored data from '{filename}'.")
+            current_app.logger.info(f"Successfully parsed and stored data from '{filename}' into app.config['PROCESSED_DEMAND_DATA'].")
 
-            # Optionally, delete the temporary file after processing
+            # Delete the temporary file after successful processing.
             try:
                 os.remove(temp_file_path)
                 current_app.logger.info(f"Temporary file '{temp_file_path}' deleted.")
@@ -110,14 +113,16 @@ def api_get_historical_chart_data():
         JSON: Success status, message, and data formatted for the historical demand chart.
               Returns error if no data is processed or data is in incorrect format.
     """
+    # Retrieve the globally stored processed data from the last uploaded file.
     processed_data = current_app.config.get('PROCESSED_DEMAND_DATA')
 
     if not processed_data or 'aggregated_electricity' not in processed_data:
+        current_app.logger.warning("Historical chart data requested, but no PROCESSED_DEMAND_DATA found or it's incomplete.")
         return jsonify({
             "success": False,
-            "message": "No processed demand data available. Please upload a demand file first.",
-            "data": {"years": [], "sectors": {}, "title": "Historical Energy Demand (MU) - No Data"}
-        }), 404 # Not found, or could be 200 with empty data based on preference
+            "message": "No processed demand data available. Please upload and process a demand file first.",
+            "data": {"years": [], "sectors": {}, "title": "Historical Energy Demand (MU) - No Data Available"}
+        }), 404
 
     aggregated_df = processed_data['aggregated_electricity']
 
@@ -163,12 +168,15 @@ def api_run_forecast():
         return jsonify({"success": False, "message": "Scenario name ('scenarioName') is required to run forecast."}), 400
 
     scenario_name = config.get('scenarioName')
-    # Check if processed data is available to base the forecast on
+    # Check if processed data is available to base the forecast on.
+    # This implies that forecasts are run on the currently loaded dataset.
     processed_demand_data = current_app.config.get('PROCESSED_DEMAND_DATA')
     if not processed_demand_data:
-        return jsonify({"success": False, "message": "Cannot run forecast: No demand data has been uploaded and processed yet."}), 400
+        current_app.logger.warning(f"Forecast run for '{scenario_name}' attempted without processed demand data.")
+        return jsonify({"success": False, "message": "Cannot run forecast: No demand data has been uploaded and processed yet. Please upload data first."}), 400
 
-    print(f"Received request to run demand forecast for scenario: {scenario_name} using current processed data.")
+    print(f"Received request to run demand forecast for scenario: {scenario_name} using current processed data (simulated).")
+    # In a real application, specific elements from processed_demand_data would be passed to the forecasting engine.
     job_id = f"fcst_{str(uuid.uuid4())[:8]}"
 
     simulated_jobs = current_app.config.get('SIMULATED_JOBS', {})

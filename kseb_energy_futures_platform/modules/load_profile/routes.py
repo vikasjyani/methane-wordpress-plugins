@@ -58,15 +58,18 @@ def api_upload_load_curve_template():
             file.save(temp_file_path)
             current_app.logger.info(f"Load curve template '{filename}' saved temporarily to '{temp_file_path}'.")
 
+            # Call the parser function from file_parser.py
             parsed_data = process_load_curve_template(temp_file_path)
 
             if parsed_data is None:
-                current_app.logger.error(f"Parsing failed for load curve template '{filename}'.")
-                return jsonify({"success": False, "message": f"Failed to parse the uploaded template '{filename}'. Check file format and content."}), 500
+                current_app.logger.error(f"Parsing failed for load curve template '{filename}'. process_load_curve_template returned None.")
+                return jsonify({"success": False, "message": f"Failed to parse the uploaded template '{filename}'. Review file structure and logs."}), 500
 
+            # Store the successfully parsed data in app.config to make it available to other requests/endpoints.
             current_app.config['PROCESSED_LOAD_CURVE_DATA'] = parsed_data
-            current_app.logger.info(f"Successfully parsed and stored data from load curve template '{filename}'.")
+            current_app.logger.info(f"Successfully parsed and stored data from load curve template '{filename}' in app.config['PROCESSED_LOAD_CURVE_DATA'].")
 
+            # Delete the temporary file after successful processing.
             try:
                 os.remove(temp_file_path)
                 current_app.logger.info(f"Temporary load curve template file '{temp_file_path}' deleted.")
@@ -112,14 +115,21 @@ def api_preview_load_profile():
     config = request.json
     print(f"Received request to preview load profile with config: {config}")
 
+    # Check if data from an uploaded load curve template is available
     processed_lc_data = current_app.config.get('PROCESSED_LOAD_CURVE_DATA')
-    log_message = " (using default simulation data)."
-    if processed_lc_data and not processed_lc_data.get('past_hourly_demand', pd.DataFrame()).empty:
-        log_message = f" (found {len(processed_lc_data['past_hourly_demand'])} records from uploaded template)."
-        # Actual preview logic would use processed_lc_data here.
-        # For now, just acknowledge its presence.
-    print(f"Simulating preview data {log_message}")
+    log_message = " (using default simulation/placeholder data for preview)."
+    if processed_lc_data and isinstance(processed_lc_data.get('past_hourly_demand'), pd.DataFrame) and not processed_lc_data['past_hourly_demand'].empty:
+        # If actual data was used for preview, this log would confirm it.
+        # For this simulation, the preview logic below remains independent of the uploaded file's content.
+        log_message = f" (found {len(processed_lc_data['past_hourly_demand'])} hourly records in processed template data, but preview uses its own simulation)."
+    elif processed_lc_data:
+        log_message = " (processed template data available but past_hourly_demand is empty or invalid, preview uses its own simulation)."
 
+    print(f"Simulating load profile preview data {log_message}")
+
+    # The preview generation logic below is independent of the uploaded file for this simulation.
+    # A real implementation would use data from processed_lc_data (e.g., shape from past_hourly_demand)
+    # combined with config from the request to generate a more meaningful preview.
     base_load_factor = float(config.get('baseLoadFactor', 0.35))
     peak_load_factor = float(config.get('peakLoadFactor', 0.9))
     simulated_average_load_mw = random.uniform(2000, 4000)
@@ -146,11 +156,14 @@ def api_generate_load_profiles():
     if not config or not config.get('demandScenario'):
         return jsonify({"success": False, "message": "Demand scenario ID ('demandScenario') is required."}), 400
 
+    # Check if data from an uploaded load curve template is available
     processed_lc_data = current_app.config.get('PROCESSED_LOAD_CURVE_DATA')
-    input_data_source_log = "default internal data"
-    if processed_lc_data:
-        input_data_source_log = "uploaded load curve template"
-        # Actual generation logic would use processed_lc_data here.
+    input_data_source_log = "default internal data generation logic" # Default assumption
+    if processed_lc_data and isinstance(processed_lc_data.get('past_hourly_demand'), pd.DataFrame) and not processed_lc_data['past_hourly_demand'].empty:
+        # If actual generation logic were implemented, it would now use data from processed_lc_data.
+        input_data_source_log = "data from uploaded load curve template (simulated usage)"
+    elif processed_lc_data:
+        input_data_source_log = "uploaded load curve template was processed but seems empty/invalid for generation (simulated usage)"
 
     demand_scenario_id = config.get('demandScenario')
     profile_name_base = f"LP_{demand_scenario_id}_{config.get('startYear', 'YYYY')}-{config.get('endYear', 'YYYY')}"

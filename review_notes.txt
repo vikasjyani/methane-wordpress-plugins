@@ -1,6 +1,6 @@
-KSEB Energy Futures Platform - Final Review Notes (Prototype Phase)
+KSEB Energy Futures Platform - Review Notes
 
-Date: 2024-08-16
+Date: 2024-08-16 (Updated 2024-08-17 for Parsers & Integrations)
 
 This document outlines key observations, discrepancies, and areas for future development based on a review of the implemented UI/UX prototype against the provided UI documentation.
 
@@ -14,55 +14,70 @@ This document outlines key observations, discrepancies, and areas for future dev
 **Key Observations & Discrepancies (aligned with UI Documentation Sections):**
 
 1.  **General:**
-    *   **Backend Functionality:** The backend is entirely mocked. No actual data processing, file system operations (uploads/downloads of generated files), or database interactions are implemented. This is as per the project's current scope.
-    *   **Error Handling:** API error responses are basic (e.g., `{"success": False, "message": "..."}`). No sophisticated global error handling, detailed error codes, or user-facing error pages beyond alerts are implemented.
-    *   **User Authentication/Authorization:** Not implemented. All pages and simulated API endpoints are publicly accessible.
-    *   **Navigation:** Primary navigation is via the Home Page Quick Actions. A persistent sidebar or header-based global navigation menu for all modules is a potential future enhancement for better usability. Some direct navigation links (e.g., User Guide, Admin Panel from base layout) have been added.
-    *   **State Persistence:** Project state, scenario selections, etc., are not persisted across sessions beyond the simulated in-memory stores in `app.config` which reset on app restart.
+    *   **Backend Functionality:** The backend is entirely mocked for core calculations. No actual data processing (beyond Excel parsing), file system operations for project persistence, or database interactions are implemented. This is as per the project's current scope.
+    *   **Error Handling:** API error responses are basic. No sophisticated global error handlers or detailed user-facing error pages beyond alerts are implemented. Parsers include basic error/warning prints to console.
+    *   **User Authentication/Authorization:** Not implemented.
+    *   **Navigation:** Primarily via Home Page Quick Actions and some direct links in base layout.
+    *   **State Persistence:** User-uploaded data (parsed Excel content) is stored in `app.config` and persists for the current app session only. Project state, scenario selections, etc., are not persisted across app restarts.
 
-2.  **Home Page (Section 2):**
-    *   Quick Action buttons for module-specific actions (e.g., "Run Demand Forecast", "Save Project") are currently generic placeholders that log to console or show an alert. They correctly navigate to module pages where appropriate (e.g. "New Project").
+2.  **Home Page (Section 2):** (No changes specific to this review)
 
-3.  **Project Management (Section 3):**
-    *   "Browse" for project location is a visual placeholder due to limitations of web browser file system access. Path input is manual.
-    *   Saving a project is simulated (no actual file/data saving).
+3.  **Project Management (Section 3):** (No changes specific to this review)
 
 4.  **Demand Projection (Section 4):**
-    *   File upload is simulated. No actual parsing or validation of uploaded files occurs.
-    *   "Configure Details" buttons for sector-wise model configuration are placeholders.
-    *   "Validate Data & Config" and "View Previous Forecast Runs" buttons are placeholders.
+    *   **Excel Parsing (`input_demand_file.xlsx`):**
+        *   `file_parser.py` implemented with `load_input_demand_data`.
+        *   Supports `~Settings Table`, `~Consumption_Sectors Table`, `~Econometric_Parameters Table` (optional) from 'main' sheet.
+        *   Reads individual sector sheets and `Economic_Indicators` sheet if econometric parameters are enabled.
+        *   Performs merging of economic indicators with sector data (on 'Year' or broadcasting first row).
+        *   Aggregates electricity consumption into `aggregated_electricity` DataFrame.
+        *   Unit tests (`test_demand_parser.py`) created and pass, covering structure, settings, aggregation, and handling of optional econometric data.
+    *   **API Integration:**
+        *   `POST /api/demand_projection/upload_demand_file` endpoint now uses the parser, saves uploaded file temporarily, stores parsed data in `app.config['PROCESSED_DEMAND_DATA']`.
+        *   `GET /api/demand_projection/chart_data/historical` now sources its data from `app.config['PROCESSED_DEMAND_DATA']['aggregated_electricity']`, reflecting uploaded content.
+    *   **UI:** File upload UI on `data_input.html` is functional, and the historical chart updates after successful upload.
 
 5.  **Load Profile Generation (Section 5):**
-    *   "Advanced Configuration" button is a placeholder.
-    *   Linking generated profiles to PyPSA scenarios is a placeholder action.
+    *   **Excel Parsing (`load_curve_template.xlsx`):**
+        *   `file_parser.py` implemented with `process_load_curve_template`.
+        *   Parses 'Past_Hourly_Demand' (handles datetime conversion, resampling to hourly), 'Total Demand' (flexible column names), and optional 'max_demand', 'load_factors' sheets.
+        *   Unit tests (`test_load_curve_parser.py`) created and pass, covering full/minimal templates, missing sheets, and malformed data.
+    *   **API Integration:**
+        *   `POST /api/load_profile/upload_load_curve_template` endpoint uses the parser, saves file temporarily, stores parsed data in `app.config['PROCESSED_LOAD_CURVE_DATA']`.
+        *   Other Load Profile APIs (e.g., `/preview`, `/generate`) conceptually acknowledge the presence of this processed data (logged to console) but their core mock logic doesn't fully utilize it yet.
+    *   **UI:** File upload UI on `creation.html` is functional, providing feedback.
 
 6.  **PyPSA Modeling (Section 6):**
-    *   "Expert Mode Options" button is a placeholder.
-    *   Actual PyPSA model setup, solver integration, and execution are not implemented. Job progress is simulated.
+    *   **Excel Parsing (`pypsa_input_template.xlsx`):**
+        *   `file_parser.py` implemented with `parse_pypsa_input_template` and helper `extract_tables_from_sheet_pypsa`.
+        *   Special handling for 'Settings' sheet to extract multiple marker-defined tables.
+        *   Parses predefined lists of component, time-series, and cost/parameter sheets.
+        *   Loads any other custom sheets found in the template.
+        *   Unit tests (`test_pypsa_input_parser.py`) created and pass, covering Settings tables, component/timeseries/cost sheets, missing optional sheets, and custom sheets.
+    *   **API Integration:**
+        *   `POST /api/pypsa_model/upload_pypsa_template` endpoint uses the parser, saves file temporarily, stores parsed data in `current_app.config['PROCESSED_PYPSA_DATA']`.
+        *   `POST /api/pypsa_model/validate_model_setup` now retrieves data from `app.config['PROCESSED_PYPSA_DATA']` and performs basic validation checks (e.g., presence of key sheets/tables).
+        *   `POST /api/pypsa_model/run_simulation` now checks for presence of processed data.
+    *   **UI:** File upload UI on `configuration.html` is functional. "Validate Model" uses the uploaded data context. UI updates (settings display, component summary) after upload are basic.
 
-7.  **PyPSA Results Visualization (Section 7):**
-    *   Chart rendering uses Plotly.js with basic simulated data. Advanced interactivity, specific chart types (e.g., Sankey diagrams, detailed network graphs), or complex data drill-downs are not implemented.
-    *   "Upload Custom Network/Results" is a placeholder.
-    *   "Export" and "Create Presentation" functionalities are placeholders.
+7.  **PyPSA Results Visualization (Section 7):** (No changes specific to this review)
 
-8.  **Admin Panel (Section 8):**
-    *   Feature toggles update the in-memory `app.config` but don't have real effects on backend functionality (as backend logic is mocked).
-    *   System monitoring data is entirely simulated and fetched on page load/refresh. No true real-time data feeds (e.g., via WebSockets) are implemented.
-    *   Actions like "Download Logs", "Clear Cache", "Restart Services" are placeholders and only show alerts.
+8.  **Admin Panel (Section 8):** (No changes specific to this review)
 
-9.  **Helper Pages (Section 9):**
-    *   User Guide search bar is a non-functional visual placeholder.
-    *   Content for User Guide topics is placeholder text.
-    *   "Download PDF" and "Print" for User Guide are placeholders (Print uses `window.print()`).
-    *   Template file download links point to placeholder static paths; actual template files would need to be created and placed there.
+9.  **Helper Pages (Section 9):** (No changes specific to this review)
 
 **Documentation Status:**
--   Python code (`app.py`, module `routes.py` files) has module and function-level docstrings and inline comments.
--   JavaScript (`main.js`) has file-level, function-level comments, and inline comments.
--   HTML templates have comments for complex structures and placeholders.
--   CSS (`style.css`) has comments grouping styles and explaining rules/variables.
+-   Python code for new file parsers (`demand_projection/file_parser.py`, `load_profile/file_parser.py`, `pypsa_modeling/file_parser.py`) has module and function-level docstrings and inline comments.
+-   Relevant API route functions in `routes.py` for these modules have updated docstrings/comments reflecting the integration of parsers and use of `app.config` for parsed data.
+-   JavaScript file upload handlers in `main.js` have comments explaining `FormData` usage, API calls, and UI updates.
+-   HTML templates for file upload sections have been reviewed for consistency and commented where necessary.
 
-**Conclusion:**
-The platform prototype aligns well with the UI documentation in terms of structure, visual elements, and basic mocked interactions. The identified discrepancies are primarily related to the mocked nature of the backend, absence of real data processing, and placeholder status of some advanced/non-core functionalities. The current state serves as a strong foundation for further development where real backend logic and advanced features would be implemented. The codebase is now better organized with Blueprints and includes developer-focused documentation.The `review_notes.txt` file has been created with a summary of the review. All Python code, JavaScript, HTML, and CSS have been documented as requested.
+**Limitations & Future Work (related to parsing & integration):**
+-   **Error Propagation:** Parsers print warnings/errors to console but don't return detailed error structures to the API layer. APIs return generic 500s on parsing failures. A more structured error reporting mechanism would be beneficial.
+-   **Data Validation within Parsers:** Parsers perform basic structural checks (e.g., presence of columns) but not deep data validation (e.g., data types, value ranges, consistency between tables/sheets). This would be a next step for robustness.
+-   **Use of Parsed Data:** While parsed data is stored in `app.config`, its actual *use* in downstream logic (e.g., forecast generation, load profile synthesis, PyPSA model building) is still simulated in most API endpoints. Full integration into these processes is pending.
+-   **Security for File Uploads:** While `secure_filename` is used, further security considerations (file type/size limits enforced on server, virus scanning, etc.) would be needed for a production system. Temporary file management is basic.
+-   **Scalability of `app.config` Storage:** Storing large parsed Excel data in `app.config` is suitable for this prototype but not for a multi-user or production environment. A proper database or session-specific/project-specific file storage would be needed.
 
-This concludes the subtask. I will now submit the final report.
+**Conclusion on Excel Parsing Integration:**
+The core Excel parsing logic for the three specified template types has been successfully implemented and integrated into their respective module APIs. File upload UIs are functional, and the parsed data is made available within the application context for subsequent (currently mocked) operations. Unit tests provide a good baseline for parser correctness.

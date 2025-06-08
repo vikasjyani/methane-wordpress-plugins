@@ -16,10 +16,9 @@
             <span id="demand-file-status" class="status-warning">No file uploaded or processed yet.</span>
             <span id="demand-file-upload-details" class="status-text" style="display: block; margin-top: 5px; font-size: 0.85em;"></span>
         </div>
-        <!-- Button to trigger file input dialog -->
+        <!-- Button to trigger file input dialog; actual file input is hidden and triggered by JS -->
         <button type="button" id="upload-demand-file-btn" class="btn btn-primary">Upload New Data File</button>
-        <!-- Hidden file input, triggered by the button above -->
-        <input type="file" id="demand-file-input" style="display: none;" accept=".csv, .xlsx, .xls">
+        <input type="file" id="demand-file-input" name="demand_file" style="display: none;" accept=".csv, .xlsx, .xls"> <!-- name added for consistency, though not strictly needed for JS FormData if key is set there -->
         <button type="button" id="download-template-btn" class="btn btn-secondary">Download Data Template</button>
         <button type="button" id="view-help-demand-btn" class="btn btn-secondary">View Help/Documentation</button>
     </div>

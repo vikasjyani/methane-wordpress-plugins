@@ -11,25 +11,25 @@
 
     <!-- Status bar displaying information about base templates and selected inputs -->
     <div class="status-bar pypsa-status">
-        <!-- This span will be updated by JS after template upload -->
+        <!-- This span will be updated by JS after template upload to reflect the processed file status -->
         <span><strong>PyPSA Base Template Status:</strong> <span id="pypsa-template-upload-status" class="status-warning">No template uploaded yet. Please upload a PyPSA input template.</span></span>
-        <!-- JS should update this based on user selection from Load Profile module or project settings -->
-        <span><strong>Selected Load Profile:</strong> <span id="pypsa-load-profile-status" class="status-ok">LP_Default_2025-2040 (Default)</span></span>
-        <!-- Tech cost data could also come from template or be separate -->
+        <!-- This span should be updated by JS if a load profile is selected elsewhere (e.g. project settings or LP module) -->
+        <span><strong>Selected Load Profile:</strong> <span id="pypsa-load-profile-status" class="status-ok" data-selected-load-profile-id="default_lp_if_not_set">LP_Default_2025-2040 (Default)</span></span>
+        <!-- Tech cost data source could also be displayed here if managed separately -->
     </div>
 
     <!-- File Upload Section for PyPSA Input Template -->
-    <div class="form-section template-upload-section"> <!-- Reusing class for consistent styling -->
+    <div class="form-section template-upload-section">
         <h3>Upload PyPSA Input Template</h3>
         <div class="form-group">
             <label for="pypsa-template-file-input">Select PyPSA Input Template File (.xlsx, .xls):</label>
-            <div style="display: flex; gap: 10px; align-items: center;"> <!-- Flex container for input and button -->
-                <input type="file" id="pypsa-template-file-input" name="pypsa_template_file" accept=".xlsx, .xls" class="form-control-file" style="flex-grow: 1;">
+            <div style="display: flex; gap: 10px; align-items: center;">
+                <input type="file" id="pypsa-template-file-input" name="pypsa_template_file" accept=".xlsx, .xls" class="form-control-file" style="flex-grow: 1;" aria-describedby="pypsaTemplateHelp">
                 <button type="button" id="upload-pypsa-template-btn" class="btn btn-secondary btn-small">Upload & Process Template</button>
             </div>
-            <!-- Span to show status of template processing -->
+            <!-- Span to show detailed status of template processing (e.g., success, errors) -->
             <span id="pypsa-template-processing-status" class="status-text" style="display: block; margin-top: 5px;"></span>
-            <small>This Excel file should contain sheets for 'Settings', 'Buses', 'Generators', 'Lines', 'Demand', costs, etc., as per PyPSA conventions.</small>
+            <small id="pypsaTemplateHelp">This Excel file should contain all necessary sheets for a PyPSA model: 'Settings', 'Buses', 'Generators', 'Lines', 'Load' (or 'Demand'), technology costs, etc.</small>
         </div>
     </div>
 
@@ -49,11 +49,14 @@
             </div>
 
             <h4>Base Model Settings (from Uploaded Template - Display Only)</h4>
-            <!-- Display box for showing key assumptions from the base template (non-editable here) -->
-            <div id="pypsa-settings-display-box" class="settings-display-box"> <!-- Added ID for JS targeting -->
-                <p><i>Upload a PyPSA template to see a summary of its 'Settings' sheet here (e.g., Scenario_Info, CO2_Limits tables).</i></p>
-                <!-- Example of how it might look after population by JS:
-                <p><strong>Scenario Name (from template):</strong> Test_Scenario_2030</p>
+            <!-- This display box is populated by JavaScript after a PyPSA template is successfully uploaded and parsed. -->
+            <!-- It shows key settings extracted from the 'Settings' sheet of the template. -->
+            <div id="pypsa-settings-display-box" class="settings-display-box">
+                <p><i>Upload a PyPSA template to see a summary of its 'Settings' sheet (e.g., Scenario_Info, CO2_Limits tables) here.</i></p>
+                <!-- Example content after JS populates:
+                <strong>Key Settings from Template (Scenario_Info):</strong>
+                <ul>
+                    <li><strong>Scenario Name:</strong> Test_Scenario_2030</li>
                 <p><strong>Years (from template):</strong> 2025,2030</p>
                 <p><strong>CO2 Limit (2030 from template):</strong> 8.0 MT</p>
                 -->
@@ -98,13 +101,15 @@
         <aside class="summary-solver-pypsa">
             <section class="config-section-pypsa">
                 <h3>System Components Summary (from Uploaded Template)</h3>
+                <!-- This table body is populated by JavaScript after template upload. -->
+                <!-- It shows a summary of key components found in the template. -->
                 <div class="table-container small-table">
                     <table id="pypsa-components-summary-table" class="data-table">
-                        <thead><tr><th>Component Type</th><th>Count from Template</th></tr></thead>
-                        <tbody id="pypsa-components-tbody"> <!-- Target for JS population -->
-                            <tr><td colspan="2"><i>Upload template to see summary.</i></td></tr>
-                            <!-- Example after JS populates:
-                            <tr><td>Buses</td><td>55</td></tr>
+                        <thead><tr><th>Component Type</th><th>Status / Count (from Template)</th></tr></thead>
+                        <tbody id="pypsa-components-tbody">
+                            <tr><td colspan="2"><i>Upload a PyPSA template to see the component summary.</i></td></tr>
+                            <!-- Example content after JS populates:
+                            <tr><td>Buses</td><td>Data found (details in parsed data)</td></tr>
                             <tr><td>Generators</td><td>85</td></tr>
                             -->
                         </tbody>
